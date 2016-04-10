@@ -45,8 +45,8 @@ clean :
 preview : $(DST_ALL)
 
 # Pattern to build a generic page.
-#%.html : %.md _layouts/page.html $(FILTERS)
-	#${PANDOC} -s -t html \
+%.html : %.md _layouts/page.html $(FILTERS)
+	${PANDOC} -s -t html \
 	    ${PANDOC_FLAGS} \
 	    --mathjax \
 	    --template=_layouts/page \
