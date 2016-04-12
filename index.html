@@ -5,7 +5,7 @@ venue: University of Melbourne
 address: Day One (19th) - Old Arts (Building number 149), Collaborative Learning Space 3 (Room 143); Day Two (26th) - Kenneth Myer Building/Melbourne Brain Centre (Building number 144), Education Centre Room, Parkville, VIC 3010 
 country: Australia
 language: en
-latlng: [[-37.7980987, 144.9560483], [-37.797477, 144.960077]]
+latlng: -37.797477, 144.960077
 humandate: April 19 and 26, 2016
 humantime: 9:00 am - 5:00 pm
 startdate: 2016-04-19
@@ -98,8 +98,6 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
   <strong>Where:</strong>
   {{page.address}}.
   Get directions with
-  <a href="//www.openstreetmap.org/?mlat={{page.latlng | replace:',','&mlon='}}&zoom=16">OpenStreetMap</a>
-  or
   <a href="//maps.google.com/maps?q={{page.latlng}}">Google Maps</a>.
 </p>
 {% endif %}
@@ -111,10 +109,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 <p id="requirements">
   <strong>Requirements:</strong> <strong>**Participants must bring a laptop**</strong> with a 
   Mac, Linux, or Windows operating sytem (not a tablet, Chromebook, etc.) that they have administrative privileges
-  on. They should have a few specific software packages installed (listed
-  <a href="#setup">below</a>). They are also required to abide by
-  Software Carpentry's
-  <a href="{{site.swc_site}}/conduct.html">Code of Conduct</a>.
+  on. 
 </p>
 
 <!--
@@ -133,10 +128,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
   {% endif %}
   for more information.
 </p>
-<p>
-  or <a href="https://www.facebook.com/groups/NeuralCode/?ref=bookmarks">The NeuralCode group</a> on Facebook
-  
-</p>
+
 
 <hr/>
 
@@ -146,38 +138,69 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
   to match your plans.  You may also want to change 'Day 1' and 'Day
   2' to be actual dates or days of the week.
 -->
-<h2 id="schedule">Schedule</h2>
+<h2 id="schedule">Schedule</h2> 
 
 <!-- DO NOT EDIT SURVEY LINKS -->
-<p><em>Surveys</em></p>
+ <!--<p><em>Surveys</em></p>
 <p>Please be sure to complete these surveys before and after the workshop.</p>
 <p><a href='{{ site.swc_pre_survey }}{{ site.github.project_title }}'>Pre-workshop Survey</a></p>
 <p><a href='{{ site.swc_post_survey }}{{ site.github.project_title }}'>Post-workshop Survey</a></p>
-
+-->
 <div class="row">
   <div class="col-md-6">
-    <h3>Wed March 30th</h3>
+    <h3>Tues April 19th (Old Arts)</h3>
     <table class="table table-striped">
-      <tr> <td>09:00</td>  <td>Automating tasks with the Unix shell</td> </tr>
-      <tr> <td>10:30</td> <td>Coffee</td> </tr>
+      <tr> <td>09:00</td>  <td>Introduction and access to R through "Data Intensive Tools for the Cloud (DIT4C)"</td> </tr>
+      <tr> <td>10:00</td> <td>Intro to R and how to find help</td> </tr>
+      <tr> <td>11:00</td>  <td>Data structures</td> </tr>
       <tr> <td>12:00</td>  <td>Lunch break</td> </tr>
-      <tr> <td>13:00</td>  <td>Building programs with Python</td> </tr>
-      <tr> <td>14:30</td>  <td>Coffee</td> </tr>
-      <tr> <td>16:00</td>  <td>Wrap-up</td> </tr>
+      <tr> <td>13:00</td>  <td>Reading and subsetting data</td> </tr>
+      <tr> <td>14:30</td>  <td>Functions</td> </tr>
+      <tr> <td>16:00</td>  <td>Plotting data using ggplot2</td> </tr>
+      <tr> <td>16:45</td>  <td>Wrap up</td> </tr>
     </table>
   </div>
   <div class="col-md-6">
-    <h3>Thur March 31st</h3>
+    <h3>Tues April 26th (Kenneth Myer Building)</h3>
     <table class="table table-striped">
-      <tr> <td>09:00</td>  <td>Building programs with Python</td> </tr>
-      <tr> <td>10:30</td>  <td>Coffee</td> </tr>
+      <tr> <td>09:00</td>  <td>Setup</td> </tr>
+      <tr> <td>09:30</td>  <td>Vectorisation</td> </tr>
+      <tr> <td>10:30</td>  <td>Control flow ("if" and "for" statements)</td> </tr>
       <tr> <td>12:00</td>  <td>Lunch break</td> </tr>
-      <tr> <td>13:00</td>  <td>Version control with Git</td> </tr>
-      <tr> <td>14:30</td>  <td>Coffee</td> </tr>
-      <tr> <td>16:00</td>  <td>Wrap-up</td> </tr>
+      <tr> <td>13:00</td>  <td>Writing data and figures</td> </tr>
+      <tr> <td>14:30</td>  <td>Split-apply-combine</td> </tr>
+      <tr> <td>15:00</td>  <td>Dataframe manipulation using dplyr tidyr</td> </tr>
+      <tr> <td>16:00</td>  <td>Github</td></tr>
+      <tr> <td>16:45</td>  <td>Wrap-up</td> </tr>
     </table>
   </div>
 </div>
+
+<h2 id="topics">Topics</h2>
+<ol style="list-style-type: decimal">
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/01-rstudio-intro.html">Introduction to R and RStudio</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/03-seeking-help.html">Seeking help</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/04-data-structures-part1.html">Data structures</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/05-data-structures-part2.html">Data frames and reading in data</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/06-data-subsetting.html">Subsetting data</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/07-functions.html">Creating functions</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/08-plot-ggplot2.html">Creating publication quality graphics</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/09-vectorisation.html">Vectorisation</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/10-control-flow.html">Control flow</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/11-writing-data.html">Writing data</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/12-plyr.html">Split-apply-combine</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/13-dplyr.html">Dataframe manipulation with dplyr</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/14-tidyr.html">Dataframe manipulation with tidyr</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/02-project-intro.html">Project management with RStudio</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/15-wrap-up.html">Wrapping up</a></li>
+</ol>
+<h2 id="other-resources">Other Resources</h2>
+<ul>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/reference.html">Reference</a></li>
+<li><a href="http://timesler.github.io/Introductory-R-Workshop/instructors.html">Instructor’s Guide</a></li>
+</ul>
+
+
 
 <!--
   ETHERPAD
@@ -213,7 +236,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
   please preview your site before committing, and make sure to run
   'tools/check' as well.
 -->
-<h2 id="syllabus">Syllabus</h2>
+<!-- <h2 id="syllabus">Syllabus</h2>
 
 <div class="row">
   <div class="col-md-6">
@@ -240,7 +263,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
       <li>Using Python from the command line</li>
       <li><a href="{{site.swc_githubio}}/python-novice-inflammation/reference.html">Reference...</a></li>
     </ul>
-  </div>
+  </div> -->
   <!--
   <div class="col-md-6">
     <h3 id="syllabus-r">Programming in R</h3>
@@ -267,7 +290,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
      </ul>
    </div>
    -->
-</div>
+<!--</div>
 
 <div class="row">
   <div class="col-md-6">
@@ -283,7 +306,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
       <li>Where to host work, and why</li>
       <li><a href="{{site.swc_githubio}}/git-novice/reference.html">Reference...</a></li>
     </ul>
-  </div>
+  </div>-->
   <!--
   <div class="col-md-6">
     <h3 id="syllabus-sql">Managing Data with SQL</h3>
@@ -300,9 +323,9 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
     </ul>
   </div>
   -->
-</div>
+<!--</div>
 
-<hr/>
+<hr/> -->
 
 <!--
   SETUP
