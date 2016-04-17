@@ -13,6 +13,7 @@ enddate: 2016-04-26
 instructor: ["Tim Esler", "Nikki Rubinstein", "Elisabeth Vogel"]
 helper: ["Caroline X Gao", "Sepideh Foroutan", "Rebecca Jordan", "Chenkai Ma", "Ramyar Molania", "Andy Krause", "Jovana Maksimovic", "Elisabeth Vogel"]
 contact: t.esler@student.unimelb.edu.au 
+contact2: nikkir@student.unimelb.edu.au
 etherpad: https://v.etherpad.org/p/Introductory-R-Workshop-19th-April-2016
 eventbrite: 24384287059
 ---
@@ -120,11 +121,14 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 -->
 <p id="contact">
   <strong>Contact</strong>:
-  Please mail
+  Please email
   {% if page.contact %}
     <a href='mailto:{{page.contact}}'>{{page.contact}}</a>
   {% else %}
     <a href='mailto:{{site.contact}}'>{{site.contact}}</a>
+  {% endif %}
+  {% if page.contact2 %}
+    of <a href='mailto:{{page.contact2}}'>{{page.contact2}}</a>
   {% endif %}
   for more information.
 </p>
