@@ -2,7 +2,8 @@
 layout: workshop 
 root: .
 venue: University of Melbourne
-address: Day One (19th) - Old Arts (Building number 149), Collaborative Learning Space 3 (Room 143); Day Two (26th) - Kenneth Myer Building/Melbourne Brain Centre (Building number 144), Education Centre Room, Parkville, VIC 3010 
+address1: Old Arts (Building number 149), Collaborative Learning Space 3 (Room 143)
+address2: Kenneth Myer Building/Melbourne Brain Centre (Building number 144), Education Centre Room, Parkville, VIC 3010 
 country: Australia
 language: en
 latlng: -37.797477, 144.960077
@@ -19,7 +20,12 @@ eventbrite: 24384287059
 ---
 
 
-<!-- See instructions in the comments below for how to edit specific sections of this workshop template. -->
+<!-- See instructions in the comments below for how to edit specific sections of this workshop template. 
+Main things to edit include:
+  The Header
+  The Schedule and Training Material links
+  The containers and passwords in the dit4c document
+  -->
 
 
 
@@ -97,11 +103,16 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 {% if page.latlng %}
 <p id="where">
   <strong>Where:</strong>
-  {{page.address}}.
+  {% if page.address2 %}
+  Day One ({{page.startdate}}) - {{page.address1}}; Day Two ({{page.enddate}}) - {{page.address2}}.
+  {% else %}
+  {{page.address1}}.
+   {% endif %}
   Get directions with
   <a href="//maps.google.com/maps?q={{page.latlng}}">Google Maps</a>.
 </p>
 {% endif %}
+
 
 <!--
   SPECIAL REQUIREMENTS
