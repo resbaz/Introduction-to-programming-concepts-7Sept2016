@@ -4,3 +4,5 @@ _site
 .DS_Store
 .Rproj.user
 pandoc
+ssh-keygen.txt.pub
+ssh-keygen.txt
