@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
-    <title>Software Carpentry: R for reproducible scientific analysis</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <title>Research Platforms: R for reproducible scientific analysis</title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
-    <link rel="stylesheet" type="text/css" href="css/swc.css" />
-    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <link rel="stylesheet" type="text/css" href="{{page.root}}/css/bootstrap/bootstrap.css"  />
+    <link rel="stylesheet" type="text/css" href="{{page.root}}/css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="The Software Carpentry Blog" href="{{config.site}}/feed.xml"/>
     <meta charset="UTF-8" />
+    <meta http-equiv="last-modified" content="{{site.timestamp}}" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -19,8 +19,8 @@
   <body class="lesson">
     <div class="container card">
       <div class="banner">
-        <a href="http://software-carpentry.org" title="Software Carpentry">
-          <img alt="Software Carpentry banner" src="img/software-carpentry-banner.png" />
+        <a href="http://melbourne.resbaz.edu.au/" title="ResBaz">
+          <img alt="ResBaz banner" src="img/ResBaz-banner.png"/>
         </a>
       </div>
       <article>
@@ -30,7 +30,7 @@
           <h2 class="subtitle">Writing data</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
-<h2 id="learning-objectives"><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+<h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
 </div>
 <div class="panel-body">
 <ul>
@@ -40,21 +40,21 @@
 </section>
 <h2 id="saving-plots">Saving plots</h2>
 <p>You have already seen how to save the most recent plot you create in <code>ggplot2</code>, using the command <code>ggsave</code>. As a refresher:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="st">&quot;My_most_recent_plot.pdf&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="st">&quot;My_most_recent_plot.pdf&quot;</span>)</code></pre>
 <p>You can save a plot from within RStudio using the ‘Export’ button in the ‘Plot’ window. This will give you the option of saving as a .pdf or as .png, .jpg or other image formats.</p>
 <p>Sometimes you will want to save plots without creating them in the ‘Plot’ window first. Perhaps you want to make a pdf document with multiple pages: each one a different plot, for example. Or perhaps you’re looping through multiple subsets of a file, plotting data from each subset, and you want to save each plot, but obviously can’t stop the loop to click ‘Export’ for each one.</p>
 <p>In this case you can use a more flexible approach. The function <code>pdf</code> creates a new pdf device. You can control the size and resolution using the arguments to this function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pdf</span>(<span class="st">&quot;Life_Exp_vs_time.pdf&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">4</span>)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pdf</span>(<span class="st">&quot;Life_Exp_vs_time.pdf&quot;</span>, <span class="dt">width=</span><span class="dv">12</span>, <span class="dt">height=</span><span class="dv">4</span>)
 <span class="kw">ggplot</span>(<span class="dt">data=</span>gapminder, <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">y=</span>lifeExp, <span class="dt">colour=</span>country)) +
 <span class="st">  </span><span class="kw">geom_line</span>()
 
 <span class="co"># You then have to make sure to turn off the pdf device!</span>
 
-<span class="kw">dev.off</span>()</code></pre></div>
+<span class="kw">dev.off</span>()</code></pre>
 <p>Open up this document and have a look.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge-1"><span class="glyphicon glyphicon-pencil"></span>Challenge 1</h2>
+<h2><span class="glyphicon glyphicon-pencil"></span>Challenge 1</h2>
 </div>
 <div class="panel-body">
 <p>Rewrite your ‘pdf’ command to print a second page in the pdf, showing a facet plot (hint: use <code>facet_grid</code>) of the same data with one panel per continent.</p>
@@ -65,14 +65,14 @@
 <p>At some point, you’ll also want to write out data from R.</p>
 <p>We can use the <code>write.table</code> function for this, which is very similar to <code>read.table</code> from before.</p>
 <p>Let’s create a data-cleaning script, for this analysis, we only want to focus on the gapminder data for Australia:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">aust_subset &lt;-<span class="st"> </span>gapminder[gapminder$country ==<span class="st"> &quot;Australia&quot;</span>,]
+<pre class="sourceCode r"><code class="sourceCode r">aust_subset &lt;-<span class="st"> </span>gapminder[gapminder$country ==<span class="st"> &quot;Australia&quot;</span>,]
 
 <span class="kw">write.table</span>(aust_subset,
   <span class="dt">file=</span><span class="st">&quot;cleaned-data/gapminder-aus.csv&quot;</span>,
   <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>
-)</code></pre></div>
+)</code></pre>
 <p>Let’s switch back to the shell to take a look at the data to make sure it looks OK:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">head cleaned-data/gapminder-aus.csv</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">head cleaned-data/gapminder-aus.csv</code></pre>
 <pre class="output"><code>&quot;country&quot;,&quot;year&quot;,&quot;pop&quot;,&quot;continent&quot;,&quot;lifeExp&quot;,&quot;gdpPercap&quot;
 &quot;61&quot;,&quot;Australia&quot;,1952,8691212,&quot;Oceania&quot;,69.12,10039.59564
 &quot;62&quot;,&quot;Australia&quot;,1957,9712569,&quot;Oceania&quot;,70.33,10949.64959
@@ -86,16 +86,16 @@
 </code></pre>
 <p>Hmm, that’s not quite what we wanted. Where did all these quotation marks come from? Also the row numbers are meaningless.</p>
 <p>Let’s look at the help file to work out how to change this behaviour.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?write.table</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">?write.table</code></pre>
 <p>By default R will wrap character vectors with quotation marks when writing out to file. It will also write out the row and column names.</p>
 <p>Let’s fix this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.table</span>(
   gapminder[gapminder$country ==<span class="st"> &quot;Australia&quot;</span>,],
   <span class="dt">file=</span><span class="st">&quot;cleaned-data/gapminder-aus.csv&quot;</span>,
   <span class="dt">sep=</span><span class="st">&quot;,&quot;</span>, <span class="dt">quote=</span><span class="ot">FALSE</span>, <span class="dt">row.names=</span><span class="ot">FALSE</span>
-)</code></pre></div>
+)</code></pre>
 <p>Now lets look at the data again using our shell skills:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">head cleaned-data/gapminder-aus.csv</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">head cleaned-data/gapminder-aus.csv</code></pre>
 <pre class="output"><code>country,year,pop,continent,lifeExp,gdpPercap
 Australia,1952,8691212,Oceania,69.12,10039.59564
 Australia,1957,9712569,Oceania,70.33,10949.64959
@@ -110,7 +110,7 @@ Australia,1992,17481977,Oceania,77.56,23424.76683
 <p>That looks better!</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2 id="challenge-2"><span class="glyphicon glyphicon-pencil"></span>Challenge 2</h2>
+<h2><span class="glyphicon glyphicon-pencil"></span>Challenge 2</h2>
 </div>
 <div class="panel-body">
 <p>Write a data-cleaning script file that subsets the gapminder data to include only data points collected since 1990.</p>
@@ -120,15 +120,18 @@ Australia,1992,17481977,Oceania,77.56,23424.76683
         </div>
       </div>
       </article>
-      <div class="footer">
-        <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
-        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/lesson-template">Source</a>
-        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
-        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
-      </div>
+    <!--  <div class="footer">
+  <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
+  <a class="label swc-blue-bg" href="https://github.com/swcarpentry/lesson-template">Source</a>
+  <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+  <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+</div> -->
     </div>
     <!-- Javascript placed at the end of the document so the pages load faster -->
     <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
     <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+    <script src="{{page.root}}/js/jquery-1.9.1.min.js"></script>
+    <script src="{{page.root}}/css/bootstrap/bootstrap-js/bootstrap.js"></script>
   </body>
 </html>

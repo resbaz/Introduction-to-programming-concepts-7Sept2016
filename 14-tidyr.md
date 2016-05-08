@@ -38,6 +38,18 @@ Load the packages
 
 ~~~{.r}
 library("tidyr")
+~~~
+
+
+
+~~~{.error}
+Error in library("tidyr"): there is no package called 'tidyr'
+
+~~~
+
+
+
+~~~{.r}
 library("dplyr")
 ~~~
 
@@ -130,17 +142,25 @@ The first step towards getting our nice intermediate data format is to first con
 
 ~~~{.r}
 gap_long <- gap_wide %>% gather(obstype_year,obs_values,starts_with('pop'),starts_with('lifeExp'),starts_with('gdpPercap'))
+~~~
+
+
+
+~~~{.error}
+Error in function_list[[k]](value): could not find function "gather"
+
+~~~
+
+
+
+~~~{.r}
 str(gap_long)
 ~~~
 
 
 
-~~~{.output}
-'data.frame':	5112 obs. of  4 variables:
- $ continent   : chr  "Africa" "Africa" "Africa" "Africa" ...
- $ country     : chr  "Algeria" "Angola" "Benin" "Botswana" ...
- $ obstype_year: Factor w/ 36 levels "pop_1952","pop_1957",..: 1 1 1 1 1 1 1 1 1 1 ...
- $ obs_values  : num  9279525 4232095 1738315 442308 4469979 ...
+~~~{.error}
+Error in str(gap_long): object 'gap_long' not found
 
 ~~~
 
@@ -153,17 +173,25 @@ Inside `gather()` we first name the new column for the new ID variable (`obstype
 
 ~~~{.r}
 gap_long <- gap_wide %>% gather(obstype_year,obs_values,-continent,-country)
+~~~
+
+
+
+~~~{.error}
+Error in function_list[[k]](value): could not find function "gather"
+
+~~~
+
+
+
+~~~{.r}
 str(gap_long)
 ~~~
 
 
 
-~~~{.output}
-'data.frame':	5112 obs. of  4 variables:
- $ continent   : chr  "Africa" "Africa" "Africa" "Africa" ...
- $ country     : chr  "Algeria" "Angola" "Benin" "Botswana" ...
- $ obstype_year: Factor w/ 36 levels "gdpPercap_1952",..: 1 1 1 1 1 1 1 1 1 1 ...
- $ obs_values  : num  2449 3521 1063 851 543 ...
+~~~{.error}
+Error in str(gap_long): object 'gap_long' not found
 
 ~~~
 
@@ -175,7 +203,26 @@ Now `obstype_year` actually contains 2 pieces of information, the observation ty
 
 ~~~{.r}
 gap_long <- gap_long %>% separate(obstype_year,into=c('obs_type','year'),sep="_")
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_long' not found
+
+~~~
+
+
+
+~~~{.r}
 gap_long$year <- as.integer(gap_long$year)
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_long' not found
+
 ~~~
 
 
@@ -191,13 +238,25 @@ Now just to double-check our work, let's use the opposite of `gather()` to sprea
 
 ~~~{.r}
 gap_normal <- gap_long %>% spread(obs_type,obs_values)
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_long' not found
+
+~~~
+
+
+
+~~~{.r}
 dim(gap_normal)
 ~~~
 
 
 
-~~~{.output}
-[1] 1704    6
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_normal' not found
 
 ~~~
 
@@ -222,8 +281,8 @@ names(gap_normal)
 
 
 
-~~~{.output}
-[1] "continent" "country"   "year"      "gdpPercap" "lifeExp"   "pop"      
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_normal' not found
 
 ~~~
 
@@ -245,17 +304,25 @@ Now we've got an intermediate dataframe `gap_normal` with the same dimensions as
 
 ~~~{.r}
 gap_normal <- gap_normal[,names(gapminder)]
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_normal' not found
+
+~~~
+
+
+
+~~~{.r}
 all.equal(gap_normal,gapminder)
 ~~~
 
 
 
-~~~{.output}
-[1] "Component \"country\": 1704 string mismatches"              
-[2] "Component \"pop\": Mean relative difference: 1.634504"      
-[3] "Component \"continent\": 1212 string mismatches"            
-[4] "Component \"lifeExp\": Mean relative difference: 0.203822"  
-[5] "Component \"gdpPercap\": Mean relative difference: 1.162302"
+~~~{.error}
+Error in all.equal(gap_normal, gapminder): object 'gap_normal' not found
 
 ~~~
 
@@ -267,14 +334,8 @@ head(gap_normal)
 
 
 
-~~~{.output}
-  country year      pop continent lifeExp gdpPercap
-1 Algeria 1952  9279525    Africa  43.077  2449.008
-2 Algeria 1957 10270856    Africa  45.685  3013.976
-3 Algeria 1962 11000948    Africa  48.303  2550.817
-4 Algeria 1967 12760499    Africa  51.407  3246.992
-5 Algeria 1972 14760787    Africa  54.518  4182.664
-6 Algeria 1977 17152804    Africa  58.014  4910.417
+~~~{.error}
+Error in head(gap_normal): object 'gap_normal' not found
 
 ~~~
 
@@ -302,13 +363,25 @@ We're almost there, the original was sorted by `country`, `continent`, then `yea
 
 ~~~{.r}
 gap_normal <- gap_normal %>% arrange(country,continent,year)
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_normal' not found
+
+~~~
+
+
+
+~~~{.r}
 all.equal(gap_normal,gapminder)
 ~~~
 
 
 
-~~~{.output}
-[1] TRUE
+~~~{.error}
+Error in all.equal(gap_normal, gapminder): object 'gap_normal' not found
 
 ~~~
 
@@ -319,17 +392,25 @@ Now lets convert the long all the way back to the wide. In the wide format, we w
 
 ~~~{.r}
 gap_temp <- gap_long %>% unite(var_ID,continent,country,sep="_")
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_long' not found
+
+~~~
+
+
+
+~~~{.r}
 str(gap_temp)
 ~~~
 
 
 
-~~~{.output}
-'data.frame':	5112 obs. of  4 variables:
- $ var_ID    : chr  "Africa_Algeria" "Africa_Angola" "Africa_Benin" "Africa_Botswana" ...
- $ obs_type  : chr  "gdpPercap" "gdpPercap" "gdpPercap" "gdpPercap" ...
- $ year      : int  1952 1952 1952 1952 1952 1952 1952 1952 1952 1952 ...
- $ obs_values: num  2449 3521 1063 851 543 ...
+~~~{.error}
+Error in str(gap_temp): object 'gap_temp' not found
 
 ~~~
 
@@ -339,16 +420,25 @@ str(gap_temp)
 gap_temp <- gap_long %>%
     unite(ID_var,continent,country,sep="_") %>%
     unite(var_names,obs_type,year,sep="_")
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_long' not found
+
+~~~
+
+
+
+~~~{.r}
 str(gap_temp)
 ~~~
 
 
 
-~~~{.output}
-'data.frame':	5112 obs. of  3 variables:
- $ ID_var    : chr  "Africa_Algeria" "Africa_Angola" "Africa_Benin" "Africa_Botswana" ...
- $ var_names : chr  "gdpPercap_1952" "gdpPercap_1952" "gdpPercap_1952" "gdpPercap_1952" ...
- $ obs_values: num  2449 3521 1063 851 543 ...
+~~~{.error}
+Error in str(gap_temp): object 'gap_temp' not found
 
 ~~~
 
@@ -360,50 +450,25 @@ gap_wide_new <- gap_long %>%
     unite(ID_var,continent,country,sep="_") %>%
     unite(var_names,obs_type,year,sep="_") %>%
     spread(var_names,obs_values)
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_long' not found
+
+~~~
+
+
+
+~~~{.r}
 str(gap_wide_new)
 ~~~
 
 
 
-~~~{.output}
-'data.frame':	142 obs. of  37 variables:
- $ ID_var        : chr  "Africa_Algeria" "Africa_Angola" "Africa_Benin" "Africa_Botswana" ...
- $ gdpPercap_1952: num  2449 3521 1063 851 543 ...
- $ gdpPercap_1957: num  3014 3828 960 918 617 ...
- $ gdpPercap_1962: num  2551 4269 949 984 723 ...
- $ gdpPercap_1967: num  3247 5523 1036 1215 795 ...
- $ gdpPercap_1972: num  4183 5473 1086 2264 855 ...
- $ gdpPercap_1977: num  4910 3009 1029 3215 743 ...
- $ gdpPercap_1982: num  5745 2757 1278 4551 807 ...
- $ gdpPercap_1987: num  5681 2430 1226 6206 912 ...
- $ gdpPercap_1992: num  5023 2628 1191 7954 932 ...
- $ gdpPercap_1997: num  4797 2277 1233 8647 946 ...
- $ gdpPercap_2002: num  5288 2773 1373 11004 1038 ...
- $ gdpPercap_2007: num  6223 4797 1441 12570 1217 ...
- $ lifeExp_1952  : num  43.1 30 38.2 47.6 32 ...
- $ lifeExp_1957  : num  45.7 32 40.4 49.6 34.9 ...
- $ lifeExp_1962  : num  48.3 34 42.6 51.5 37.8 ...
- $ lifeExp_1967  : num  51.4 36 44.9 53.3 40.7 ...
- $ lifeExp_1972  : num  54.5 37.9 47 56 43.6 ...
- $ lifeExp_1977  : num  58 39.5 49.2 59.3 46.1 ...
- $ lifeExp_1982  : num  61.4 39.9 50.9 61.5 48.1 ...
- $ lifeExp_1987  : num  65.8 39.9 52.3 63.6 49.6 ...
- $ lifeExp_1992  : num  67.7 40.6 53.9 62.7 50.3 ...
- $ lifeExp_1997  : num  69.2 41 54.8 52.6 50.3 ...
- $ lifeExp_2002  : num  71 41 54.4 46.6 50.6 ...
- $ lifeExp_2007  : num  72.3 42.7 56.7 50.7 52.3 ...
- $ pop_1952      : num  9279525 4232095 1738315 442308 4469979 ...
- $ pop_1957      : num  10270856 4561361 1925173 474639 4713416 ...
- $ pop_1962      : num  11000948 4826015 2151895 512764 4919632 ...
- $ pop_1967      : num  12760499 5247469 2427334 553541 5127935 ...
- $ pop_1972      : num  14760787 5894858 2761407 619351 5433886 ...
- $ pop_1977      : num  17152804 6162675 3168267 781472 5889574 ...
- $ pop_1982      : num  20033753 7016384 3641603 970347 6634596 ...
- $ pop_1987      : num  23254956 7874230 4243788 1151184 7586551 ...
- $ pop_1992      : num  26298373 8735988 4981671 1342614 8878303 ...
- $ pop_1997      : num  29072015 9875024 6066080 1536536 10352843 ...
- $ pop_2002      : num  31287142 10866106 7026113 1630347 12251209 ...
- $ pop_2007      : num  33333216 12420476 8078314 1639131 14326203 ...
+~~~{.error}
+Error in str(gap_wide_new): object 'gap_wide_new' not found
 
 ~~~
 
@@ -419,56 +484,42 @@ Now we have a great 'wide' format dataframe, but the `ID_var` could be more usab
 
 ~~~{.r}
 gap_wide_betterID <- separate(gap_wide_new,ID_var,c("continent","country"),sep="_")
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): could not find function "separate"
+
+~~~
+
+
+
+~~~{.r}
 gap_wide_betterID <- gap_long %>% 
     unite(ID_var,continent,country,sep="_") %>%
     unite(var_names,obs_type,year,sep="_") %>%
     spread(var_names,obs_values) %>%
     separate(ID_var,c("continent","country"),sep="_")
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'gap_long' not found
+
+~~~
+
+
+
+~~~{.r}
 str(gap_wide_betterID)
 ~~~
 
 
 
-~~~{.output}
-'data.frame':	142 obs. of  38 variables:
- $ continent     : chr  "Africa" "Africa" "Africa" "Africa" ...
- $ country       : chr  "Algeria" "Angola" "Benin" "Botswana" ...
- $ gdpPercap_1952: num  2449 3521 1063 851 543 ...
- $ gdpPercap_1957: num  3014 3828 960 918 617 ...
- $ gdpPercap_1962: num  2551 4269 949 984 723 ...
- $ gdpPercap_1967: num  3247 5523 1036 1215 795 ...
- $ gdpPercap_1972: num  4183 5473 1086 2264 855 ...
- $ gdpPercap_1977: num  4910 3009 1029 3215 743 ...
- $ gdpPercap_1982: num  5745 2757 1278 4551 807 ...
- $ gdpPercap_1987: num  5681 2430 1226 6206 912 ...
- $ gdpPercap_1992: num  5023 2628 1191 7954 932 ...
- $ gdpPercap_1997: num  4797 2277 1233 8647 946 ...
- $ gdpPercap_2002: num  5288 2773 1373 11004 1038 ...
- $ gdpPercap_2007: num  6223 4797 1441 12570 1217 ...
- $ lifeExp_1952  : num  43.1 30 38.2 47.6 32 ...
- $ lifeExp_1957  : num  45.7 32 40.4 49.6 34.9 ...
- $ lifeExp_1962  : num  48.3 34 42.6 51.5 37.8 ...
- $ lifeExp_1967  : num  51.4 36 44.9 53.3 40.7 ...
- $ lifeExp_1972  : num  54.5 37.9 47 56 43.6 ...
- $ lifeExp_1977  : num  58 39.5 49.2 59.3 46.1 ...
- $ lifeExp_1982  : num  61.4 39.9 50.9 61.5 48.1 ...
- $ lifeExp_1987  : num  65.8 39.9 52.3 63.6 49.6 ...
- $ lifeExp_1992  : num  67.7 40.6 53.9 62.7 50.3 ...
- $ lifeExp_1997  : num  69.2 41 54.8 52.6 50.3 ...
- $ lifeExp_2002  : num  71 41 54.4 46.6 50.6 ...
- $ lifeExp_2007  : num  72.3 42.7 56.7 50.7 52.3 ...
- $ pop_1952      : num  9279525 4232095 1738315 442308 4469979 ...
- $ pop_1957      : num  10270856 4561361 1925173 474639 4713416 ...
- $ pop_1962      : num  11000948 4826015 2151895 512764 4919632 ...
- $ pop_1967      : num  12760499 5247469 2427334 553541 5127935 ...
- $ pop_1972      : num  14760787 5894858 2761407 619351 5433886 ...
- $ pop_1977      : num  17152804 6162675 3168267 781472 5889574 ...
- $ pop_1982      : num  20033753 7016384 3641603 970347 6634596 ...
- $ pop_1987      : num  23254956 7874230 4243788 1151184 7586551 ...
- $ pop_1992      : num  26298373 8735988 4981671 1342614 8878303 ...
- $ pop_1997      : num  29072015 9875024 6066080 1536536 10352843 ...
- $ pop_2002      : num  31287142 10866106 7026113 1630347 12251209 ...
- $ pop_2007      : num  33333216 12420476 8078314 1639131 14326203 ...
+~~~{.error}
+Error in str(gap_wide_betterID): object 'gap_wide_betterID' not found
 
 ~~~
 
@@ -480,8 +531,8 @@ all.equal(gap_wide,gap_wide_betterID)
 
 
 
-~~~{.output}
-[1] TRUE
+~~~{.error}
+Error in all.equal.default(gap_wide, gap_wide_betterID): object 'gap_wide_betterID' not found
 
 ~~~
 
@@ -502,27 +553,8 @@ There and back again!
 >
 >
 >
->~~~{.output}
->Source: local data frame [15 x 3]
->Groups: continent [?]
->
->   continent  obs_type        means
->       (chr)     (chr)        (dbl)
->1     Africa gdpPercap 2.193755e+03
->2     Africa   lifeExp 4.886533e+01
->3     Africa       pop 9.916003e+06
->4   Americas gdpPercap 7.136110e+03
->5   Americas   lifeExp 6.465874e+01
->6   Americas       pop 2.450479e+07
->7       Asia gdpPercap 7.902150e+03
->8       Asia   lifeExp 6.006490e+01
->9       Asia       pop 7.703872e+07
->10    Europe gdpPercap 1.446948e+04
->11    Europe   lifeExp 7.190369e+01
->12    Europe       pop 1.716976e+07
->13   Oceania gdpPercap 1.862161e+04
->14   Oceania   lifeExp 7.432621e+01
->15   Oceania       pop 8.874672e+06
+>~~~{.error}
+>Error in eval(expr, envir, enclos): object 'gap_long' not found
 >
 >~~~
 
@@ -532,6 +564,13 @@ There and back again!
 >gap_ludicrously_wide <- gap_long %>% 
 >    unite(var_names,obs_type,year,country,sep="_") %>%
 >    spread(var_names,obs_values)
+>~~~
+>
+>
+>
+>~~~{.error}
+>Error in eval(expr, envir, enclos): object 'gap_long' not found
+>
 >~~~
 
 

@@ -110,12 +110,12 @@ sessionInfo()
 
 
 ~~~{.output}
-R version 3.2.4 (2016-03-10)
-Platform: x86_64-apple-darwin15.3.0 (64-bit)
-Running under: OS X 10.11.3 (El Capitan)
+R version 3.2.4 Revised (2016-03-16 r70336)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Debian GNU/Linux 8 (jessie)
 
 locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+[1] C
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  base     
