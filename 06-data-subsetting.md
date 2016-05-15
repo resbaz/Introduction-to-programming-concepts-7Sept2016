@@ -927,7 +927,7 @@ Using `[` will always return a list. If you want to *subset* a list, but not
 
 
 ~~~{.r}
-xlist <- list(a = "Software Carpentry", b = 1:10, data = head(iris))
+xlist <- list(a = "Research Bazaar", b = 1:10, data = head(iris))
 xlist[1]
 ~~~
 
@@ -935,7 +935,7 @@ xlist[1]
 
 ~~~{.output}
 $a
-[1] "Software Carpentry"
+[1] "Research Bazaar"
 
 ~~~
 
@@ -956,7 +956,7 @@ xlist[1:2]
 
 ~~~{.output}
 $a
-[1] "Software Carpentry"
+[1] "Research Bazaar"
 
 $b
  [1]  1  2  3  4  5  6  7  8  9 10
@@ -974,7 +974,7 @@ xlist[[1]]
 
 
 ~~~{.output}
-[1] "Software Carpentry"
+[1] "Research Bazaar"
 
 ~~~
 
@@ -1004,7 +1004,7 @@ xlist[[-1]]
 
 
 ~~~{.error}
-Error in xlist[[-1]]: attempt to select more than one element
+Error in xlist[[-1]]: attempt to select more than one element in get1index <real>
 
 ~~~
 
@@ -1018,7 +1018,7 @@ xlist[["a"]]
 
 
 ~~~{.output}
-[1] "Software Carpentry"
+[1] "Research Bazaar"
 
 ~~~
 
@@ -1047,7 +1047,7 @@ xlist$data
 >
 > 
 > ~~~{.r}
-> xlist <- list(a = "Software Carpentry", b = 1:10, data = head(iris))
+> xlist <- list(a = "Research Bazaar", b = 1:10, data = head(iris))
 > ~~~
 >
 > Using your knowledge of both list and vector subsetting, extract the number 2 from xlist. 
@@ -1058,7 +1058,7 @@ xlist$data
 >
 > 
 > ~~~{.r}
-> mod <- aov(pop ~ lifeExp, data=gapminder)
+> mod <- aov(intellect ~ education, data=healthData)
 > ~~~
 >
 > Extract the residual degrees of freedom (hint: `attributes()` will help you)
@@ -1074,19 +1074,19 @@ element corresponds to a column. The resulting object will be a data frame:
 
 
 ~~~{.r}
-head(gapminder[3])
+head(healthData[3])
 ~~~
 
 
 
 ~~~{.output}
-       pop
-1  8425333
-2  9240934
-3 10267083
-4 11537966
-5 13079460
-6 14880372
+  extraversion
+1        3.986
+2        7.016
+3        2.697
+4        2.504
+5        5.147
+6        3.535
 
 ~~~
 
@@ -1094,13 +1094,13 @@ Similarly, `[[` will act to extract *a single column*:
 
 
 ~~~{.r}
-head(gapminder[["lifeExp"]])
+head(healthData[["health"]])
 ~~~
 
 
 
 ~~~{.output}
-[1] 28.801 30.332 31.997 34.020 36.088 38.438
+[1]  6.74 11.96  8.05  6.48  6.74  9.01
 
 ~~~
 
@@ -1108,13 +1108,13 @@ And `$` provides a convenient shorthand to extract columns by name:
 
 
 ~~~{.r}
-head(gapminder$year)
+head(healthData$birthYear)
 ~~~
 
 
 
 ~~~{.output}
-[1] 1952 1957 1962 1967 1972 1977
+[1] 1909 1905 1910 1905 1910 1911
 
 ~~~
 
@@ -1122,16 +1122,24 @@ With two arguments, `[` behaves the same way as for matrices:
 
 
 ~~~{.r}
-gapminder[1:3,]
+healthData[1:3,]
 ~~~
 
 
 
 ~~~{.output}
-      country year      pop continent lifeExp gdpPercap
-1 Afghanistan 1952  8425333      Asia  28.801  779.4453
-2 Afghanistan 1957  9240934      Asia  30.332  820.8530
-3 Afghanistan 1962 10267083      Asia  31.997  853.1007
+  id conscientiousness extraversion intellect agreeableness neuroticism
+1  3             5.825        3.986     6.044         4.613       3.649
+2  4             7.732        7.016     6.821         6.649       6.299
+3  7             6.498        2.697     5.527         3.087       4.091
+   sex selfRatedHealth mentalAdjustment illnessReversed health
+1 Male               4                2               3   6.74
+2 Male               5                3               5  11.96
+3 Male               3                3               4   8.05
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+1                          2         9      1909 Group 1
+2                          3         8      1905 Group 1
+3                          2         6      1910 Group 1
 
 ~~~
 
@@ -1140,14 +1148,18 @@ the elements are mixed types):
 
 
 ~~~{.r}
-gapminder[3,]
+healthData[3,]
 ~~~
 
 
 
 ~~~{.output}
-      country year      pop continent lifeExp gdpPercap
-3 Afghanistan 1962 10267083      Asia  31.997  853.1007
+  id conscientiousness extraversion intellect agreeableness neuroticism
+3  7             6.498        2.697     5.527         3.087       4.091
+   sex selfRatedHealth mentalAdjustment illnessReversed health
+3 Male               3                3               4   8.05
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+3                          2         6      1910 Group 1
 
 ~~~
 
@@ -1158,50 +1170,49 @@ be changed with the third argument, `drop = FALSE`).
 >
 > Fix each of the following common data frame subsetting errors:
 >
-> 1. Extract observations collected for the year 1957
+> 1. Extract observations collected for birth year = 1909
 >
 > 
 > ~~~{.r}
-> gapminder[gapminder$year = 1957,]
+> healthData[healthData$birthYear = 1909,]
 > ~~~
 >
 > 2. Extract all columns except 1 through to 4
 >
 > 
 > ~~~{.r}
-> gapminder[,-1:4]
+> healthData[,-1:4]
 > ~~~
 >
-> 3. Extract the rows where the life expectancy is longer the 80 years
+> 3. Extract the rows where the health metric is greater than 7
 >
 > 
 > ~~~{.r}
-> gapminder[gapminder$lifeExp > 80]
+> healthData[healthData$health > 7]
 > ~~~
 >
 > 4. Extract the first row, and the fourth and fifth columns
->   (`lifeExp` and `gdpPercap`).
+>   (`intellect` and `agreeableness`).
 >
 > 
 > ~~~{.r}
-> gapminder[1, 4, 5]
+> healthData[1, 4, 5]
 > ~~~
 >
-> 5. Advanced: extract rows that contain information for the years 2002
->    and 2007
+> 5. Advanced: extract rows that contain information for those in education level 7 and 9
 >
 > 
 > ~~~{.r}
-> gapminder[gapminder$year == 2002 | 2007,]
+> healthData[healthData$education == 7 | 9,]
 > ~~~
 >
 
 > ## Challenge 8 {.challenge}
 >
-> 1. Why does `gapminder[1:20]` return an error? How does it differ from `gapminder[1:20, ]`?
+> 1. Why does `healthData[1:20]` return an error? How does it differ from `healthData[1:20, ]`?
 >
 >
-> 2. Create a new `data.frame` called `gapminder_small` that only contains rows 1 through 9
+> 2. Create a new `data.frame` called `healthData_small` that only contains rows 1 through 9
 > and 19 through 23. You can do this in one or two steps.
 >
 
@@ -1326,7 +1337,7 @@ be changed with the third argument, `drop = FALSE`).
 >
 > 
 > ~~~{.r}
-> xlist <- list(a = "Software Carpentry", b = 1:10, data = head(iris))
+> xlist <- list(a = "Research Bazaar", b = 1:10, data = head(iris))
 > ~~~
 >
 > Using your knowledge of both list and vector subsetting, extract the number 2 from xlist. 
@@ -1345,7 +1356,7 @@ be changed with the third argument, `drop = FALSE`).
 >
 > 
 > ~~~{.r}
-> mod <- aov(pop ~ lifeExp, data=gapminder)
+> mod <- aov(intellect ~ education, data=healthData)
 > ~~~
 >
 > Extract the residual degrees of freedom (hint: `attributes()` will help you)
@@ -1361,61 +1372,60 @@ be changed with the third argument, `drop = FALSE`).
 >
 > Fix each of the following common data frame subsetting errors:
 >
-> 1. Extract observations collected for the year 1957
+> 1. Extract observations collected for birth year = 1909
 >
 > 
 > ~~~{.r}
-> # gapminder[gapminder$year = 1957,]
-> gapminder[gapminder$year == 1957,]
+> # healthData[healthData$birthYear = 1909,]
+> healthData[healthData$birthYear == 1909,]
 > ~~~
 >
 > 2. Extract all columns except 1 through to 4
 >
 > 
 > ~~~{.r}
-> # gapminder[,-1:4]
-> gapminder[,-c(1:4)]
+> # healthData[,-1:4]
+> healthData[,-c(1:4)]
 > ~~~
 >
-> 3. Extract the rows where the life expectancy is longer the 80 years
+> 3. Extract the rows where the health metric is greater than 7
 >
 > 
 > ~~~{.r}
-> # gapminder[gapminder$lifeExp > 80]
-> gapminder[gapminder$lifeExp > 80,]
+> # healthData[healthData$health > 7]
+> healthData[healthData$health > 7,]
 > ~~~
 >
 > 4. Extract the first row, and the fourth and fifth columns
->   (`lifeExp` and `gdpPercap`).
+>   (`intellect` and `agreeableness`).
 >
 > 
 > ~~~{.r}
-> # gapminder[1, 4, 5]
-> gapminder[1, c(4, 5)]
+> # healthData[1, 4, 5]
+> healthData[1, c(4, 5)]
 > ~~~
 >
-> 5. Advanced: extract rows that contain information for the years 2002
->    and 2007
+> 5. Advanced: extract rows that contain information for those in education level 7 and 9
 >
 > 
 > ~~~{.r}
-> # gapminder[gapminder$year == 2002 | 2007,]
-> gapminder[gapminder$year == 2002 | gapminder$year == 2007,]
-> gapminder[gapminder$year %in% c(2002, 2007),]
+> # healthData[healthData$education == 7 | 9,]
+> healthData[healthData$education == 7 | healthData$education == 9,]
+> healthData[healthData$education %in% c(7, 9),]
 > ~~~
 >
 
 > ## Solution to challenge 8 {.challenge}
 >
-> 1. Why does `gapminder[1:20]` return an error? How does it differ from `gapminder[1:20, ]`?
+> 1. Why does `healthData[1:20]` return an error? How does it differ from `healthData[1:20, ]`?
 >
-> Answer: `gapminder` is a data.frame so needs to be subsetted on two dimensions. `gapminder[1:20, ]` subsets the data to give the first 20 rows and all columns.
+> Answer: `healthData` is a data.frame so needs to be subsetted on two dimensions. `healthData[1:20, ]` subsets the data to give the first 20 rows and all columns.
 >
-> 2. Create a new `data.frame` called `gapminder_small` that only contains rows 1 through 9
+> 2. Create a new `data.frame` called `healthData_small` that only contains rows 1 through 9
 > and 19 through 23. You can do this in one or two steps.
 >
 > 
 > ~~~{.r}
-> gapminder_small <- gapminder[c(1:9, 19:23),]
+> healthData_small <- healthData[c(1:9, 19:23),]
 > ~~~
 >
