@@ -75,19 +75,23 @@
 <p>If you’re not sure what package a function is in, or how it’s specifically spelled you can do a fuzzy search:</p>
 <pre class="sourceCode r"><code class="sourceCode r">??function_name</code></pre>
 <h2 id="when-you-have-no-idea-where-to-begin">When you have no idea where to begin</h2>
-<p>If you don’t know what function or package you need to use <a href="http://cran.at.r-project.org/web/views">CRAN Task Views</a> is a specially maintained list of packages grouped into fields. This can be a good starting point.</p>
+<p><strong>GOOGLE</strong></p>
+<p>If you don’t know what function or package you can use <a href="http://cran.at.r-project.org/web/views">CRAN Task Views</a> is a specially maintained list of packages grouped into fields. This can be a good starting point.</p>
 <h2 id="when-your-code-doesnt-work-seeking-help-from-your-peers">When your code doesn’t work: seeking help from your peers</h2>
 <p>If you’re having trouble using a function, 9 times out of 10, the answers you are seeking have already been answered on <a href="http://stackoverflow.com/">Stack Overflow</a>. You can search using the <code>[r]</code> tag.</p>
 <p>If you can’t find the answer, there are a few useful functions to help you ask a question from your peers:</p>
 <pre class="sourceCode r"><code class="sourceCode r">?dput</code></pre>
 <p>Will dump the data you’re working with into a format so that it can be copy and pasted by anyone else into their R session.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre>
-<pre class="output"><code>R version 3.2.4 Revised (2016-03-16 r70336)
+<pre class="output"><code>R version 3.3.0 (2016-05-03)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Debian GNU/Linux 8 (jessie)
 
 locale:
-[1] C
+ [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+ [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+ [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+[10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
 
 attached base packages:
 [1] stats     graphics  grDevices utils     datasets  base     
@@ -96,8 +100,8 @@ other attached packages:
 [1] knitr_1.12.3
 
 loaded via a namespace (and not attached):
-[1] magrittr_1.5   formatR_1.3    tools_3.2.4    stringi_1.0-1 
-[5] methods_3.2.4  stringr_1.0.0  evaluate_0.8.3
+[1] magrittr_1.5  formatR_1.3   tools_3.3.0   stringi_1.0-1 methods_3.3.0
+[6] stringr_1.0.0 evaluate_0.9 
 </code></pre>
 <p>Will print out your current version of R, as well as any packages you have loaded. This can be useful for others to help reproduce and debug your issue.</p>
 <section class="challenge panel panel-success">

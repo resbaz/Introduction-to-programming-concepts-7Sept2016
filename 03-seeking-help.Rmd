@@ -78,7 +78,9 @@ If you're not sure what package a function is in, or how it's specifically spell
 
 ## When you have no idea where to begin
 
-If you don't know what function or package you need to use
+**GOOGLE**
+
+If you don't know what function or package you can use
 [CRAN Task Views](http://cran.at.r-project.org/web/views)
 is a specially maintained list of packages grouped into
 fields. This can be a good starting point.
