@@ -478,7 +478,7 @@ output_vector2
 > ~~~{.r}
 > for (illness in sort(unique(healthStudy$illnessReversed[!is.na(healthStudy$illnessReversed)]))){
 >   for (group in unique(healthStudy$HIGroup)){
->     if ((ans <- mean(healthStudy$health[healthStudy$illnessReversed == illness &       healthStudy$HIGroup == group], na.rm=T)) > 8){
+>     if ((ans <- mean(healthStudy$health[healthStudy$illnessReversed == illness & healthStudy$HIGroup == group], na.rm=T)) > 8){
 >       print(paste("The mean health measure for people with", illness, "illness in group", group, "is greater than 8 units"))
 >     } else if (ans < 5){
 >       print(paste("The mean health measure for people with", illness, "illness in group", group, "is less than 5 units"))
