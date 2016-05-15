@@ -20,8 +20,6 @@ minutes: 45
 
 ## Introduction to RStudio
 
-Welcome to the R portion of the Software Carpentry workshop.
-
 Throughout this lesson, we're going to teach you some of the fundamentals of
 the R language as well as some best practices for organising code for
 scientific projects that will make your life easier.
@@ -583,7 +581,7 @@ function (name, pos = -1L, envir = as.environment(pos), all.names = FALSE,
     }
     else all.names
 }
-<bytecode: 0x1854620>
+<bytecode: 0x332e398>
 <environment: namespace:base>
 
 ~~~
@@ -694,5 +692,5 @@ network). R and RStudio have functionality for managing packages:
 
 > ## Challenge 5 {.challenge}
 > 
-> Install the following packages: `ggplot2`, `plyr`, `gapminder`
+> Install the following packages: `dplyr`, `tidyr`
 > 
