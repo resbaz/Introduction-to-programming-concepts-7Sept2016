@@ -8,7 +8,7 @@ minutes: 35
 ```{r, include=FALSE}
 source("tools/chunk-options.R")
 # Silently load in the data so the rest of the lesson works
-gapminder <- read.csv("data/gapminder-FiveYearData.csv", header=TRUE)
+healthStudy <- read.csv("data/THCombo051311.csv", header=TRUE)
 # Silently set seed for random number generation, so we don't have to explain it
 set.seed(10)
 ```
@@ -104,15 +104,15 @@ x
 > ## Challenge 1 {.challenge}
 >
 > Use an `if` statement to print a suitable message
-> reporting whether there are any records from 2002 in
-> the `gapminder` dataset.
-> Now do the same for 2012.
+> reporting whether there are any years of birth from 1812 in
+> the `healthStudy` dataset.
+> Now do the same for 1910.
 >
 
 Did anyone get a warning message like this?
 
 ```{r, echo=FALSE}
-if (gapminder$year == 2012) {}
+if (healthStudy$birthYear == 1812) {}
 ```
 
 If your condition evaluates to a vector with more than one logical element,
@@ -254,21 +254,98 @@ output_vector2
 
 > ## Challenge 3 {.challenge}
 >
-> Write a script that loops through the `gapminder` data by continent and prints out
-> whether the mean life expectancy is smaller or larger than 50
-> years.
->
+> Write a script that loops through the `healthStudy` data by illness level and prints 
+> out whether the mean health measure is smaller or larger than 8 units.
+> Hint: you may want to check out the functions na.rm() and unique()
 
 > ## Challenge 4 {.challenge}
 >
 > Modify the script from Challenge 4 to also loop over each
-> country. This time print out whether the life expectancy is
-> smaller than 50, between 50 and 70, or greater than 70.
+> study. This time print out whether the health measure is
+> smaller than 5, between 5 and 8, or greater than 8.
 >
 
+<!-- I don't think so
 > ## Challenge 5 - Advanced {.challenge}
 >
 > Write a script that loops over each country in the `gapminder` dataset,
 > tests whether the country starts with a 'B', and graphs life expectancy
 > against time as a line graph if the mean life expectancy is under 50 years.
 >
+-->
+
+## Challenge solutions
+
+> ## Solution to challenge 1 {.challenge}
+>
+> Use an `if` statement to print a suitable message
+> reporting whether there are any years of birth from 1812 in
+> the `healthStudy` dataset.
+> Now do the same for 1910.
+>
+> ```{r}
+if (any(healthStudy$birthYear == 1812)){
+  print("There was at least one person born in 1812 in the dataset")
+} else {
+  print("There are no people in the dataset who were born in 1812")
+}
+if (any(healthStudy$birthYear == 1910)){
+  print("There was at least one person born in 1910 in the dataset")
+} else {
+  print("There are no people in the dataset who were born in 1910")
+}
+> ```
+
+> ## Solution to challenge 2 {.challenge}
+> Compare the objects output_vector and
+> output_vector2. Are they the same? If not, why not?
+> How would you change the last block of code to make output_vector2
+> the same as output_vector?
+>
+> The rows and columns have been swapped between output_vector and output_vector2
+>```{r}
+output_matrix <- matrix(nrow=5, ncol=5)
+j_vector <- c('a', 'b', 'c', 'd', 'e')
+for (i in 1:5){
+  for(j in 1:5){
+    temp_j_value <- j_vector[j]
+    temp_output <- paste(i, temp_j_value)
+    output_matrix[j, i] <- temp_output
+  }
+}
+output_vector2 <- as.vector(output_matrix)
+output_vector2
+>```
+> ## Challenge 3 {.challenge}
+>
+> Write a script that loops through the `healthStudy` data by illness level and prints 
+> out whether the mean health measure is smaller or larger than 8 units.
+>
+> ```{r}
+for (illness in unique(healthStudy$illnessReversed)){
+  if (mean(healthStudy$health[healthStudy$illnessReversed == illness], na.rm=T) > 8){
+  print(paste("The mean health measure for people with", illness, "illness is greater than 8 units"))
+  } else {
+  print(paste("The mean health measure for people with", illness, "illness is less than 8 units"))
+  }
+}
+> ```
+> ## Challenge 4 {.challenge}
+>
+> Modify the script from Challenge 4 to also loop over each
+> study. This time print out whether the health measure is
+> smaller than 5, between 5 and 8, or greater than 8.
+>
+> ```{r}
+for (illness in unique(healthStudy$illnessReversed)){
+  for (group in unique(healthStudy$HIGroup)){
+    if ((ans <- mean(healthStudy$health[healthStudy$illnessReversed == illness &       healthStudy$HIGroup == group], na.rm=T)) > 8){
+      print(paste("The mean health measure for people with", illness, "illness in   group", group, "is greater than 8 units"))
+    } else if (ans < 5){
+      print(paste("The mean health measure for people with", illness, "illness in group", group, "is less than 5 units"))
+    } else {
+      print(paste("The mean health measure for people with", illness, "illness in     group", group, "is between 5 and 8 units"))
+    }
+  }
+}
+> ```
