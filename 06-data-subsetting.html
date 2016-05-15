@@ -443,8 +443,7 @@ m[<span class="dv">3</span>:<span class="dv">4</span>, <span class="kw">c</span>
 <h2 id="list-subsetting">List subsetting</h2>
 <p>Now we’ll introduce some new subsetting operators. There are three functions used to subset lists. <code>[</code>, as we’ve seen for atomic vectors and matrices, as well as <code>[[</code> and <code>$</code>.</p>
 <p>Using <code>[</code> will always return a list. If you want to <em>subset</em> a list, but not <em>extract</em> an element, then you will likely use <code>[</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;Research Platforms&quot;</span>, <span class="dt">b =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">data =</span> <span class="kw">head</span>(iris))
-xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;Research Bazaar&quot;</span>, <span class="dt">b =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">data =</span> <span class="kw">head</span>(iris))
+<pre class="sourceCode r"><code class="sourceCode r">xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;Research Bazaar&quot;</span>, <span class="dt">b =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">data =</span> <span class="kw">head</span>(iris))
 xlist[<span class="dv">1</span>]</code></pre>
 <pre class="output"><code>$a
 [1] &quot;Research Bazaar&quot;
@@ -491,8 +490,7 @@ $b
 </div>
 <div class="panel-body">
 <p>Given the following list:</p>
-<pre class="sourceCode r"><code class="sourceCode r">xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;Research Platforms&quot;</span>, <span class="dt">b =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">data =</span> <span class="kw">head</span>(iris))
-xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;Research Bazaar&quot;</span>, <span class="dt">b =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">data =</span> <span class="kw">head</span>(iris))</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;Research Bazaar&quot;</span>, <span class="dt">b =</span> <span class="dv">1</span>:<span class="dv">10</span>, <span class="dt">data =</span> <span class="kw">head</span>(iris))</code></pre>
 <p>Using your knowledge of both list and vector subsetting, extract the number 2 from xlist. Hint: the number 2 is contained within the “b” item in the list.</p>
 </div>
 </section>
@@ -502,15 +500,14 @@ xlist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt
 </div>
 <div class="panel-body">
 <p>Given a linear model:</p>
-<pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">aov</span>(alcoholUseInYoungAdulthood ~<span class="st"> </span>intellect, <span class="dt">data=</span>healthStudy)
-mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span class="st"> </span>education, <span class="dt">data=</span>healthStudy)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span class="st"> </span>education, <span class="dt">data=</span>healthData)</code></pre>
 <p>Extract the residual degrees of freedom (hint: <code>attributes()</code> will help you)</p>
 </div>
 </section>
 <h2 id="data-frames">Data frames</h2>
 <p>Remember the data frames are lists underneath the hood, so similar rules apply. However they are also two dimensional objects:</p>
 <p><code>[</code> with one argument will act the same was as for lists, where each list element corresponds to a column. The resulting object will be a data frame:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthStudy[<span class="dv">3</span>])</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthData[<span class="dv">3</span>])</code></pre>
 <pre class="output"><code>  extraversion
 1        3.986
 2        7.016
@@ -520,15 +517,15 @@ mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span c
 6        3.535
 </code></pre>
 <p>Similarly, <code>[[</code> will act to extract <em>a single column</em>:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthStudy[[<span class="st">&quot;intellect&quot;</span>]])</code></pre>
-<pre class="output"><code>[1] 6.044 6.821 5.527 4.234 4.751 6.821
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthData[[<span class="st">&quot;health&quot;</span>]])</code></pre>
+<pre class="output"><code>[1]  6.74 11.96  8.05  6.48  6.74  9.01
 </code></pre>
 <p>And <code>$</code> provides a convenient shorthand to extract columns by name:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthStudy$intellect)</code></pre>
-<pre class="output"><code>[1] 6.044 6.821 5.527 4.234 4.751 6.821
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthData$birthYear)</code></pre>
+<pre class="output"><code>[1] 1909 1905 1910 1905 1910 1911
 </code></pre>
 <p>With two arguments, <code>[</code> behaves the same way as for matrices:</p>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[<span class="dv">1</span>:<span class="dv">3</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData[<span class="dv">1</span>:<span class="dv">3</span>,]</code></pre>
 <pre class="output"><code>  id conscientiousness extraversion intellect agreeableness neuroticism
 1  3             5.825        3.986     6.044         4.613       3.649
 2  4             7.732        7.016     6.821         6.649       6.299
@@ -543,7 +540,7 @@ mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span c
 3                          2         6      1910 Group 1
 </code></pre>
 <p>If we subset a single row, the result will be a data frame (because the elements are mixed types):</p>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[<span class="dv">3</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData[<span class="dv">3</span>,]</code></pre>
 <pre class="output"><code>  id conscientiousness extraversion intellect agreeableness neuroticism
 3  7             6.498        2.697     5.527         3.087       4.091
    sex selfRatedHealth mentalAdjustment illnessReversed health
@@ -559,33 +556,25 @@ mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span c
 <div class="panel-body">
 <p>Fix each of the following common data frame subsetting errors:</p>
 <ol style="list-style-type: decimal">
-<li>Extract observations collected for people born in the year 1910</li>
+<li>Extract observations collected for birth year = 1909</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$birthYear =<span class="st"> </span><span class="dv">1910</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData[healthData$birthYear =<span class="st"> </span><span class="dv">1909</span>,]</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Extract all columns except 1 through to 4</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[,-<span class="dv">1</span>:<span class="dv">4</span>]</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Extract the rows where conscientiousness in greater than 5</li>
-</ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span>]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData[,-<span class="dv">1</span>:<span class="dv">4</span>]</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Extract the rows where the health metric is greater than 7</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$health &gt;<span class="st"> </span><span class="dv">7</span>]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData[healthData$health &gt;<span class="st"> </span><span class="dv">7</span>]</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Extract the first row, and the fourth and fifth columns (<code>intellect</code> and <code>agreeableness</code>).</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>]</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Advanced: extract rows that contain information for people born in 1911 and 1912</li>
-</ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1911</span> |<span class="st"> </span><span class="dv">1912</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData[<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>]</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Advanced: extract rows that contain information for those in education level 7 and 9</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$education ==<span class="st"> </span><span class="dv">7</span> |<span class="st"> </span><span class="dv">9</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData[healthData$education ==<span class="st"> </span><span class="dv">7</span> |<span class="st"> </span><span class="dv">9</span>,]</code></pre>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -594,10 +583,8 @@ mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span c
 </div>
 <div class="panel-body">
 <ol style="list-style-type: decimal">
-<li><p>Why does <code>healthStudy[1:20]</code> return an error? How does it differ from <code>healthStudy[1:20, ]</code>?</p></li>
-<li>Create a new <code>data.frame</code> called <code>healthStudy_small</code> that only contains rows 1 through 9</li>
-<li><p>Why does <code>healthStudy[1:20]</code> return an error? How does it differ from <code>healthStudy[1:20, ]</code>?</p></li>
-<li><p>Create a new <code>data.frame</code> called <code>healthStudy_small</code> that only contains rows 1 through 9 and 19 through 23. You can do this in one or two steps.</p></li>
+<li><p>Why does <code>healthData[1:20]</code> return an error? How does it differ from <code>healthData[1:20, ]</code>?</p></li>
+<li><p>Create a new <code>data.frame</code> called <code>healthData_small</code> that only contains rows 1 through 9 and 19 through 23. You can do this in one or two steps.</p></li>
 </ol>
 </div>
 </section>
@@ -706,8 +693,7 @@ xlist[[<span class="st">&quot;b&quot;</span>]][<span class="dv">2</span>]</code>
 </div>
 <div class="panel-body">
 <p>Given a linear model:</p>
-<pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">aov</span>(alcoholUseInYoungAdulthood ~<span class="st"> </span>intellect, <span class="dt">data=</span>healthStudy)
-mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span class="st"> </span>education, <span class="dt">data=</span>healthStudy)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span class="st"> </span>education, <span class="dt">data=</span>healthData)</code></pre>
 <p>Extract the residual degrees of freedom (hint: <code>attributes()</code> will help you)</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attributes</span>(mod) ## `df.residual` is one of the names of `mod`
 mod$df.residual</code></pre>
@@ -720,42 +706,31 @@ mod$df.residual</code></pre>
 <div class="panel-body">
 <p>Fix each of the following common data frame subsetting errors:</p>
 <ol style="list-style-type: decimal">
-<li>Extract observations collected for people born in the year 1910</li>
+<li>Extract observations collected for birth year = 1909</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$birthYear = 1910,]</span>
-healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1910</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthData[healthData$birthYear = 1909,]</span>
+healthData[healthData$birthYear ==<span class="st"> </span><span class="dv">1909</span>,]</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Extract all columns except 1 through to 4</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[,-1:4]</span>
-healthStudy[,-(<span class="dv">1</span>:<span class="dv">4</span>)]</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Extract the rows where conscientiousness in greater than 5</li>
-</ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$conscientiousness &gt; 5]</span>
-healthStudy[healthStudy$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span>, ]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthData[,-1:4]</span>
+healthData[,-<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">4</span>)]</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Extract the rows where the health metric is greater than 7</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$health &gt; 7]</span>
-healthStudy[healthStudy$health &gt;<span class="st"> </span><span class="dv">7</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthData[healthData$health &gt; 7]</span>
+healthData[healthData$health &gt;<span class="st"> </span><span class="dv">7</span>,]</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Extract the first row, and the fourth and fifth columns (<code>intellect</code> and <code>agreeableness</code>).</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[1, 4, 5]</span>
-healthStudy[<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)]</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Advanced: extract rows that contain information for people born in 1911 and 1912</li>
-</ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$birthYear == 1911 | 1912,]</span>
-healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1911</span> |<span class="st"> </span>healthStudy$birthYear ==<span class="st"> </span><span class="dv">1912</span>,]
-healthStudy[healthStudy$birthYear %in%<span class="st"> </span><span class="kw">c</span>(<span class="dv">1911</span>, <span class="dv">1912</span>),]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthData[1, 4, 5]</span>
+healthData[<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)]</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Advanced: extract rows that contain information for those in education level 7 and 9</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$education == 7 | 9,]</span>
-healthStudy[healthStudy$education ==<span class="st"> </span><span class="dv">7</span> |<span class="st"> </span>healthStudy$education ==<span class="st"> </span><span class="dv">9</span>,]
-healthStudy[healthStudy$education %in%<span class="st"> </span><span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">9</span>),]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthData[healthData$education == 7 | 9,]</span>
+healthData[healthData$education ==<span class="st"> </span><span class="dv">7</span> |<span class="st"> </span>healthData$education ==<span class="st"> </span><span class="dv">9</span>,]
+healthData[healthData$education %in%<span class="st"> </span><span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">9</span>),]</code></pre>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -764,21 +739,13 @@ healthStudy[healthStudy$education %in%<span class="st"> </span><span class="kw">
 </div>
 <div class="panel-body">
 <ol style="list-style-type: decimal">
-<li>Why does <code>healthStudy[1:20]</code> return an error? How does it differ from <code>healthStudy[1:20, ]</code>?</li>
+<li>Why does <code>healthData[1:20]</code> return an error? How does it differ from <code>healthData[1:20, ]</code>?</li>
 </ol>
-<p>Answer: <code>healthStudy</code> is a data.frame so needs to be subsetted on two dimensions. <code>healthStudy[1:20, ]</code> subsets the data to give the first 20 rows and all columns.</p>
+<p>Answer: <code>healthData</code> is a data.frame so needs to be subsetted on two dimensions. <code>healthData[1:20, ]</code> subsets the data to give the first 20 rows and all columns.</p>
 <ol start="2" style="list-style-type: decimal">
-<li>Create a new <code>data.frame</code> called <code>healthStudy_small</code> that only contains rows 1 through 9 and 19 through 23. You can do this in one or two steps.</li>
+<li>Create a new <code>data.frame</code> called <code>healthData_small</code> that only contains rows 1 through 9 and 19 through 23. You can do this in one or two steps.</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r"> healthStudy_small &lt;-<span class="st"> </span>healthStudy[<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">9</span>, <span class="dv">19</span>:<span class="dv">23</span>),]</code></pre>
-<ol style="list-style-type: decimal">
-<li>Why does <code>healthStudy[1:20]</code> return an error? How does it differ from <code>healthStudy[1:20, ]</code>?</li>
-</ol>
-<p>Answer: <code>healthStudy</code> is a data.frame so needs to be subsetted on two dimensions. <code>healthStudy[1:20, ]</code> subsets the data to give the first 20 rows and all columns.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Create a new <code>data.frame</code> called <code>healthStudy_small</code> that only contains rows 1 through 9 and 19 through 23. You can do this in one or two steps.</li>
-</ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy_small &lt;-<span class="st"> </span>healthStudy[<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">9</span>, <span class="dv">19</span>:<span class="dv">23</span>),]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData_small &lt;-<span class="st"> </span>healthData[<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">9</span>, <span class="dv">19</span>:<span class="dv">23</span>),]</code></pre>
 </div>
 </section>
         </div>
