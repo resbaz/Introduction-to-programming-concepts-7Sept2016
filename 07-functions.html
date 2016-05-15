@@ -121,6 +121,7 @@ kelvin_to_celsius &lt;-<span class="st"> </span>function(temp) {
 <p>Define the function to convert directly from Fahrenheit to Celsius, by reusing the two functions above (or using your own functions if you prefer).</p>
 </div>
 </section>
+<h2 id="applying-functions-to-datasets">Applying functions to datasets</h2>
 <p>We’re going to define a function that calculates the average year of birth in our health dataset:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Takes a dataset and calculates the average year of birth for a</span>
 <span class="co"># specified study group.</span>
@@ -147,13 +148,13 @@ calcBirthYearAverage &lt;-<span class="st"> </span>function(dat, <span class="dt
 <p>The function now subsets the provided data by group before taking the average year of birth. A default value of 1 is given for group, so that if no value is specified when you call the function, the result of the function will be for group 1. You need to be careful when setting default values; sometimes you can get some unexpected behaviour from functions if you don’t realise that an argument has a default value.</p>
 <p>Let’s take a look at what happens when we specify the study group:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthStudy,<span class="dv">0</span>)</code></pre>
-<pre class="output"><code>[1] 1910.041
+<pre class="output"><code>[1] NaN
 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthStudy,<span class="dv">1</span>)</code></pre>
-<pre class="output"><code>[1] 1955.426
+<pre class="output"><code>[1] NaN
 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthStudy)</code></pre>
-<pre class="output"><code>[1] 1955.426
+<pre class="output"><code>[1] NaN
 </code></pre>
 <p>What if we want to look at the average year of birth for specific year levels?</p>
 <section class="challenge panel panel-success">
