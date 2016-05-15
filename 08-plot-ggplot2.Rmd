@@ -9,7 +9,7 @@ minutes: 70
 source("tools/chunk-options.R")
 opts_chunk$set(fig.path = "fig/08-plot-ggplot2-")
 # Silently load in the data so the rest of the lesson works
-gapminder <- read.csv("data/gapminder-FiveYearData.csv", header = TRUE)
+healthStudy <- read.csv("data/THCombo051311.csv", header = TRUE)
 ```
 
 > ## Learning Objectives {.objectives}
@@ -52,7 +52,7 @@ Let's start off with an example:
 
 ```{r lifeExp-vs-gdpPercap-scatter, message=FALSE}
 library("ggplot2")
-ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) +
+ggplot(data = healthStudy, aes(x = education, y = health)) +
   geom_point()
 ```
 
@@ -62,19 +62,19 @@ know that we're creating a new plot, and any of the arguments we give the
 layers on the plot.
 
 We've passed in two arguments to `ggplot`. First, we tell `ggplot` what data we
-want to show on our figure, in this example the gapminder data we read in
+want to show on our figure, in this example the health data we read in
 earlier. For the second argument we passed in the `aes` function, which
 tells `ggplot` how variables in the **data** map to *aesthetic* properties of
 the figure, in this case the **x** and **y** locations. Here we told `ggplot` we
-want to plot the "lifeExp" column of the gapminder data frame on the x-axis, and
-the "gdpPercap" column on the y-axis. Notice that we didn't need to explicitly
-pass `aes` these columns (e.g. `x = gapminder[, "lifeExp"]`), this is because
+want to plot the "education" column of the gapminder data frame on the x-axis, and
+the "health" column on the y-axis. Notice that we didn't need to explicitly
+pass `aes` these columns (e.g. `x = healthStudy[, "education"]`), this is because
 `ggplot` is smart enough to know to look in the **data** for that column!
 
 By itself, the call to `ggplot` isn't enough to draw a figure:
 
 ```{r}
-ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap))
+ggplot(data = healthStudy, aes(x = education, y = health))
 ```
 
 We need to tell `ggplot` how we want to visually represent the data, which we
@@ -82,22 +82,19 @@ do by adding a new **geom** layer. In our example, we used `geom_point`, which
 tells `ggplot` we want to visually represent the relationship between **x** and
 **y** as a scatterplot of points:
 
-```{r lifeExp-vs-gdpPercap-scatter2}
-ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) +
+```{r education-vs-health-scatter2}
+ggplot(data = healthStudy, aes(x = education, y = health)) +
   geom_point()
 ```
 
 > ## Challenge 1 {.challenge}
 >
-> Modify the example so that the figure visualise how life expectancy has
-> changed over time:
+> Modify the example so that the figure visualises how agreeableness 
+> varies with extraversion:
 >
 > ```{r, eval=FALSE}
-> ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) + geom_point()
+> ggplot(data = healthStudy, aes(x = education, y = health)) + geom_point()
 > ```
->
-> Hint: the gapminder dataset has a column called "year", which should appear
-> on the x-axis.
 >
 
 > ## Challenge 2 {.challenge}
@@ -105,17 +102,17 @@ ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) +
 > In the previous examples and challenge we've used the `aes` function to tell
 > the scatterplot **geom** about the **x** and **y** locations of each point.
 > Another *aesthetic* property we can modify is the point *color*. Modify the
-> code from the previous challenge to **color** the points by the "continent"
+> code from the previous challenge to **color** the points by the "sex"
 > column. What trends do you see in the data? Are they what you expected?
 >
 
 ## Layers
 
-Using a scatterplot probably isn't the best for visualising change over time.
+We could also make a line plot.
 Instead, let's tell `ggplot` to visualise the data as a line plot:
 
-```{r lifeExp-line}
-ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country, color=continent)) +
+```{r health-line}
+ggplot(data = healthStudy, aes(x=education, y=health, by=HIGroup, color=sex)) +
   geom_line()
 ```
 
@@ -126,18 +123,19 @@ country.
 But what if we want to visualise both lines and points on the plot? We can
 simply add another layer to the plot:
 
-```{r lifeExp-line-point}
-ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country, color=continent)) +
-  geom_line() + geom_point()
+```{r health-line-point}
+ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+ geom_point() + geom_line()
 ```
 
 It's important to note that each layer is drawn on top of the previous layer. In
 this example, the points have been drawn *on top of* the lines. Here's a
 demonstration:
 
-```{r lifeExp-layer-example-1}
-ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country)) +
-  geom_line(aes(color=continent)) + geom_point()
+```{r health-layer-example-1}
+ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+  geom_point() + geom_line(aes(colour=sex))
+
 ```
 
 In this example, the *aesthetic* mapping of **color** has been moved from the
@@ -156,10 +154,12 @@ lines.
 Ggplot also makes it easy to overlay statistical models over the data. To
 demonstrate we'll go back to our first example:
 
-```{r lifeExp-vs-gdpPercap-scatter3, message=FALSE}
-ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap, color=continent)) +
+```{r health-vs-gdpPercap-scatter3, message=FALSE}
+ggplot(data = healthStudy, aes(x = health, y = agreeableness, color=sex)) +
   geom_point()
 ```
+
+<!-- not useful ???
 
 Currently it's hard to see the relationship between the points due to some strong
 outliers in GDP per capita. We can change the scale of units on the y axis using
@@ -167,7 +167,7 @@ the *scale* functions. These control the mapping between the data values and
 visual values of an aesthetic.
 
 ```{r axis-scale}
-ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) +
+ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
   geom_point() + scale_y_log10()
 ```
 
@@ -176,22 +176,22 @@ column before rendering them on the plot, so that each multiple of 10 now only
 corresponds to an increase in 1 on the transformed scale, e.g. a GDP per capita
 of 1,000 is now 3 on the y axis, a value of 10,000 corresponds to 4 on the y
 axis and so on. This makes it easier to visualise the spread of data on the
-y-axis.
+y-axis. -->
 
 We can fit a simple relationship to the data by adding another layer,
 `geom_smooth`:
 
 ```{r lm-fit}
-ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) +
-  geom_point() + scale_y_log10() + geom_smooth(method="lm")
+ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+   geom_point() + geom_smooth(method="lm")
 ```
 
 We can make the line thicker by *setting* the **size** aesthetic in the
 `geom_smooth` layer:
 
 ```{r lm-fit2}
-ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) +
-  geom_point() + scale_y_log10() + geom_smooth(method="lm", size=1.5)
+ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+   geom_point() + geom_smooth(method="lm", size = 1.5)
 ```
 
 There are two ways an *aesthetic* can be specified. Here we *set* the **size**
@@ -209,24 +209,23 @@ variables and their visual representation.
 
 ## Multi-panel figures
 
-Earlier we visualised the change in life expectancy over time across all
-countries in one plot. Alternatively, we can split this out over multiple panels
+Earlier we visualised the change in health with education across both genders
+in one plot. Alternatively, we can split this out over multiple panels
 by adding a layer of **facet** panels:
 
 ```{r facet}
-ggplot(data = gapminder, aes(x = year, y = lifeExp, color=continent)) +
-  geom_line() + facet_wrap( ~ country)
+ggplot(data = healthStudy, aes(x = education, y = health, color=HIGroup)) +
+  geom_line() + facet_wrap( ~ sex)
 ```
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
-(~). This tells R to draw a panel for each unique value in the country column
-of the gapminder dataset.
+(~). This tells R to draw a panel for each unique value in the HIGroup column
+of the healthStudy dataset.
 
 ## Modifying text
 
 To clean this figure up for a publication we need to change some of the text
-elements. The x-axis is way too cluttered, and the y axis should read
-"Life expectancy", rather than the column name in the data frame.
+elements. 
 
 We can do this by adding a couple of different layers. The **theme** layer
 controls the axis text, and overall text size, and there are special layers
@@ -234,10 +233,10 @@ for changing the axis labels. To change the legend title, we need to use the
 **scales** layer.
 
 ```{r theme}
-ggplot(data = gapminder, aes(x = year, y = lifeExp, color=continent)) +
-  geom_line() + facet_wrap( ~ country) +
-  xlab("Year") + ylab("Life expectancy") + ggtitle("Figure 1") +
-  scale_colour_discrete(name="Continent") +
+ggplot(healthStudy, aes(x = education, y = health, color=HIGroup)) +
+  geom_line() + facet_wrap( ~ sex) +
+  xlab("Education level") + ylab("Health rating from teacher") + ggtitle("Figure 1") +
+  scale_colour_discrete(name="Study group", labels= c("Hawaii","Teman")) +
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
 ```
 
@@ -255,22 +254,19 @@ code to modify!
 
 > ## Challenge 5 {.challenge}
 >
-> Create a density plot of GDP per capita, filled by continent.
->
-> Advanced:
->  - Transform the x axis to better visualise the data spread.
->  - Add a facet layer to panel the density plots by year.
+> What would you like to visualise from the dataset?
+> Go ahead and try to do it using ggplot!
 >
 
 ## Challenge solutions
 
 > ## Solution to challenge 1 {.challenge}
 >
-> Modify the example so that the figure visualise how life expectancy has
-> changed over time:
+> Modify the example so that the figure visualises how agreeableness 
+> varies with extraversion:
 >
 > ```{r ch1-sol}
-> ggplot(data = gapminder, aes(x = year, y = lifeExp)) + geom_point()
+> ggplot(healthStudy, aes(x = agreeableness, y = extraversion)) + geom_point()
 > ```
 >
 
@@ -279,12 +275,12 @@ code to modify!
 > In the previous examples and challenge we've used the `aes` function to tell
 > the scatterplot **geom** about the **x** and **y** locations of each point.
 > Another *aesthetic* property we can modify is the point *color*. Modify the
-> code from the previous challenge to **color** the points by the "continent"
+> code from the previous challenge to **color** the points by the "sex"
 > column. What trends do you see in the data? Are they what you expected?
 >
 > ```{r ch2-sol}
-> ggplot(data = gapminder, aes(x = year, y = lifeExp, color=continent)) +
->   geom_point()
+> ggplot(healthStudy, aes(x = agreeableness, y = extraversion, colour=sex)) + 
+> geom_point()
 > ```
 >
 
@@ -294,11 +290,11 @@ code to modify!
 > happened?
 >
 > ```{r ch3-sol}
-> ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country)) +
->  geom_point() + geom_line(aes(color=continent))
+ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+  geom_line(aes(colour=sex)) + geom_point() 
 > ```
 > 
-> The lines now get drawn over the points!
+> The points now get drawn over the lines!
 >
 
 
@@ -310,22 +306,9 @@ code to modify!
 > Hint: do not use the `aes` function.
 >
 > ```{r ch4-sol}
-> ggplot(data = gapminder, aes(x = lifeExp, y = gdpPercap)) +
->  geom_point(size=3, color="orange") + scale_y_log10() +
->  geom_smooth(method="lm", size=1.5)
+ggplot(data = healthStudy, aes(x = health, y = education)) +
+  geom_point(size=3, color="orange") + 
+  geom_smooth(method="lm", size=1.5)
 > ```
 >
 
-> ## Solution to challenge 5 {.challenge}
->
-> Create a density plot of GDP per capita, filled by continent.
->
-> Advanced:
->  - Transform the x axis to better visualise the data spread.
->  - Add a facet layer to panel the density plots by year.
->
-> ```{r ch5-sol}
-> ggplot(data = gapminder, aes(x = gdpPercap, fill=continent)) +
->  geom_density(alpha=0.6) + facet_wrap( ~ year) + scale_x_log10()
-> ```
->
