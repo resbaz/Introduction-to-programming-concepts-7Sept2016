@@ -302,7 +302,13 @@ output_vector2</code></pre>
 [12] &quot;3 b&quot; &quot;3 c&quot; &quot;3 d&quot; &quot;3 e&quot; &quot;4 a&quot; &quot;4 b&quot; &quot;4 c&quot; &quot;4 d&quot; &quot;4 e&quot; &quot;5 a&quot; &quot;5 b&quot;
 [23] &quot;5 c&quot; &quot;5 d&quot; &quot;5 e&quot;
 </code></pre>
-<h2>Solution to challenge 3</h2>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 3</h2>
+</div>
+<div class="panel-body">
 <p>Write a script that loops through the <code>healthStudy</code> data by illness level and prints out whether the mean health measure is smaller or larger than 8 units.</p>
 <pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">sort</span>(<span class="kw">unique</span>(healthStudy$illnessReversed[!<span class="kw">is.na</span>(healthStudy$illnessReversed)]))){
   if ((<span class="kw">mean</span>(healthStudy$health[healthStudy$illnessReversed ==<span class="st"> </span>illness], <span class="dt">na.rm=</span>T) &gt;<span class="st"> </span><span class="dv">8</span>)){
@@ -317,7 +323,13 @@ output_vector2</code></pre>
 [1] &quot;The mean health measure for people with 4 illness is greater than 8 units&quot;
 [1] &quot;The mean health measure for people with 5 illness is greater than 8 units&quot;
 </code></pre>
-<h2>Solution to challenge 4</h2>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 4</h2>
+</div>
+<div class="panel-body">
 <p>Modify the script from Challenge 4 to also loop over each study. This time print out whether the health measure is smaller than 5, between 5 and 8, or greater than 8.</p>
 <pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">sort</span>(<span class="kw">unique</span>(healthStudy$illnessReversed[!<span class="kw">is.na</span>(healthStudy$illnessReversed)]))){
   for (group in <span class="kw">unique</span>(healthStudy$HIGroup)){

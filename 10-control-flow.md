@@ -440,6 +440,7 @@ output_vector2
 >[23] "5 c" "5 d" "5 e"
 >
 >~~~
+
 > ## Solution to challenge 3 {.challenge}
 >
 > Write a script that loops through the `healthStudy` data by illness level and prints 
@@ -466,6 +467,7 @@ output_vector2
 > [1] "The mean health measure for people with 5 illness is greater than 8 units"
 > 
 > ~~~
+
 > ## Solution to challenge 4 {.challenge}
 >
 > Modify the script from Challenge 4 to also loop over each

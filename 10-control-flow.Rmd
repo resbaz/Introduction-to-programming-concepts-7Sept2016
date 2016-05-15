@@ -316,6 +316,7 @@ for (i in 1:5){
 output_vector2 <- as.vector(output_matrix)
 output_vector2
 >```
+
 > ## Solution to challenge 3 {.challenge}
 >
 > Write a script that loops through the `healthStudy` data by illness level and prints 
@@ -330,6 +331,7 @@ for (illness in sort(unique(healthStudy$illnessReversed[!is.na(healthStudy$illne
   }
 }
 > ```
+
 > ## Solution to challenge 4 {.challenge}
 >
 > Modify the script from Challenge 4 to also loop over each
