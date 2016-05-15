@@ -9,7 +9,7 @@ minutes: 30
 source("tools/chunk-options.R")
 opts_chunk$set(fig.path = "fig/09-vectorisation-")
 # Silently load in the data so the rest of the lesson works
-healthStudy <- read.csv("data/THCombo051311.csv", header=TRUE)
+healthData <- read.csv("https://goo.gl/oqQGKF", header=TRUE)
 library(ggplot2)
 ```
 
@@ -51,9 +51,9 @@ y:  6  7  8  9
 
 > ## Challenge 1 {.challenge}
 >
-> Let's try this on the `health` column of the `healthStudy` dataset.
+> Let's try this on the `health` column of the `healthData` dataset.
 >
-> Make a new column in the `healthStudy` data frame that
+> Make a new column in the `healthData` data frame that
 > contains health rounded to the nearest integer.
 > Check the head or tail of the data frame to make sure
 > it worked.
@@ -158,9 +158,9 @@ m * -1
 
 > ## Solution to challenge 1 {.challenge}
 >
-> Let's try this on the `health` column of the `healthStudy` dataset.
+> Let's try this on the `health` column of the `healthData` dataset.
 >
-> Make a new column in the `healthStudy` data frame that
+> Make a new column in the `healthData` data frame that
 > contains health rounded to the nearest integer.
 > Check the head or tail of the data frame to make sure
 > it worked.
@@ -168,7 +168,7 @@ m * -1
 > Hint: R has a round() function
 >
 > ```{r}
-> healthStudy$healthInteger <- round(healthStudy$health)
+> healthData$healthInteger <- round(healthData$health)
 > head(gapminder)
 > ```
 >
@@ -184,9 +184,9 @@ m * -1
 >
 >
 > ```{r ch2-sol}
- ggplot(healthStudy, aes(x = healthInteger, y = neuroticism)) + 
+ ggplot(healthData, aes(x = healthInteger, y = neuroticism)) + 
   geom_point()
- ggplot(healthStudy[healthStudy$conscientiousness > 5 & healthStudy$selfRatedHealth < 7 & healthStudy$alcoholUseInYoungAdulthood == 2,],
+ ggplot(healthData[healthData$conscientiousness > 5 & healthData$selfRatedHealth < 7 & healthData$alcoholUseInYoungAdulthood == 2,],
         aes(x = healthInteger, y = neuroticism)) + 
    geom_point()
 > ```

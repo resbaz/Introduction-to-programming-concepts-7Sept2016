@@ -176,7 +176,7 @@ of the function.
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy)
+calcBirthYearAverage(healthData)
 ~~~
 
 
@@ -213,7 +213,7 @@ Let's take a look at what happens when we specify the study group:
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy,0)
+calcBirthYearAverage(healthData,0)
 ~~~
 
 
@@ -226,7 +226,7 @@ calcBirthYearAverage(healthStudy,0)
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy,1)
+calcBirthYearAverage(healthData,1)
 ~~~
 
 
@@ -239,7 +239,7 @@ calcBirthYearAverage(healthStudy,1)
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy)
+calcBirthYearAverage(healthData)
 ~~~
 
 

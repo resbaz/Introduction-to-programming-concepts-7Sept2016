@@ -125,7 +125,7 @@ x
 >
 > Use an `if` statement to print a suitable message
 > reporting whether there are any years of birth from 1812 in
-> the `healthStudy` dataset.
+> the `healthData` dataset.
 > Now do the same for 1910.
 >
 
@@ -133,7 +133,7 @@ Did anyone get a warning message like this?
 
 
 ~~~{.error}
-Warning in if (healthStudy$birthYear == 1812) {: the condition has length >
+Warning in if (healthData$birthYear == 1812) {: the condition has length >
 1 and only the first element will be used
 
 ~~~
@@ -348,7 +348,7 @@ output_vector2
 
 > ## Challenge 3 {.challenge}
 >
-> Write a script that loops through the `healthStudy` data by illness level and prints 
+> Write a script that loops through the `healthData` data by illness level and prints 
 > out whether the mean health measure is smaller or larger than 8 units.
 > Hint: you may want to check out the functions na.rm(), is.na() and unique()
 
@@ -374,12 +374,12 @@ output_vector2
 >
 > Use an `if` statement to print a suitable message
 > reporting whether there are any years of birth from 1812 in
-> the `healthStudy` dataset.
+> the `healthData` dataset.
 > Now do the same for 1910.
 >
 > 
 > ~~~{.r}
-> if (any(healthStudy$birthYear == 1812)){
+> if (any(healthData$birthYear == 1812)){
 >   print("There was at least one person born in 1812 in the dataset")
 > } else {
 >   print("There are no people in the dataset who were born in 1812")
@@ -396,7 +396,7 @@ output_vector2
 > 
 > 
 > ~~~{.r}
-> if (any(healthStudy$birthYear == 1910)){
+> if (any(healthData$birthYear == 1910)){
 >   print("There was at least one person born in 1910 in the dataset")
 > } else {
 >   print("There are no people in the dataset who were born in 1910")
@@ -443,13 +443,13 @@ output_vector2
 
 > ## Solution to challenge 3 {.challenge}
 >
-> Write a script that loops through the `healthStudy` data by illness level and prints 
+> Write a script that loops through the `healthData` data by illness level and prints 
 > out whether the mean health measure is smaller or larger than 8 units.
 >
 > 
 > ~~~{.r}
-> for (illness in sort(unique(healthStudy$illnessReversed[!is.na(healthStudy$illnessReversed)]))){
->   if ((mean(healthStudy$health[healthStudy$illnessReversed == illness], na.rm=T) > 8)){
+> for (illness in sort(unique(healthData$illnessReversed[!is.na(healthData$illnessReversed)]))){
+>   if ((mean(healthData$health[healthData$illnessReversed == illness], na.rm=T) > 8)){
 >   print(paste("The mean health measure for people with", illness, "illness is greater than 8 units"))
 >   } else {
 >   print(paste("The mean health measure for people with", illness, "illness is less than 8 units"))
@@ -476,9 +476,9 @@ output_vector2
 >
 > 
 > ~~~{.r}
-> for (illness in sort(unique(healthStudy$illnessReversed[!is.na(healthStudy$illnessReversed)]))){
->   for (group in unique(healthStudy$HIGroup)){
->     if ((ans <- mean(healthStudy$health[healthStudy$illnessReversed == illness & healthStudy$HIGroup == group], na.rm=T)) > 8){
+> for (illness in sort(unique(healthData$illnessReversed[!is.na(healthData$illnessReversed)]))){
+>   for (group in unique(healthData$HIGroup)){
+>     if ((ans <- mean(healthData$health[healthData$illnessReversed == illness & healthData$HIGroup == group], na.rm=T)) > 8){
 >       print(paste("The mean health measure for people with", illness, "illness in group", group, "is greater than 8 units"))
 >     } else if (ans < 5){
 >       print(paste("The mean health measure for people with", illness, "illness in group", group, "is less than 5 units"))

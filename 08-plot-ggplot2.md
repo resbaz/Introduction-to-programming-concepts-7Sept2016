@@ -48,7 +48,7 @@ Let's start off with an example:
 
 ~~~{.r}
 library("ggplot2")
-ggplot(data = healthStudy, aes(x = education, y = health)) +
+ggplot(data = healthData, aes(x = education, y = health)) +
   geom_point()
 ~~~
 
@@ -73,14 +73,14 @@ tells `ggplot` how variables in the **data** map to *aesthetic* properties of
 the figure, in this case the **x** and **y** locations. Here we told `ggplot` we
 want to plot the "education" column of the gapminder data frame on the x-axis, and
 the "health" column on the y-axis. Notice that we didn't need to explicitly
-pass `aes` these columns (e.g. `x = healthStudy[, "education"]`), this is because
+pass `aes` these columns (e.g. `x = healthData[, "education"]`), this is because
 `ggplot` is smart enough to know to look in the **data** for that column!
 
 By itself, the call to `ggplot` isn't enough to draw a figure:
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x = education, y = health))
+ggplot(data = healthData, aes(x = education, y = health))
 ~~~
 
 <img src="fig/08-plot-ggplot2-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
@@ -92,7 +92,7 @@ tells `ggplot` we want to visually represent the relationship between **x** and
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x = education, y = health)) +
+ggplot(data = healthData, aes(x = education, y = health)) +
   geom_point()
 ~~~
 
@@ -112,7 +112,7 @@ Warning: Removed 34 rows containing missing values (geom_point).
 >
 > 
 > ~~~{.r}
-> ggplot(data = healthStudy, aes(x = education, y = health)) + geom_point()
+> ggplot(data = healthData, aes(x = education, y = health)) + geom_point()
 > ~~~
 >
 
@@ -132,7 +132,7 @@ Instead, let's tell `ggplot` to visualise the data as a line plot:
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x=education, y=health, by=HIGroup, color=sex)) +
+ggplot(data = healthData, aes(x=education, y=health, by=HIGroup, color=sex)) +
   geom_line()
 ~~~
 
@@ -154,7 +154,7 @@ simply add another layer to the plot:
 
 
 ~~~{.r}
-ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
  geom_point() + geom_line()
 ~~~
 
@@ -166,7 +166,7 @@ demonstration:
 
 
 ~~~{.r}
-ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
   geom_point() + geom_line(aes(colour=sex))
 ~~~
 
@@ -190,7 +190,7 @@ demonstrate we'll go back to our first example:
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x = health, y = agreeableness, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = agreeableness, color=sex)) +
   geom_point()
 ~~~
 
@@ -205,7 +205,7 @@ visual values of an aesthetic.
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
   geom_point() + scale_y_log10()
 ~~~
 
@@ -230,7 +230,7 @@ We can fit a simple relationship to the data by adding another layer,
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
    geom_point() + geom_smooth(method="lm")
 ~~~
 
@@ -255,7 +255,7 @@ We can make the line thicker by *setting* the **size** aesthetic in the
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
    geom_point() + geom_smooth(method="lm", size = 1.5)
 ~~~
 
@@ -296,7 +296,7 @@ by adding a layer of **facet** panels:
 
 
 ~~~{.r}
-ggplot(data = healthStudy, aes(x = education, y = health, color=HIGroup)) +
+ggplot(data = healthData, aes(x = education, y = health, color=HIGroup)) +
   geom_line() + facet_wrap( ~ sex)
 ~~~
 
@@ -311,7 +311,7 @@ Warning: Removed 16 rows containing missing values (geom_path).
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the HIGroup column
-of the healthStudy dataset.
+of the healthData dataset.
 
 ## Modifying text
 
@@ -325,7 +325,7 @@ for changing the axis labels. To change the legend title, we need to use the
 
 
 ~~~{.r}
-ggplot(healthStudy, aes(x = education, y = health, color=HIGroup)) +
+ggplot(healthData, aes(x = education, y = health, color=HIGroup)) +
   geom_line() + facet_wrap( ~ sex) +
   xlab("Education level") + ylab("Health rating from teacher") + ggtitle("Figure 1") +
   scale_colour_discrete(name="Study group", labels= c("Hawaii","Teman")) +
@@ -368,7 +368,7 @@ code to modify!
 >
 > 
 > ~~~{.r}
-> ggplot(healthStudy, aes(x = agreeableness, y = extraversion)) + geom_point()
+> ggplot(healthData, aes(x = agreeableness, y = extraversion)) + geom_point()
 > ~~~
 > 
 > <img src="fig/08-plot-ggplot2-ch1-sol-1.png" title="plot of chunk ch1-sol" alt="plot of chunk ch1-sol" style="display: block; margin: auto;" />
@@ -384,7 +384,7 @@ code to modify!
 >
 > 
 > ~~~{.r}
-> ggplot(healthStudy, aes(x = agreeableness, y = extraversion, colour=sex)) + 
+> ggplot(healthData, aes(x = agreeableness, y = extraversion, colour=sex)) + 
 > geom_point()
 > ~~~
 > 
@@ -398,7 +398,7 @@ code to modify!
 >
 > 
 > ~~~{.r}
-> ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+> ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
 >   geom_line(aes(colour=sex)) + geom_point() 
 > ~~~
 > 
@@ -417,7 +417,7 @@ code to modify!
 >
 > 
 > ~~~{.r}
-> ggplot(data = healthStudy, aes(x = health, y = education)) +
+> ggplot(data = healthData, aes(x = health, y = education)) +
 >   geom_point(size=3, color="orange") + 
 >   geom_smooth(method="lm", size=1.5)
 > ~~~

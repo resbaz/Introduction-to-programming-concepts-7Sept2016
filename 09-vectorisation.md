@@ -62,9 +62,9 @@ y:  6  7  8  9
 
 > ## Challenge 1 {.challenge}
 >
-> Let's try this on the `health` column of the `healthStudy` dataset.
+> Let's try this on the `health` column of the `healthData` dataset.
 >
-> Make a new column in the `healthStudy` data frame that
+> Make a new column in the `healthData` data frame that
 > contains health rounded to the nearest integer.
 > Check the head or tail of the data frame to make sure
 > it worked.
@@ -240,9 +240,9 @@ m * -1
 
 > ## Solution to challenge 1 {.challenge}
 >
-> Let's try this on the `health` column of the `healthStudy` dataset.
+> Let's try this on the `health` column of the `healthData` dataset.
 >
-> Make a new column in the `healthStudy` data frame that
+> Make a new column in the `healthData` data frame that
 > contains health rounded to the nearest integer.
 > Check the head or tail of the data frame to make sure
 > it worked.
@@ -251,7 +251,7 @@ m * -1
 >
 > 
 > ~~~{.r}
-> healthStudy$healthInteger <- round(healthStudy$health)
+> healthData$healthInteger <- round(healthData$health)
 > head(gapminder)
 > ~~~
 > 
@@ -275,14 +275,14 @@ m * -1
 >
 > 
 > ~~~{.r}
->  ggplot(healthStudy, aes(x = healthInteger, y = neuroticism)) + 
+>  ggplot(healthData, aes(x = healthInteger, y = neuroticism)) + 
 >   geom_point()
 > ~~~
 > 
 > <img src="fig/09-vectorisation-ch2-sol-1.png" title="plot of chunk ch2-sol" alt="plot of chunk ch2-sol" style="display: block; margin: auto;" />
 > 
 > ~~~{.r}
->  ggplot(healthStudy[healthStudy$conscientiousness > 5 & healthStudy$selfRatedHealth < 7 & healthStudy$alcoholUseInYoungAdulthood == 2,],
+>  ggplot(healthData[healthData$conscientiousness > 5 & healthData$selfRatedHealth < 7 & healthData$alcoholUseInYoungAdulthood == 2,],
 >         aes(x = healthInteger, y = neuroticism)) + 
 >    geom_point()
 > ~~~

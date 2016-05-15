@@ -61,8 +61,8 @@ y:<span class="st">  </span><span class="dv">6</span>  <span class="dv">7</span>
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 1</h2>
 </div>
 <div class="panel-body">
-<p>Let’s try this on the <code>health</code> column of the <code>healthStudy</code> dataset.</p>
-<p>Make a new column in the <code>healthStudy</code> data frame that contains health rounded to the nearest integer. Check the head or tail of the data frame to make sure it worked.</p>
+<p>Let’s try this on the <code>health</code> column of the <code>healthData</code> dataset.</p>
+<p>Make a new column in the <code>healthData</code> data frame that contains health rounded to the nearest integer. Check the head or tail of the data frame to make sure it worked.</p>
 <p>Hint: R has a round() function</p>
 </div>
 </section>
@@ -165,10 +165,10 @@ m</code></pre>
 <h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 1</h2>
 </div>
 <div class="panel-body">
-<p>Let’s try this on the <code>health</code> column of the <code>healthStudy</code> dataset.</p>
-<p>Make a new column in the <code>healthStudy</code> data frame that contains health rounded to the nearest integer. Check the head or tail of the data frame to make sure it worked.</p>
+<p>Let’s try this on the <code>health</code> column of the <code>healthData</code> dataset.</p>
+<p>Make a new column in the <code>healthData</code> data frame that contains health rounded to the nearest integer. Check the head or tail of the data frame to make sure it worked.</p>
 <p>Hint: R has a round() function</p>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy$healthInteger &lt;-<span class="st"> </span><span class="kw">round</span>(healthStudy$health)
+<pre class="sourceCode r"><code class="sourceCode r">healthData$healthInteger &lt;-<span class="st"> </span><span class="kw">round</span>(healthData$health)
 <span class="kw">head</span>(gapminder)</code></pre>
 <pre class="error"><code>Error in head(gapminder): object &#39;gapminder&#39; not found
 </code></pre>
@@ -181,10 +181,10 @@ m</code></pre>
 <div class="panel-body">
 <p>On a single graph, plot neuroticism against health rounded to the nearest integer, for each of the study groups.</p>
 <p>Repeat the exercise, graphing only for people with: conscientiousnss greater than 5, self-rated health below 7, and alcohol use in young adulthood of 2.</p>
-<pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(healthStudy, <span class="kw">aes</span>(<span class="dt">x =</span> healthInteger, <span class="dt">y =</span> neuroticism)) +<span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(healthData, <span class="kw">aes</span>(<span class="dt">x =</span> healthInteger, <span class="dt">y =</span> neuroticism)) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>()</code></pre>
 <p><img src="fig/09-vectorisation-ch2-sol-1.png" title="plot of chunk ch2-sol" alt="plot of chunk ch2-sol" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(healthStudy[healthStudy$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span> &amp;<span class="st"> </span>healthStudy$selfRatedHealth &lt;<span class="st"> </span><span class="dv">7</span> &amp;<span class="st"> </span>healthStudy$alcoholUseInYoungAdulthood ==<span class="st"> </span><span class="dv">2</span>,],
+<pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">ggplot</span>(healthData[healthData$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span> &amp;<span class="st"> </span>healthData$selfRatedHealth &lt;<span class="st"> </span><span class="dv">7</span> &amp;<span class="st"> </span>healthData$alcoholUseInYoungAdulthood ==<span class="st"> </span><span class="dv">2</span>,],
         <span class="kw">aes</span>(<span class="dt">x =</span> healthInteger, <span class="dt">y =</span> neuroticism)) +<span class="st"> </span>
 <span class="st">   </span><span class="kw">geom_point</span>()</code></pre>
 <pre class="error"><code>Warning: Removed 119 rows containing missing values (geom_point).

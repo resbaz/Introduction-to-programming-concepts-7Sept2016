@@ -8,7 +8,7 @@ minutes: 45
 ```{r, include=FALSE}
 source("tools/chunk-options.R")
 # Silently load in the data so the rest of the lesson works
-healthStudy <- read.csv("data/THCombo051311.csv", header=TRUE)
+healthData <- read.csv("https://goo.gl/oqQGKF", header=TRUE)
 ```
 
 > ## Learning Objectives {.objectives}
@@ -159,7 +159,7 @@ of the function.
 
 
 ```{r}
-calcBirthYearAverage(healthStudy)
+calcBirthYearAverage(healthData)
 ```
 
 That's not very informative, since the dataset comprises data from two studies that were performed decades apart. Let's add another argument so we can calculate the average year of birth for a particular study group.
@@ -186,9 +186,9 @@ The function now subsets the provided data by group before taking the average ye
 Let's take a look at what happens when we specify the study group:
 
 ```{r}
-calcBirthYearAverage(healthStudy,0)
-calcBirthYearAverage(healthStudy,1)
-calcBirthYearAverage(healthStudy)
+calcBirthYearAverage(healthData,0)
+calcBirthYearAverage(healthData,1)
+calcBirthYearAverage(healthData)
 ```
 
 What if we want to look at the average year of birth for specific year levels?
