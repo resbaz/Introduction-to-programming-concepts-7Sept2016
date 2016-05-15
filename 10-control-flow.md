@@ -479,11 +479,11 @@ output_vector2
 > for (illness in sort(unique(healthStudy$illnessReversed[!is.na(healthStudy$illnessReversed)]))){
 >   for (group in unique(healthStudy$HIGroup)){
 >     if ((ans <- mean(healthStudy$health[healthStudy$illnessReversed == illness &       healthStudy$HIGroup == group], na.rm=T)) > 8){
->       print(paste("The mean health measure for people with", illness, "illness in   group", group, "is greater than 8 units"))
+>       print(paste("The mean health measure for people with", illness, "illness in group", group, "is greater than 8 units"))
 >     } else if (ans < 5){
 >       print(paste("The mean health measure for people with", illness, "illness in group", group, "is less than 5 units"))
 >     } else {
->       print(paste("The mean health measure for people with", illness, "illness in     group", group, "is between 5 and 8 units"))
+>       print(paste("The mean health measure for people with", illness, "illness in group", group, "is between 5 and 8 units"))
 >     }
 >   }
 > }
@@ -494,13 +494,13 @@ output_vector2
 > ~~~{.output}
 > [1] "The mean health measure for people with 1 illness in group Group 1 is less than 5 units"
 > [1] "The mean health measure for people with 1 illness in group Group 2 is less than 5 units"
-> [1] "The mean health measure for people with 2 illness in     group Group 1 is between 5 and 8 units"
-> [1] "The mean health measure for people with 2 illness in     group Group 2 is between 5 and 8 units"
-> [1] "The mean health measure for people with 3 illness in     group Group 1 is between 5 and 8 units"
-> [1] "The mean health measure for people with 3 illness in   group Group 2 is greater than 8 units"
-> [1] "The mean health measure for people with 4 illness in   group Group 1 is greater than 8 units"
-> [1] "The mean health measure for people with 4 illness in   group Group 2 is greater than 8 units"
-> [1] "The mean health measure for people with 5 illness in   group Group 1 is greater than 8 units"
-> [1] "The mean health measure for people with 5 illness in   group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 2 illness in group Group 1 is between 5 and 8 units"
+> [1] "The mean health measure for people with 2 illness in group Group 2 is between 5 and 8 units"
+> [1] "The mean health measure for people with 3 illness in group Group 1 is between 5 and 8 units"
+> [1] "The mean health measure for people with 3 illness in group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 4 illness in group Group 1 is greater than 8 units"
+> [1] "The mean health measure for people with 4 illness in group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness in group Group 1 is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness in group Group 2 is greater than 8 units"
 > 
 > ~~~

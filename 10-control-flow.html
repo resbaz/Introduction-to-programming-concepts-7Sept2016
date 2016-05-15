@@ -334,24 +334,24 @@ output_vector2</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">sort</span>(<span class="kw">unique</span>(healthStudy$illnessReversed[!<span class="kw">is.na</span>(healthStudy$illnessReversed)]))){
   for (group in <span class="kw">unique</span>(healthStudy$HIGroup)){
     if ((ans &lt;-<span class="st"> </span><span class="kw">mean</span>(healthStudy$health[healthStudy$illnessReversed ==<span class="st"> </span>illness &amp;<span class="st">       </span>healthStudy$HIGroup ==<span class="st"> </span>group], <span class="dt">na.rm=</span>T)) &gt;<span class="st"> </span><span class="dv">8</span>){
-      <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in   group&quot;</span>, group, <span class="st">&quot;is greater than 8 units&quot;</span>))
+      <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in group&quot;</span>, group, <span class="st">&quot;is greater than 8 units&quot;</span>))
     } else if (ans &lt;<span class="st"> </span><span class="dv">5</span>){
       <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in group&quot;</span>, group, <span class="st">&quot;is less than 5 units&quot;</span>))
     } else {
-      <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in     group&quot;</span>, group, <span class="st">&quot;is between 5 and 8 units&quot;</span>))
+      <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in group&quot;</span>, group, <span class="st">&quot;is between 5 and 8 units&quot;</span>))
     }
   }
 }</code></pre>
 <pre class="output"><code>[1] &quot;The mean health measure for people with 1 illness in group Group 1 is less than 5 units&quot;
 [1] &quot;The mean health measure for people with 1 illness in group Group 2 is less than 5 units&quot;
-[1] &quot;The mean health measure for people with 2 illness in     group Group 1 is between 5 and 8 units&quot;
-[1] &quot;The mean health measure for people with 2 illness in     group Group 2 is between 5 and 8 units&quot;
-[1] &quot;The mean health measure for people with 3 illness in     group Group 1 is between 5 and 8 units&quot;
-[1] &quot;The mean health measure for people with 3 illness in   group Group 2 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 4 illness in   group Group 1 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 4 illness in   group Group 2 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 5 illness in   group Group 1 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 5 illness in   group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 2 illness in group Group 1 is between 5 and 8 units&quot;
+[1] &quot;The mean health measure for people with 2 illness in group Group 2 is between 5 and 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness in group Group 1 is between 5 and 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness in group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness in group Group 1 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness in group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness in group Group 1 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness in group Group 2 is greater than 8 units&quot;
 </code></pre>
 </div>
 </section>
