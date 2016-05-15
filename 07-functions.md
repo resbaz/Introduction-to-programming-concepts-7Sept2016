@@ -17,8 +17,8 @@ minutes: 45
 >
 
 If we only had one data set to analyze, it would probably be faster to load the
-file into a spreadsheet and use that to plot simple statistics. However, the
-gapminder data is updated periodically, and we may want to pull in that new
+file into a spreadsheet and use that to plot simple statistics. However, data 
+may be updated periodically, and we may want to pull in that new
 information later and re-run our analysis again. We may also obtain similar data
 from a different source in the future.
 
@@ -52,6 +52,7 @@ my_sum <- function(a, b) {
 
 Let’s define a function fahr_to_kelvin that converts temperatures from Fahrenheit to Kelvin:
 
+<!-- all of the boredom-->
 
 ~~~{.r}
 fahr_to_kelvin <- function(temp) {
@@ -142,20 +143,19 @@ kelvin_to_celsius <- function(temp) {
 
 
 We're going to define
-a function that calculates the Gross Domestic Product of a nation from the data
-available in our dataset:
+a function that calculates the average year of birth in our health dataset:
 
 
 ~~~{.r}
-# Takes a dataset and multiplies the population column
-# with the GDP per capita column.
-calcGDP <- function(dat) {
-  gdp <- dat$pop * dat$gdpPercap
-  return(gdp)
+# Takes a dataset and calculates the average year of birth for a
+# specified study group.
+calcBirthYearAverage <- function(dat) {
+  birthYearAverage <- mean(dat$birthYear)
+  return(birthYearAverage)
 }
 ~~~
 
-We define `calcGDP` by assigning it to the output of `function`.
+We define `calcBirthYearAverage` by assigning it to the output of `function`.
 The list of argument names are contained within parentheses.
 Next, the body of the function -- the statements executed when you
 call the function -- is contained within curly braces (`{}`).
@@ -175,34 +175,25 @@ of the function.
 
 
 ~~~{.r}
-calcGDP(head(gapminder))
+calcBirthYearAverage(healthStudy)
 ~~~
 
 
 
 ~~~{.output}
-[1]  6567086330  7585448670  8758855797  9648014150  9678553274 11697659231
+[1] 1933.588
 
 ~~~
 
-That's not very informative. Let's add some more arguments so we can extract
-that per year and country.
+That's not very informative, since the dataset comprises data from two studies that were performed decades apart. Let's add another argument so we can calculate the average year of birth for a particular study group.
 
 
 ~~~{.r}
-# Takes a dataset and multiplies the population column
-# with the GDP per capita column.
-calcGDP <- function(dat, year=NULL, country=NULL) {
-  if(!is.null(year)) {
-    dat <- dat[dat$year %in% year, ]
-  }
-  if (!is.null(country)) {
-    dat <- dat[dat$country %in% country,]
-  }
-  gdp <- dat$pop * dat$gdpPercap
-
-  new <- cbind(dat, gdp=gdp)
-  return(new)
+# Takes a dataset and calculates the average year of birth for a
+# specified study group.
+calcBirthYearAverage <- function(dat, group = 1) {
+  birthYearAverage <- mean(dat[dat$HIGroup == group, ]$birthYear)
+  return(birthYearAverage)
 }
 ~~~
 
@@ -215,117 +206,63 @@ If you've been writing these functions down into a separate R script
 source("functions/functions-lesson.R")
 ~~~
 
-Ok, so there's a lot going on in this function now. In plain English,
-the function now subsets the provided data by year if the year argument isn't
-empty, then subsets the result by country if the country argument isn't empty.
-Then it calculates the GDP for whatever subset emerges from the previous two steps.
-The function then adds the GDP as a new column to the subsetted data and returns
-this as the final result.
-You can see that the output is much more informative than just getting a vector of numbers.
+The function now subsets the provided data by group before taking the average year of birth. A default value of 1 is given for group, so that if no value is specified when you call the function, the result of the function will be for group 1. You need to be careful when setting default values; sometimes you can get some unexpected behaviour from functions if you don't realise that an argument has a default value.
 
-Let's take a look at what happens when we specify the year:
+Let's take a look at what happens when we specify the study group:
 
 
 ~~~{.r}
-head(calcGDP(gapminder, year=2007))
+calcBirthYearAverage(healthStudy,0)
 ~~~
 
 
 
 ~~~{.output}
-       country year      pop continent lifeExp  gdpPercap          gdp
-12 Afghanistan 2007 31889923      Asia  43.828   974.5803  31079291949
-24     Albania 2007  3600523    Europe  76.423  5937.0295  21376411360
-36     Algeria 2007 33333216    Africa  72.301  6223.3675 207444851958
-48      Angola 2007 12420476    Africa  42.731  4797.2313  59583895818
-60   Argentina 2007 40301927  Americas  75.320 12779.3796 515033625357
-72   Australia 2007 20434176   Oceania  81.235 34435.3674 703658358894
+[1] 1910.041
 
 ~~~
 
-Or for a specific country:
 
 
 ~~~{.r}
-calcGDP(gapminder, country="Australia")
+calcBirthYearAverage(healthStudy,1)
 ~~~
 
 
 
 ~~~{.output}
-     country year      pop continent lifeExp gdpPercap          gdp
-61 Australia 1952  8691212   Oceania  69.120  10039.60  87256254102
-62 Australia 1957  9712569   Oceania  70.330  10949.65 106349227169
-63 Australia 1962 10794968   Oceania  70.930  12217.23 131884573002
-64 Australia 1967 11872264   Oceania  71.100  14526.12 172457986742
-65 Australia 1972 13177000   Oceania  71.930  16788.63 221223770658
-66 Australia 1977 14074100   Oceania  73.490  18334.20 258037329175
-67 Australia 1982 15184200   Oceania  74.740  19477.01 295742804309
-68 Australia 1987 16257249   Oceania  76.320  21888.89 355853119294
-69 Australia 1992 17481977   Oceania  77.560  23424.77 409511234952
-70 Australia 1997 18565243   Oceania  78.830  26997.94 501223252921
-71 Australia 2002 19546792   Oceania  80.370  30687.75 599847158654
-72 Australia 2007 20434176   Oceania  81.235  34435.37 703658358894
+[1] 1955.426
 
 ~~~
 
-Or both:
 
 
 ~~~{.r}
-calcGDP(gapminder, year=2007, country="Australia")
+calcBirthYearAverage(healthStudy)
 ~~~
 
 
 
 ~~~{.output}
-     country year      pop continent lifeExp gdpPercap          gdp
-72 Australia 2007 20434176   Oceania  81.235  34435.37 703658358894
+[1] 1955.426
 
 ~~~
 
-Let's walk through the body of the function:
+What if we want to look at the average year of birth for specific year levels?
 
+> ## Challenge 3 {.challenge}
+>
+> Define the function to calculate the average year of birth for specific year 
+> levels of a single study group.
+> Hint: Look up the function %in%, which will allow you to subset by multiple 
+> year levels
 
-~~~{.r}
-calcGDP <- function(dat, year=NULL, country=NULL) {
-~~~
-
-Here we've added two arguments, `year`, and `country`. We've set
-*default arguments* for both as `NULL` using the `=` operator
-in the function definition. This means that those arguments will
-take on those values unless the user specifies otherwise.
-
-
-~~~{.r}
-  if(!is.null(year)) {
-    dat <- dat[dat$year %in% year, ]
-  }
-  if (!is.null(country)) {
-    dat <- dat[dat$country %in% country,]
-  }
-~~~
-
-Here, we check whether each additional argument is set to `null`,
-and whenever they're not `null` overwrite the dataset stored in `dat` with
-a subset given by the non-`null` argument.
-
-I did this so that our function is more flexible for later. We
-can ask it to calculate the GDP for:
-
- * The whole dataset;
- * A single year;
- * A single country;
- * A single combination of year and country.
-
-By using `%in%` instead, we can also give multiple years or countries
-to those arguments.
 
 > ## Tip: Pass by value {.callout}
 >
 > Functions in R almost always make copies of the data to operate on
-> inside of a function body. When we modify `dat` inside the function
-> we are modifying the copy of the gapminder dataset stored in `dat`,
+> inside of a function body. If we were to modify `dat` inside the function
+> we are modifying the copy of the health study dataset stored in `dat`,
 > not the original variable we gave as the first argument.
 >
 > This is called "pass-by-value" and it makes writing code much safer:
@@ -337,26 +274,13 @@ to those arguments.
 >
 > Another important concept is scoping: any variables (or functions!) you
 > create or modify inside the body of a function only exist for the lifetime
-> of the function's execution. When we call `calcGDP`, the variables `dat`,
-> `gdp` and `new` only exist inside the body of the function. Even if we
+> of the function's execution. When we call `calcBirthYearAverage`, the variables `dat`,
+> `group` and `birthYearAverage` only exist inside the body of the function. Even if we
 > have variables of the same name in our interactive R session, they are
 > not modified in any way when executing a function.
 >
 
-
-~~~{.r}
-  gdp <- dat$pop * dat$gdpPercap
-  new <- cbind(dat, gdp=gdp)
-  return(new)
-}
-~~~
-
-Finally, we calculated the GDP on our new subset, and created a new
-data frame with that column added. This means when we call the function
-later we can see the context for the returned GDP values,
-which is much better than in our first attempt where we just got a vector of numbers.
-
-> ## Challenge 3 {.challenge}
+> ## Challenge 4 {.challenge}
 >
 > The `paste` function can be used to combine text together, e.g:
 >
@@ -464,8 +388,22 @@ which is much better than in our first attempt where we just got a vector of num
 > ~~~
 >
 
-
 > ## Solution to challenge 3 {.challenge}
+>
+> Define the function to calculate the average year of birth for specific year 
+> levels of a single study group.
+> Hint: Look up the function %in%, which will allow you to subset by multiple 
+> year levels
+>
+> 
+> ~~~{.r}
+> calcBirthYearAverage <- function(dat, group, yearLevel) {
+>   birthYearAverage <- mean(dat[dat$HIGroup == group & dat$education %in% yearLevel, ]$birthYear)
+>   return(birthYearAverage)
+> }
+> ~~~
+
+> ## Solution to challenge 4 {.challenge}
 >
 >  Write a function called `fence` that takes two vectors as arguments, called
 > `text` and `wrapper`, and prints out the text wrapped with the `wrapper`:
