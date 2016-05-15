@@ -8,7 +8,11 @@ minutes: 45
 ```{r, include=FALSE}
 source("tools/chunk-options.R")
 # Silently load in the data so the rest of the lesson works
+<<<<<<< HEAD
 healthStudy <- read.csv("data/THCombo051311.csv", header=TRUE)
+=======
+healthData <- read.csv("https://goo.gl/oqQGKF", header=TRUE)
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 ```
 
 > ## Learning Objectives {.objectives}
@@ -510,7 +514,11 @@ Using `[` will always return a list. If you want to *subset* a list, but not
 *extract* an element, then you will likely use `[`.
 
 ```{r}
+<<<<<<< HEAD
 xlist <- list(a = "Research Platforms", b = 1:10, data = head(iris))
+=======
+xlist <- list(a = "Research Bazaar", b = 1:10, data = head(iris))
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 xlist[1]
 ```
 
@@ -563,7 +571,11 @@ xlist$data
 > Given the following list:
 >
 > ```{r, eval=FALSE}
+<<<<<<< HEAD
 > xlist <- list(a = "Research Platforms", b = 1:10, data = head(iris))
+=======
+> xlist <- list(a = "Research Bazaar", b = 1:10, data = head(iris))
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 > Using your knowledge of both list and vector subsetting, extract the number 2 from xlist. 
@@ -573,7 +585,11 @@ xlist$data
 > Given a linear model:
 >
 > ```{r, eval=FALSE}
+<<<<<<< HEAD
 > mod <- aov(alcoholUseInYoungAdulthood ~ intellect, data=healthStudy)
+=======
+> mod <- aov(intellect ~ education, data=healthData)
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 > Extract the residual degrees of freedom (hint: `attributes()` will help you)
@@ -588,32 +604,52 @@ apply. However they are also two dimensional objects:
 element corresponds to a column. The resulting object will be a data frame:
 
 ```{r}
+<<<<<<< HEAD
 head(healthStudy[3])
+=======
+head(healthData[3])
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 ```
 
 Similarly, `[[` will act to extract *a single column*:
 
 ```{r}
+<<<<<<< HEAD
 head(healthStudy[["intellect"]])
+=======
+head(healthData[["health"]])
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 ```
 
 And `$` provides a convenient shorthand to extract columns by name:
 
 ```{r}
+<<<<<<< HEAD
 head(healthStudy$intellect)
+=======
+head(healthData$birthYear)
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 ```
 
 With two arguments, `[` behaves the same way as for matrices:
 
 ```{r}
+<<<<<<< HEAD
 healthStudy[1:3,]
+=======
+healthData[1:3,]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 ```
 
 If we subset a single row, the result will be a data frame (because
 the elements are mixed types):
 
 ```{r}
+<<<<<<< HEAD
 healthStudy[3,]
+=======
+healthData[3,]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 ```
 
 But for a single column the result will be a vector (this can
@@ -623,15 +659,23 @@ be changed with the third argument, `drop = FALSE`).
 >
 > Fix each of the following common data frame subsetting errors:
 >
+<<<<<<< HEAD
 > 1. Extract observations collected for people born in the year 1910
 >
 > ```{r, eval=FALSE}
 > healthStudy[healthStudy$birthYear = 1910,]
+=======
+> 1. Extract observations collected for birth year = 1909
+>
+> ```{r, eval=FALSE}
+> healthData[healthData$birthYear = 1909,]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 > 2. Extract all columns except 1 through to 4
 >
 > ```{r, eval=FALSE}
+<<<<<<< HEAD
 > healthStudy[,-1:4]
 > ```
 >
@@ -639,12 +683,22 @@ be changed with the third argument, `drop = FALSE`).
 >
 > ```{r, eval=FALSE}
 > healthStudy[healthStudy$conscientiousness > 5]
+=======
+> healthData[,-1:4]
+> ```
+>
+> 3. Extract the rows where the health metric is greater than 7
+>
+> ```{r, eval=FALSE}
+> healthData[healthData$health > 7]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 > 4. Extract the first row, and the fourth and fifth columns
 >   (`intellect` and `agreeableness`).
 >
 > ```{r, eval=FALSE}
+<<<<<<< HEAD
 > healthStudy[1, 4, 5]
 > ```
 >
@@ -653,15 +707,31 @@ be changed with the third argument, `drop = FALSE`).
 >
 > ```{r, eval=FALSE}
 > healthStudy[healthStudy$birthYear == 1911 | 1912,]
+=======
+> healthData[1, 4, 5]
+> ```
+>
+> 5. Advanced: extract rows that contain information for those in education level 7 and 9
+>
+> ```{r, eval=FALSE}
+> healthData[healthData$education == 7 | 9,]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 
 > ## Challenge 8 {.challenge}
 >
+<<<<<<< HEAD
 > 1. Why does `healthStudy[1:20]` return an error? How does it differ from `healthStudy[1:20, ]`?
 >
 >
 > 2. Create a new `data.frame` called `healthStudy_small` that only contains rows 1 through 9
+=======
+> 1. Why does `healthData[1:20]` return an error? How does it differ from `healthData[1:20, ]`?
+>
+>
+> 2. Create a new `data.frame` called `healthData_small` that only contains rows 1 through 9
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > and 19 through 23. You can do this in one or two steps.
 >
 
@@ -751,7 +821,7 @@ be changed with the third argument, `drop = FALSE`).
 > Given the following list:
 >
 > ```{r}
-> xlist <- list(a = "Software Carpentry", b = 1:10, data = head(iris))
+> xlist <- list(a = "Research Bazaar", b = 1:10, data = head(iris))
 > ```
 >
 > Using your knowledge of both list and vector subsetting, extract the number 2 from xlist. 
@@ -768,7 +838,11 @@ be changed with the third argument, `drop = FALSE`).
 > Given a linear model:
 >
 > ```{r}
+<<<<<<< HEAD
 > mod <- aov(alcoholUseInYoungAdulthood ~ intellect, data=healthStudy)
+=======
+> mod <- aov(intellect ~ education, data=healthData)
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 > Extract the residual degrees of freedom (hint: `attributes()` will help you)
@@ -783,16 +857,25 @@ be changed with the third argument, `drop = FALSE`).
 >
 > Fix each of the following common data frame subsetting errors:
 >
+<<<<<<< HEAD
 > 1. Extract observations collected for people born in the year 1910
 >
 > ```{r, eval=FALSE}
 > # healthStudy[healthStudy$birthYear = 1910,]
 > healthStudy[healthStudy$birthYear == 1910,]
+=======
+> 1. Extract observations collected for birth year = 1909
+>
+> ```{r, eval=FALSE}
+> # healthData[healthData$birthYear = 1909,]
+> healthData[healthData$birthYear == 1909,]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 > 2. Extract all columns except 1 through to 4
 >
 > ```{r, eval=FALSE}
+<<<<<<< HEAD
 > # healthStudy[,-1:4]
 > healthStudy[,-(1:4)]
 > ```
@@ -802,12 +885,24 @@ be changed with the third argument, `drop = FALSE`).
 > ```{r, eval=FALSE}
 > # healthStudy[healthStudy$conscientiousness > 5]
 > healthStudy[healthStudy$conscientiousness > 5, ]
+=======
+> # healthData[,-1:4]
+> healthData[,-c(1:4)]
+> ```
+>
+> 3. Extract the rows where the health metric is greater than 7
+>
+> ```{r, eval=FALSE}
+> # healthData[healthData$health > 7]
+> healthData[healthData$health > 7,]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
 > 4. Extract the first row, and the fourth and fifth columns
 >   (`intellect` and `agreeableness`).
 >
 > ```{r, eval=FALSE}
+<<<<<<< HEAD
 > # healthStudy[1, 4, 5]
 > healthStudy[1, c(4, 5)]
 > ```
@@ -819,11 +914,24 @@ be changed with the third argument, `drop = FALSE`).
 > # healthStudy[healthStudy$birthYear == 1911 | 1912,]
 > healthStudy[healthStudy$birthYear == 1911 | healthStudy$birthYear == 1912,]
 > healthStudy[healthStudy$birthYear %in% c(1911, 1912),]
+=======
+> # healthData[1, 4, 5]
+> healthData[1, c(4, 5)]
+> ```
+>
+> 5. Advanced: extract rows that contain information for those in education level 7 and 9
+>
+> ```{r, eval=FALSE}
+> # healthData[healthData$education == 7 | 9,]
+> healthData[healthData$education == 7 | healthData$education == 9,]
+> healthData[healthData$education %in% c(7, 9),]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 
 
 > ## Solution to challenge 8 {.challenge}
 >
+<<<<<<< HEAD
 > 1. Why does `healthStudy[1:20]` return an error? How does it differ from `healthStudy[1:20, ]`?
 >
 > Answer: `healthStudy` is a data.frame so needs to be subsetted on two dimensions. `healthStudy[1:20, ]` subsets the data to give the first 20 rows and all columns.
@@ -833,5 +941,16 @@ be changed with the third argument, `drop = FALSE`).
 >
 > ```{r}
 > healthStudy_small <- healthStudy[c(1:9, 19:23),]
+=======
+> 1. Why does `healthData[1:20]` return an error? How does it differ from `healthData[1:20, ]`?
+>
+> Answer: `healthData` is a data.frame so needs to be subsetted on two dimensions. `healthData[1:20, ]` subsets the data to give the first 20 rows and all columns.
+>
+> 2. Create a new `data.frame` called `healthData_small` that only contains rows 1 through 9
+> and 19 through 23. You can do this in one or two steps.
+>
+> ```{r}
+> healthData_small <- healthData[c(1:9, 19:23),]
+>>>>>>> 821b2494821a910e2b7c607c86661e58241fd120
 > ```
 >
