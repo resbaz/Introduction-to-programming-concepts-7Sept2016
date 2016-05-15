@@ -237,7 +237,7 @@ while(z &gt;<span class="st"> </span><span class="fl">0.1</span>){
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 3</h2>
 </div>
 <div class="panel-body">
-<p>Write a script that loops through the <code>healthStudy</code> data by illness level and prints out whether the mean health measure is smaller or larger than 8 units. Hint: you may want to check out the functions na.rm() and unique()</p>
+<p>Write a script that loops through the <code>healthStudy</code> data by illness level and prints out whether the mean health measure is smaller or larger than 8 units. Hint: you may want to check out the functions na.rm(), is.na() and unique()</p>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -302,26 +302,24 @@ output_vector2</code></pre>
 [12] &quot;3 b&quot; &quot;3 c&quot; &quot;3 d&quot; &quot;3 e&quot; &quot;4 a&quot; &quot;4 b&quot; &quot;4 c&quot; &quot;4 d&quot; &quot;4 e&quot; &quot;5 a&quot; &quot;5 b&quot;
 [23] &quot;5 c&quot; &quot;5 d&quot; &quot;5 e&quot;
 </code></pre>
-<h2>Challenge 3</h2>
+<h2>Solution to challenge 3</h2>
 <p>Write a script that loops through the <code>healthStudy</code> data by illness level and prints out whether the mean health measure is smaller or larger than 8 units.</p>
-<pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">unique</span>(healthStudy$illnessReversed)){
-  if (<span class="kw">mean</span>(healthStudy$health[healthStudy$illnessReversed ==<span class="st"> </span>illness], <span class="dt">na.rm=</span>T) &gt;<span class="st"> </span><span class="dv">8</span>){
+<pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">sort</span>(<span class="kw">unique</span>(healthStudy$illnessReversed[!<span class="kw">is.na</span>(healthStudy$illnessReversed)]))){
+  if ((<span class="kw">mean</span>(healthStudy$health[healthStudy$illnessReversed ==<span class="st"> </span>illness], <span class="dt">na.rm=</span>T) &gt;<span class="st"> </span><span class="dv">8</span>)){
   <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness is greater than 8 units&quot;</span>))
   } else {
   <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness is less than 8 units&quot;</span>))
   }
 }</code></pre>
-<pre class="output"><code>[1] &quot;The mean health measure for people with 3 illness is less than 8 units&quot;
-[1] &quot;The mean health measure for people with 5 illness is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 4 illness is greater than 8 units&quot;
+<pre class="output"><code>[1] &quot;The mean health measure for people with 1 illness is less than 8 units&quot;
 [1] &quot;The mean health measure for people with 2 illness is less than 8 units&quot;
-[1] &quot;The mean health measure for people with 1 illness is less than 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness is less than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness is greater than 8 units&quot;
 </code></pre>
-<pre class="error"><code>Error in if (mean(healthStudy$health[healthStudy$illnessReversed == illness], : missing value where TRUE/FALSE needed
-</code></pre>
-<h2>Challenge 4</h2>
+<h2>Solution to challenge 4</h2>
 <p>Modify the script from Challenge 4 to also loop over each study. This time print out whether the health measure is smaller than 5, between 5 and 8, or greater than 8.</p>
-<pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">unique</span>(healthStudy$illnessReversed)){
+<pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">sort</span>(<span class="kw">unique</span>(healthStudy$illnessReversed[!<span class="kw">is.na</span>(healthStudy$illnessReversed)]))){
   for (group in <span class="kw">unique</span>(healthStudy$HIGroup)){
     if ((ans &lt;-<span class="st"> </span><span class="kw">mean</span>(healthStudy$health[healthStudy$illnessReversed ==<span class="st"> </span>illness &amp;<span class="st">       </span>healthStudy$HIGroup ==<span class="st"> </span>group], <span class="dt">na.rm=</span>T)) &gt;<span class="st"> </span><span class="dv">8</span>){
       <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in   group&quot;</span>, group, <span class="st">&quot;is greater than 8 units&quot;</span>))
@@ -332,18 +330,16 @@ output_vector2</code></pre>
     }
   }
 }</code></pre>
-<pre class="output"><code>[1] &quot;The mean health measure for people with 3 illness in     group Group 1 is between 5 and 8 units&quot;
-[1] &quot;The mean health measure for people with 3 illness in   group Group 2 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 5 illness in   group Group 1 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 5 illness in   group Group 2 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 4 illness in   group Group 1 is greater than 8 units&quot;
-[1] &quot;The mean health measure for people with 4 illness in   group Group 2 is greater than 8 units&quot;
+<pre class="output"><code>[1] &quot;The mean health measure for people with 1 illness in group Group 1 is less than 5 units&quot;
+[1] &quot;The mean health measure for people with 1 illness in group Group 2 is less than 5 units&quot;
 [1] &quot;The mean health measure for people with 2 illness in     group Group 1 is between 5 and 8 units&quot;
 [1] &quot;The mean health measure for people with 2 illness in     group Group 2 is between 5 and 8 units&quot;
-[1] &quot;The mean health measure for people with 1 illness in group Group 1 is less than 5 units&quot;
-[1] &quot;The mean health measure for people with 1 illness in group Group 2 is less than 5 units&quot;
-</code></pre>
-<pre class="error"><code>Error in if ((ans &lt;- mean(healthStudy$health[healthStudy$illnessReversed == : missing value where TRUE/FALSE needed
+[1] &quot;The mean health measure for people with 3 illness in     group Group 1 is between 5 and 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness in   group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness in   group Group 1 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness in   group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness in   group Group 1 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness in   group Group 2 is greater than 8 units&quot;
 </code></pre>
 </div>
 </section>

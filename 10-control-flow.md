@@ -350,7 +350,7 @@ output_vector2
 >
 > Write a script that loops through the `healthStudy` data by illness level and prints 
 > out whether the mean health measure is smaller or larger than 8 units.
-> Hint: you may want to check out the functions na.rm() and unique()
+> Hint: you may want to check out the functions na.rm(), is.na() and unique()
 
 > ## Challenge 4 {.challenge}
 >
@@ -440,15 +440,15 @@ output_vector2
 >[23] "5 c" "5 d" "5 e"
 >
 >~~~
-> ## Challenge 3 {.challenge}
+> ## Solution to challenge 3 {.challenge}
 >
 > Write a script that loops through the `healthStudy` data by illness level and prints 
 > out whether the mean health measure is smaller or larger than 8 units.
 >
 > 
 > ~~~{.r}
-> for (illness in unique(healthStudy$illnessReversed)){
->   if (mean(healthStudy$health[healthStudy$illnessReversed == illness], na.rm=T) > 8){
+> for (illness in sort(unique(healthStudy$illnessReversed[!is.na(healthStudy$illnessReversed)]))){
+>   if ((mean(healthStudy$health[healthStudy$illnessReversed == illness], na.rm=T) > 8)){
 >   print(paste("The mean health measure for people with", illness, "illness is greater than 8 units"))
 >   } else {
 >   print(paste("The mean health measure for people with", illness, "illness is less than 8 units"))
@@ -459,21 +459,14 @@ output_vector2
 > 
 > 
 > ~~~{.output}
-> [1] "The mean health measure for people with 3 illness is less than 8 units"
-> [1] "The mean health measure for people with 5 illness is greater than 8 units"
-> [1] "The mean health measure for people with 4 illness is greater than 8 units"
-> [1] "The mean health measure for people with 2 illness is less than 8 units"
 > [1] "The mean health measure for people with 1 illness is less than 8 units"
+> [1] "The mean health measure for people with 2 illness is less than 8 units"
+> [1] "The mean health measure for people with 3 illness is less than 8 units"
+> [1] "The mean health measure for people with 4 illness is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness is greater than 8 units"
 > 
 > ~~~
-> 
-> 
-> 
-> ~~~{.error}
-> Error in if (mean(healthStudy$health[healthStudy$illnessReversed == illness], : missing value where TRUE/FALSE needed
-> 
-> ~~~
-> ## Challenge 4 {.challenge}
+> ## Solution to challenge 4 {.challenge}
 >
 > Modify the script from Challenge 4 to also loop over each
 > study. This time print out whether the health measure is
@@ -481,7 +474,7 @@ output_vector2
 >
 > 
 > ~~~{.r}
-> for (illness in unique(healthStudy$illnessReversed)){
+> for (illness in sort(unique(healthStudy$illnessReversed[!is.na(healthStudy$illnessReversed)]))){
 >   for (group in unique(healthStudy$HIGroup)){
 >     if ((ans <- mean(healthStudy$health[healthStudy$illnessReversed == illness &       healthStudy$HIGroup == group], na.rm=T)) > 8){
 >       print(paste("The mean health measure for people with", illness, "illness in   group", group, "is greater than 8 units"))
@@ -497,22 +490,15 @@ output_vector2
 > 
 > 
 > ~~~{.output}
-> [1] "The mean health measure for people with 3 illness in     group Group 1 is between 5 and 8 units"
-> [1] "The mean health measure for people with 3 illness in   group Group 2 is greater than 8 units"
-> [1] "The mean health measure for people with 5 illness in   group Group 1 is greater than 8 units"
-> [1] "The mean health measure for people with 5 illness in   group Group 2 is greater than 8 units"
-> [1] "The mean health measure for people with 4 illness in   group Group 1 is greater than 8 units"
-> [1] "The mean health measure for people with 4 illness in   group Group 2 is greater than 8 units"
-> [1] "The mean health measure for people with 2 illness in     group Group 1 is between 5 and 8 units"
-> [1] "The mean health measure for people with 2 illness in     group Group 2 is between 5 and 8 units"
 > [1] "The mean health measure for people with 1 illness in group Group 1 is less than 5 units"
 > [1] "The mean health measure for people with 1 illness in group Group 2 is less than 5 units"
-> 
-> ~~~
-> 
-> 
-> 
-> ~~~{.error}
-> Error in if ((ans <- mean(healthStudy$health[healthStudy$illnessReversed == : missing value where TRUE/FALSE needed
+> [1] "The mean health measure for people with 2 illness in     group Group 1 is between 5 and 8 units"
+> [1] "The mean health measure for people with 2 illness in     group Group 2 is between 5 and 8 units"
+> [1] "The mean health measure for people with 3 illness in     group Group 1 is between 5 and 8 units"
+> [1] "The mean health measure for people with 3 illness in   group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 4 illness in   group Group 1 is greater than 8 units"
+> [1] "The mean health measure for people with 4 illness in   group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness in   group Group 1 is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness in   group Group 2 is greater than 8 units"
 > 
 > ~~~
