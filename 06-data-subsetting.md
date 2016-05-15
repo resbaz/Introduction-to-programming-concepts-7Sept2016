@@ -1178,12 +1178,6 @@ be changed with the third argument, `drop = FALSE`).
 > 
 > ~~~{.r}
 > healthStudy[healthStudy$birthYear = 1910,]
-> 1. Extract observations collected for birth year = 1909
-> >
-> ~~~
-> 
-> ~~~{.r}
-> healthStudy[healthStudy$birthYear = 1909,]
 > ~~~
 >
 > 2. Extract all columns except 1 through to 4
@@ -1198,7 +1192,6 @@ be changed with the third argument, `drop = FALSE`).
 > 
 > ~~~{.r}
 > healthStudy[healthStudy$conscientiousness > 5]
-> healthStudy[,-1:4]
 > ~~~
 >
 > 3. Extract the rows where the health metric is greater than 7
@@ -1222,7 +1215,6 @@ be changed with the third argument, `drop = FALSE`).
 > 
 > ~~~{.r}
 > healthStudy[healthStudy$birthYear == 1911 | 1912,]
-> healthStudy[1, 4, 5]
 > ~~~
 >
 > 5. Advanced: extract rows that contain information for those in education level 7 and 9
@@ -1399,7 +1391,7 @@ be changed with the third argument, `drop = FALSE`).
 > ~~~
 
 
-> ## Challenge 7 {.challenge}
+> ## Solution to challenge 7 {.challenge}
 >
 > Fix each of the following common data frame subsetting errors:
 >
@@ -1409,13 +1401,6 @@ be changed with the third argument, `drop = FALSE`).
 > ~~~{.r}
 > # healthStudy[healthStudy$birthYear = 1910,]
 > healthStudy[healthStudy$birthYear == 1910,]
-> 1. Extract observations collected for birth year = 1909
-> >
-> ~~~
-> 
-> ~~~{.r}
-> # healthStudy[healthStudy$birthYear = 1909,]
-> healthStudy[healthStudy$birthYear == 1909,]
 > ~~~
 >
 > 2. Extract all columns except 1 through to 4
@@ -1432,8 +1417,6 @@ be changed with the third argument, `drop = FALSE`).
 > ~~~{.r}
 > # healthStudy[healthStudy$conscientiousness > 5]
 > healthStudy[healthStudy$conscientiousness > 5, ]
-> # healthStudy[,-1:4]
-> healthStudy[,-c(1:4)]
 > ~~~
 >
 > 3. Extract the rows where the health metric is greater than 7
@@ -1461,8 +1444,6 @@ be changed with the third argument, `drop = FALSE`).
 > # healthStudy[healthStudy$birthYear == 1911 | 1912,]
 > healthStudy[healthStudy$birthYear == 1911 | healthStudy$birthYear == 1912,]
 > healthStudy[healthStudy$birthYear %in% c(1911, 1912),]
-> # healthStudy[1, 4, 5]
-> healthStudy[1, c(4, 5)]
 > ~~~
 >
 > 5. Advanced: extract rows that contain information for those in education level 7 and 9

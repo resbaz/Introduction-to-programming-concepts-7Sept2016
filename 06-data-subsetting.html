@@ -561,10 +561,7 @@ mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span c
 <ol style="list-style-type: decimal">
 <li>Extract observations collected for people born in the year 1910</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$birthYear =<span class="st"> </span><span class="dv">1910</span>,]
-<span class="dv">1</span>. Extract observations collected for birth year =<span class="st"> </span><span class="dv">1909</span>
-&gt;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$birthYear =<span class="st"> </span><span class="dv">1909</span>,]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$birthYear =<span class="st"> </span><span class="dv">1910</span>,]</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Extract all columns except 1 through to 4</li>
 </ol>
@@ -572,8 +569,7 @@ mod &lt;-<span class="st"> </span><span class="kw">aov</span>(intellect ~<span c
 <ol start="3" style="list-style-type: decimal">
 <li>Extract the rows where conscientiousness in greater than 5</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span>]
-healthStudy[,-<span class="dv">1</span>:<span class="dv">4</span>]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span>]</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Extract the rows where the health metric is greater than 7</li>
 </ol>
@@ -585,8 +581,7 @@ healthStudy[,-<span class="dv">1</span>:<span class="dv">4</span>]</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Advanced: extract rows that contain information for people born in 1911 and 1912</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1911</span> |<span class="st"> </span><span class="dv">1912</span>,]
-healthStudy[<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>]</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1911</span> |<span class="st"> </span><span class="dv">1912</span>,]</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Advanced: extract rows that contain information for those in education level 7 and 9</li>
 </ol>
@@ -720,7 +715,7 @@ mod$df.residual</code></pre>
 </section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Challenge 7</h2>
+<h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 7</h2>
 </div>
 <div class="panel-body">
 <p>Fix each of the following common data frame subsetting errors:</p>
@@ -728,11 +723,7 @@ mod$df.residual</code></pre>
 <li>Extract observations collected for people born in the year 1910</li>
 </ol>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$birthYear = 1910,]</span>
-healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1910</span>,]
-<span class="dv">1</span>. Extract observations collected for birth year =<span class="st"> </span><span class="dv">1909</span>
-&gt;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$birthYear = 1909,]</span>
-healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1909</span>,]</code></pre>
+healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1910</span>,]</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Extract all columns except 1 through to 4</li>
 </ol>
@@ -742,9 +733,7 @@ healthStudy[,-(<span class="dv">1</span>:<span class="dv">4</span>)]</code></pre
 <li>Extract the rows where conscientiousness in greater than 5</li>
 </ol>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$conscientiousness &gt; 5]</span>
-healthStudy[healthStudy$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span>, ]
-<span class="co"># healthStudy[,-1:4]</span>
-healthStudy[,-<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">4</span>)]</code></pre>
+healthStudy[healthStudy$conscientiousness &gt;<span class="st"> </span><span class="dv">5</span>, ]</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Extract the rows where the health metric is greater than 7</li>
 </ol>
@@ -760,9 +749,7 @@ healthStudy[<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv
 </ol>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># healthStudy[healthStudy$birthYear == 1911 | 1912,]</span>
 healthStudy[healthStudy$birthYear ==<span class="st"> </span><span class="dv">1911</span> |<span class="st"> </span>healthStudy$birthYear ==<span class="st"> </span><span class="dv">1912</span>,]
-healthStudy[healthStudy$birthYear %in%<span class="st"> </span><span class="kw">c</span>(<span class="dv">1911</span>, <span class="dv">1912</span>),]
-<span class="co"># healthStudy[1, 4, 5]</span>
-healthStudy[<span class="dv">1</span>, <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)]</code></pre>
+healthStudy[healthStudy$birthYear %in%<span class="st"> </span><span class="kw">c</span>(<span class="dv">1911</span>, <span class="dv">1912</span>),]</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Advanced: extract rows that contain information for those in education level 7 and 9</li>
 </ol>
