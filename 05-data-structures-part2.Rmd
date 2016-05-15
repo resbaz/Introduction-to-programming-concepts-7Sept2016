@@ -20,7 +20,7 @@ At this point, you've see it all - in the last lesson, we toured all the basic d
 We learned last time that the columns in a data.frame were vectors, so that our data are consistent in type throughout the column. As such, if we want to add a new column, we need to start by making a new vector:
 
 ```{r, echo = FALSE}
-cats <- read.csv("data/feline-data.csv")
+cats <- read.csv("feline-data.csv")
 ```
 
 ```{r}
@@ -129,67 +129,67 @@ cats
 > Finally, use `cbind` to add a column with each person's answer to the question, "Is it time for coffee break?"
 >
 
-So far, you've seen the basics of manipulating data.frames with our cat data; now, let's use those skills to digest a more realistic dataset. Lets read in the gapminder dataset that we downloaded previously:
+So far, you've seen the basics of manipulating data.frames with our cat data; now, let's use those skills to digest a more realistic dataset. Lets read in some real data now. For the remainder of the workshop we will play with some child health data from positive psychology. The data is stored on the GitHub repository used for these training materials, and R can read the file directly from there:
 
 ```{r}
-gapminder <- read.csv("data/gapminder-FiveYearData.csv")
+healthData <- read.csv("https://goo.gl/oqQGKF")
 ```
 
 > ## Miscellaneous Tips {.callout}
 >
 > 1. Another type of file you might encounter are tab-separated
-> format. To specify a tab as a separator, use `"\t"`.
+> format. To specify a tab as a separator, use `sep="\t"`.
 >
-> 2. You can also read in files from the Internet by replacing
-> the file paths with a web address.
+> 2. You can also read in files from a local file location by replacing
+> the URL with a file location, as we saw earlier with the cat data.
 >
 > 3. You can read directly from excel spreadsheets without
 > converting them to plain text first by using the `xlsx` package.
 >
 
-Let's investigate gapminder a bit; the first thing we should always do is check out what the data looks like with `str`:
+Let's investigate the health data a bit; the first thing we should always do is check out the structure of the data with `str`:
 
 ```{r}
-str(gapminder)
+str(healthData)
 ```
 
 We can also examine individual columns of the data.frame with our `typeof` function:
 
 ```{r}
-typeof(gapminder$year)
-typeof(gapminder$lifeExp)
-typeof(gapminder$country)
-str(gapminder$country)
+typeof(healthData$id)
+typeof(healthData$conscientiousness)
+typeof(healthData$sex)
+str(healthData$health)
 ```
 
-We can also interrogate the data.frame for information about its dimensions; remembering that `str(gapminder)` said there were 1704 observations of 6 variables in gapminder, what do you think the following will produce, and why?
+We can also interrogate the data.frame for information about its dimensions; remembering that `str(healthData)` said there were 2255 observations of 15 variables in healthData, what do you think the following will produce, and why?
 
 ```{r}
-length(gapminder)
+length(healthData)
 ```
 
-A fair guess would have been to say that the length of a data.frame would be the number of rows it has (1704), but this is not the case; remember, a data.frame is a *list of vectors and factors*:
+A fair guess would have been to say that the length of a data.frame would be the number of rows it has (2255), but this is not the case; remember, a data.frame is a *list of vectors and factors*:
 
 ```{r}
-typeof(gapminder)
+typeof(healthData)
 ```
 
-When `length` gave us 6, it's because gapminder is built out of a list of 6 columns. To get the number of rows and columns in our dataset, try:
+When `length` gave us 15, it's because gapminder is built out of a list of 6 columns. To get the number of rows and columns in our dataset, try:
 
 ```{r}
-nrow(gapminder)
-ncol(gapminder)
+nrow(healthData)
+ncol(healthData)
 ```
 
 Or, both at once:
 
 ```{r}
-dim(gapminder)
+dim(healthData)
 ```
 
 We'll also likely want to know what the titles of all the columns are, so we can ask for them later:
 ```{r}
-colnames(gapminder)
+colnames(healthData)
 ```
 
 At this stage, it's important to ask ourselves if the structure R is reporting matches our intuition or expectations; do the basic data types reported for each column make sense? If not, we need to sort any problems out now before they turn into bad surprises down the road, using what we've learned about how R interprets data, and the importance of *strict consistency* in how we record our data.
@@ -197,7 +197,7 @@ At this stage, it's important to ask ourselves if the structure R is reporting m
 Once we're happy that the data types and structures seem reasonable, it's time to start digging into our data proper. Check out the first few lines:
 
 ```{r}
-head(gapminder)
+head(healthData)
 ```
 
 To make sure our analysis is reproducible, we should put the code
@@ -206,7 +206,7 @@ into a script file so we can come back to it later.
 > ## Challenge 2 {.challenge}
 >
 > Go to file -> new file -> R script, and write an R script
-> to load in the gapminder dataset. Put it in the `scripts/`
+> to load in the healthData dataset. Put it in the `scripts/`
 > directory and add it to version control.
 >
 > Run the script using the `source` function, using the file path
@@ -215,7 +215,7 @@ into a script file so we can come back to it later.
 
 > ## Challenge 3 {.challenge}
 >
-> Read the output of `str(gapminder)` again; 
+> Read the output of `str(healthData)` again; 
 > this time, use what you've learned about factors, lists and vectors,
 > as well as the output of functions like `colnames` and `dim`
 > to explain what everything that `str` prints out for gapminder means.
@@ -240,12 +240,12 @@ into a script file so we can come back to it later.
 >
 
 > ## Solution to Challenge 2 {.challenge}
-> The contents of `script/load-gapminder.R`:
+> The contents of `script/load-healthData.R`:
 > ```{r eval = FALSE}
-> gapminder <- read.csv(file = "data/gapminder-FiveYearData.csv")
+> healthData <- read.csv("https://goo.gl/oqQGKF")
 > ```
-> To run the script and load the data into the `gapminder` variable:
+> To run the script and load the data into the `healthData` variable:
 > ```{r eval = FALSE}
-> source(file = "scripts/load-gapminder.R")
+> source(file = "scripts/load-healthData.R")
 > ```
 >

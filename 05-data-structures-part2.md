@@ -279,42 +279,51 @@ cats
 > Finally, use `cbind` to add a column with each person's answer to the question, "Is it time for coffee break?"
 >
 
-So far, you've seen the basics of manipulating data.frames with our cat data; now, let's use those skills to digest a more realistic dataset. Lets read in the gapminder dataset that we downloaded previously:
+So far, you've seen the basics of manipulating data.frames with our cat data; now, let's use those skills to digest a more realistic dataset. Lets read in some real data now. For the remainder of the workshop we will play with some child health data from positive psychology. The data is stored on the GitHub repository used for these training materials, and R can read the file directly from there:
 
 
 ~~~{.r}
-gapminder <- read.csv("data/gapminder-FiveYearData.csv")
+healthData <- read.csv("https://goo.gl/oqQGKF")
 ~~~
 
 > ## Miscellaneous Tips {.callout}
 >
 > 1. Another type of file you might encounter are tab-separated
-> format. To specify a tab as a separator, use `"\t"`.
+> format. To specify a tab as a separator, use `sep="\t"`.
 >
-> 2. You can also read in files from the Internet by replacing
-> the file paths with a web address.
+> 2. You can also read in files from a local file location by replacing
+> the URL with a file location, as we saw earlier with the cat data.
 >
 > 3. You can read directly from excel spreadsheets without
 > converting them to plain text first by using the `xlsx` package.
 >
 
-Let's investigate gapminder a bit; the first thing we should always do is check out what the data looks like with `str`:
+Let's investigate the health data a bit; the first thing we should always do is check out the structure of the data with `str`:
 
 
 ~~~{.r}
-str(gapminder)
+str(healthData)
 ~~~
 
 
 
 ~~~{.output}
-'data.frame':	1704 obs. of  6 variables:
- $ country  : Factor w/ 142 levels "Afghanistan",..: 1 1 1 1 1 1 1 1 1 1 ...
- $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
- $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
- $ continent: Factor w/ 5 levels "Africa","Americas",..: 3 3 3 3 3 3 3 3 3 3 ...
- $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
- $ gdpPercap: num  779 821 853 836 740 ...
+'data.frame':	2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : Factor w/ 95 levels ".","1.000","1.408",..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : Factor w/ 56 levels ".","1.000","1.051",..: 34 56 17 34 26 34 42 23 39 23 ...
+ $ neuroticism               : Factor w/ 43 levels ".","1.000","1.442",..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ sex                       : Factor w/ 2 levels "Female","Male": 2 2 2 2 2 2 2 2 2 2 ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : Factor w/ 2 levels "Group 1","Group 2": 1 1 1 1 1 1 1 1 1 1 ...
 
 ~~~
 
@@ -322,7 +331,7 @@ We can also examine individual columns of the data.frame with our `typeof` funct
 
 
 ~~~{.r}
-typeof(gapminder$year)
+typeof(healthData$id)
 ~~~
 
 
@@ -335,7 +344,7 @@ typeof(gapminder$year)
 
 
 ~~~{.r}
-typeof(gapminder$lifeExp)
+typeof(healthData$conscientiousness)
 ~~~
 
 
@@ -348,7 +357,7 @@ typeof(gapminder$lifeExp)
 
 
 ~~~{.r}
-typeof(gapminder$country)
+typeof(healthData$sex)
 ~~~
 
 
@@ -361,35 +370,35 @@ typeof(gapminder$country)
 
 
 ~~~{.r}
-str(gapminder$country)
+str(healthData$health)
 ~~~
 
 
 
 ~~~{.output}
- Factor w/ 142 levels "Afghanistan",..: 1 1 1 1 1 1 1 1 1 1 ...
+ num [1:2255] 6.74 11.96 8.05 6.48 6.74 ...
 
 ~~~
 
-We can also interrogate the data.frame for information about its dimensions; remembering that `str(gapminder)` said there were 1704 observations of 6 variables in gapminder, what do you think the following will produce, and why?
+We can also interrogate the data.frame for information about its dimensions; remembering that `str(healthData)` said there were 2255 observations of 15 variables in healthData, what do you think the following will produce, and why?
 
 
 ~~~{.r}
-length(gapminder)
+length(healthData)
 ~~~
 
 
 
 ~~~{.output}
-[1] 6
+[1] 15
 
 ~~~
 
-A fair guess would have been to say that the length of a data.frame would be the number of rows it has (1704), but this is not the case; remember, a data.frame is a *list of vectors and factors*:
+A fair guess would have been to say that the length of a data.frame would be the number of rows it has (2255), but this is not the case; remember, a data.frame is a *list of vectors and factors*:
 
 
 ~~~{.r}
-typeof(gapminder)
+typeof(healthData)
 ~~~
 
 
@@ -399,30 +408,30 @@ typeof(gapminder)
 
 ~~~
 
-When `length` gave us 6, it's because gapminder is built out of a list of 6 columns. To get the number of rows and columns in our dataset, try:
+When `length` gave us 15, it's because gapminder is built out of a list of 6 columns. To get the number of rows and columns in our dataset, try:
 
 
 ~~~{.r}
-nrow(gapminder)
+nrow(healthData)
 ~~~
 
 
 
 ~~~{.output}
-[1] 1704
+[1] 2255
 
 ~~~
 
 
 
 ~~~{.r}
-ncol(gapminder)
+ncol(healthData)
 ~~~
 
 
 
 ~~~{.output}
-[1] 6
+[1] 15
 
 ~~~
 
@@ -430,26 +439,33 @@ Or, both at once:
 
 
 ~~~{.r}
-dim(gapminder)
+dim(healthData)
 ~~~
 
 
 
 ~~~{.output}
-[1] 1704    6
+[1] 2255   15
 
 ~~~
 
 We'll also likely want to know what the titles of all the columns are, so we can ask for them later:
 
 ~~~{.r}
-colnames(gapminder)
+colnames(healthData)
 ~~~
 
 
 
 ~~~{.output}
-[1] "country"   "year"      "pop"       "continent" "lifeExp"   "gdpPercap"
+ [1] "id"                         "conscientiousness"         
+ [3] "extraversion"               "intellect"                 
+ [5] "agreeableness"              "neuroticism"               
+ [7] "sex"                        "selfRatedHealth"           
+ [9] "mentalAdjustment"           "illnessReversed"           
+[11] "health"                     "alcoholUseInYoungAdulthood"
+[13] "education"                  "birthYear"                 
+[15] "HIGroup"                   
 
 ~~~
 
@@ -459,19 +475,33 @@ Once we're happy that the data types and structures seem reasonable, it's time t
 
 
 ~~~{.r}
-head(gapminder)
+head(healthData)
 ~~~
 
 
 
 ~~~{.output}
-      country year      pop continent lifeExp gdpPercap
-1 Afghanistan 1952  8425333      Asia  28.801  779.4453
-2 Afghanistan 1957  9240934      Asia  30.332  820.8530
-3 Afghanistan 1962 10267083      Asia  31.997  853.1007
-4 Afghanistan 1967 11537966      Asia  34.020  836.1971
-5 Afghanistan 1972 13079460      Asia  36.088  739.9811
-6 Afghanistan 1977 14880372      Asia  38.438  786.1134
+  id conscientiousness extraversion intellect agreeableness neuroticism
+1  3             5.825        3.986     6.044         4.613       3.649
+2  4             7.732        7.016     6.821         6.649       6.299
+3  7             6.498        2.697     5.527         3.087       4.091
+4  8             5.881        2.504     4.234         4.613       3.649
+5 10             4.254        5.147     4.751         3.850       3.208
+6 12             7.508        3.535     6.821         4.613       5.415
+   sex selfRatedHealth mentalAdjustment illnessReversed health
+1 Male               4                2               3   6.74
+2 Male               5                3               5  11.96
+3 Male               3                3               4   8.05
+4 Male               3                2               4   6.48
+5 Male               4                2               3   6.74
+6 Male               4                2               5   9.01
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+1                          2         9      1909 Group 1
+2                          3         8      1905 Group 1
+3                          2         6      1910 Group 1
+4                          1         8      1905 Group 1
+5                          2         9      1910 Group 1
+6                          2         4      1911 Group 1
 
 ~~~
 
@@ -481,7 +511,7 @@ into a script file so we can come back to it later.
 > ## Challenge 2 {.challenge}
 >
 > Go to file -> new file -> R script, and write an R script
-> to load in the gapminder dataset. Put it in the `scripts/`
+> to load in the healthData dataset. Put it in the `scripts/`
 > directory and add it to version control.
 >
 > Run the script using the `source` function, using the file path
@@ -490,7 +520,7 @@ into a script file so we can come back to it later.
 
 > ## Challenge 3 {.challenge}
 >
-> Read the output of `str(gapminder)` again; 
+> Read the output of `str(healthData)` again; 
 > this time, use what you've learned about factors, lists and vectors,
 > as well as the output of functions like `colnames` and `dim`
 > to explain what everything that `str` prints out for gapminder means.
@@ -516,14 +546,14 @@ into a script file so we can come back to it later.
 >
 
 > ## Solution to Challenge 2 {.challenge}
-> The contents of `script/load-gapminder.R`:
+> The contents of `script/load-healthData.R`:
 > 
 > ~~~{.r}
-> gapminder <- read.csv(file = "data/gapminder-FiveYearData.csv")
+> healthData <- read.csv("https://goo.gl/oqQGKF")
 > ~~~
-> To run the script and load the data into the `gapminder` variable:
+> To run the script and load the data into the `healthData` variable:
 > 
 > ~~~{.r}
-> source(file = "scripts/load-gapminder.R")
+> source(file = "scripts/load-healthData.R")
 > ~~~
 >

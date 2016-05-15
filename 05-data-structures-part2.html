@@ -168,76 +168,106 @@ cats</code></pre>
 <p>Then use <code>rbind</code> to add an entry for the people sitting beside you. Finally, use <code>cbind</code> to add a column with each person’s answer to the question, “Is it time for coffee break?”</p>
 </div>
 </section>
-<p>So far, you’ve seen the basics of manipulating data.frames with our cat data; now, let’s use those skills to digest a more realistic dataset. Lets read in the gapminder dataset that we downloaded previously:</p>
-<pre class="sourceCode r"><code class="sourceCode r">gapminder &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/gapminder-FiveYearData.csv&quot;</span>)</code></pre>
+<p>So far, you’ve seen the basics of manipulating data.frames with our cat data; now, let’s use those skills to digest a more realistic dataset. Lets read in some real data now. For the remainder of the workshop we will play with some child health data from positive psychology. The data is stored on the GitHub repository used for these training materials, and R can read the file directly from there:</p>
+<pre class="sourceCode r"><code class="sourceCode r">healthData &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://goo.gl/oqQGKF&quot;</span>)</code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pushpin"></span>Miscellaneous Tips</h2>
 </div>
 <div class="panel-body">
 <ol style="list-style-type: decimal">
-<li><p>Another type of file you might encounter are tab-separated format. To specify a tab as a separator, use <code>&quot;\t&quot;</code>.</p></li>
-<li><p>You can also read in files from the Internet by replacing the file paths with a web address.</p></li>
+<li><p>Another type of file you might encounter are tab-separated format. To specify a tab as a separator, use <code>sep=&quot;\t&quot;</code>.</p></li>
+<li><p>You can also read in files from a local file location by replacing the URL with a file location, as we saw earlier with the cat data.</p></li>
 <li><p>You can read directly from excel spreadsheets without converting them to plain text first by using the <code>xlsx</code> package.</p></li>
 </ol>
 </div>
 </aside>
-<p>Let’s investigate gapminder a bit; the first thing we should always do is check out what the data looks like with <code>str</code>:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gapminder)</code></pre>
-<pre class="output"><code>&#39;data.frame&#39;:   1704 obs. of  6 variables:
- $ country  : Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
- $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
- $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
- $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
- $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
- $ gdpPercap: num  779 821 853 836 740 ...
+<p>Let’s investigate the health data a bit; the first thing we should always do is check out the structure of the data with <code>str</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(healthData)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : Factor w/ 95 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.408&quot;,..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : Factor w/ 56 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.051&quot;,..: 34 56 17 34 26 34 42 23 39 23 ...
+ $ neuroticism               : Factor w/ 43 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.442&quot;,..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ sex                       : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : Factor w/ 2 levels &quot;Group 1&quot;,&quot;Group 2&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 </code></pre>
 <p>We can also examine individual columns of the data.frame with our <code>typeof</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(gapminder$year)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(healthData$id)</code></pre>
 <pre class="output"><code>[1] &quot;integer&quot;
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(gapminder$lifeExp)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(healthData$conscientiousness)</code></pre>
 <pre class="output"><code>[1] &quot;double&quot;
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(gapminder$country)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(healthData$sex)</code></pre>
 <pre class="output"><code>[1] &quot;integer&quot;
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gapminder$country)</code></pre>
-<pre class="output"><code> Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(healthData$health)</code></pre>
+<pre class="output"><code> num [1:2255] 6.74 11.96 8.05 6.48 6.74 ...
 </code></pre>
-<p>We can also interrogate the data.frame for information about its dimensions; remembering that <code>str(gapminder)</code> said there were 1704 observations of 6 variables in gapminder, what do you think the following will produce, and why?</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(gapminder)</code></pre>
-<pre class="output"><code>[1] 6
+<p>We can also interrogate the data.frame for information about its dimensions; remembering that <code>str(healthData)</code> said there were 2255 observations of 15 variables in healthData, what do you think the following will produce, and why?</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(healthData)</code></pre>
+<pre class="output"><code>[1] 15
 </code></pre>
-<p>A fair guess would have been to say that the length of a data.frame would be the number of rows it has (1704), but this is not the case; remember, a data.frame is a <em>list of vectors and factors</em>:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(gapminder)</code></pre>
+<p>A fair guess would have been to say that the length of a data.frame would be the number of rows it has (2255), but this is not the case; remember, a data.frame is a <em>list of vectors and factors</em>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(healthData)</code></pre>
 <pre class="output"><code>[1] &quot;list&quot;
 </code></pre>
-<p>When <code>length</code> gave us 6, it’s because gapminder is built out of a list of 6 columns. To get the number of rows and columns in our dataset, try:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(gapminder)</code></pre>
-<pre class="output"><code>[1] 1704
+<p>When <code>length</code> gave us 15, it’s because gapminder is built out of a list of 6 columns. To get the number of rows and columns in our dataset, try:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(healthData)</code></pre>
+<pre class="output"><code>[1] 2255
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncol</span>(gapminder)</code></pre>
-<pre class="output"><code>[1] 6
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncol</span>(healthData)</code></pre>
+<pre class="output"><code>[1] 15
 </code></pre>
 <p>Or, both at once:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(gapminder)</code></pre>
-<pre class="output"><code>[1] 1704    6
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(healthData)</code></pre>
+<pre class="output"><code>[1] 2255   15
 </code></pre>
 <p>We’ll also likely want to know what the titles of all the columns are, so we can ask for them later:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(gapminder)</code></pre>
-<pre class="output"><code>[1] &quot;country&quot;   &quot;year&quot;      &quot;pop&quot;       &quot;continent&quot; &quot;lifeExp&quot;   &quot;gdpPercap&quot;
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(healthData)</code></pre>
+<pre class="output"><code> [1] &quot;id&quot;                         &quot;conscientiousness&quot;         
+ [3] &quot;extraversion&quot;               &quot;intellect&quot;                 
+ [5] &quot;agreeableness&quot;              &quot;neuroticism&quot;               
+ [7] &quot;sex&quot;                        &quot;selfRatedHealth&quot;           
+ [9] &quot;mentalAdjustment&quot;           &quot;illnessReversed&quot;           
+[11] &quot;health&quot;                     &quot;alcoholUseInYoungAdulthood&quot;
+[13] &quot;education&quot;                  &quot;birthYear&quot;                 
+[15] &quot;HIGroup&quot;                   
 </code></pre>
 <p>At this stage, it’s important to ask ourselves if the structure R is reporting matches our intuition or expectations; do the basic data types reported for each column make sense? If not, we need to sort any problems out now before they turn into bad surprises down the road, using what we’ve learned about how R interprets data, and the importance of <em>strict consistency</em> in how we record our data.</p>
 <p>Once we’re happy that the data types and structures seem reasonable, it’s time to start digging into our data proper. Check out the first few lines:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(gapminder)</code></pre>
-<pre class="output"><code>      country year      pop continent lifeExp gdpPercap
-1 Afghanistan 1952  8425333      Asia  28.801  779.4453
-2 Afghanistan 1957  9240934      Asia  30.332  820.8530
-3 Afghanistan 1962 10267083      Asia  31.997  853.1007
-4 Afghanistan 1967 11537966      Asia  34.020  836.1971
-5 Afghanistan 1972 13079460      Asia  36.088  739.9811
-6 Afghanistan 1977 14880372      Asia  38.438  786.1134
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthData)</code></pre>
+<pre class="output"><code>  id conscientiousness extraversion intellect agreeableness neuroticism
+1  3             5.825        3.986     6.044         4.613       3.649
+2  4             7.732        7.016     6.821         6.649       6.299
+3  7             6.498        2.697     5.527         3.087       4.091
+4  8             5.881        2.504     4.234         4.613       3.649
+5 10             4.254        5.147     4.751         3.850       3.208
+6 12             7.508        3.535     6.821         4.613       5.415
+   sex selfRatedHealth mentalAdjustment illnessReversed health
+1 Male               4                2               3   6.74
+2 Male               5                3               5  11.96
+3 Male               3                3               4   8.05
+4 Male               3                2               4   6.48
+5 Male               4                2               3   6.74
+6 Male               4                2               5   9.01
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+1                          2         9      1909 Group 1
+2                          3         8      1905 Group 1
+3                          2         6      1910 Group 1
+4                          1         8      1905 Group 1
+5                          2         9      1910 Group 1
+6                          2         4      1911 Group 1
 </code></pre>
 <p>To make sure our analysis is reproducible, we should put the code into a script file so we can come back to it later.</p>
 <section class="challenge panel panel-success">
@@ -245,7 +275,7 @@ cats</code></pre>
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 2</h2>
 </div>
 <div class="panel-body">
-<p>Go to file -&gt; new file -&gt; R script, and write an R script to load in the gapminder dataset. Put it in the <code>scripts/</code> directory and add it to version control.</p>
+<p>Go to file -&gt; new file -&gt; R script, and write an R script to load in the healthData dataset. Put it in the <code>scripts/</code> directory and add it to version control.</p>
 <p>Run the script using the <code>source</code> function, using the file path as its argument (or by pressing the “source” button in RStudio).</p>
 </div>
 </section>
@@ -254,7 +284,7 @@ cats</code></pre>
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 3</h2>
 </div>
 <div class="panel-body">
-<p>Read the output of <code>str(gapminder)</code> again; this time, use what you’ve learned about factors, lists and vectors, as well as the output of functions like <code>colnames</code> and <code>dim</code> to explain what everything that <code>str</code> prints out for gapminder means. If there are any parts you can’t interpret, discuss with your neighbors!</p>
+<p>Read the output of <code>str(healthData)</code> again; this time, use what you’ve learned about factors, lists and vectors, as well as the output of functions like <code>colnames</code> and <code>dim</code> to explain what everything that <code>str</code> prints out for gapminder means. If there are any parts you can’t interpret, discuss with your neighbors!</p>
 </div>
 </section>
 <h2 id="challenge-solutions">Challenge solutions</h2>
@@ -282,10 +312,10 @@ df &lt;-<span class="st"> </span><span class="kw">cbind</span>(df, <span class="
 <h2><span class="glyphicon glyphicon-pencil"></span>Solution to Challenge 2</h2>
 </div>
 <div class="panel-body">
-<p>The contents of <code>script/load-gapminder.R</code>:</p>
-<pre class="sourceCode r"><code class="sourceCode r">gapminder &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/gapminder-FiveYearData.csv&quot;</span>)</code></pre>
-<p>To run the script and load the data into the <code>gapminder</code> variable:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="dt">file =</span> <span class="st">&quot;scripts/load-gapminder.R&quot;</span>)</code></pre>
+<p>The contents of <code>script/load-healthData.R</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">healthData &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://goo.gl/oqQGKF&quot;</span>)</code></pre>
+<p>To run the script and load the data into the <code>healthData</code> variable:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="dt">file =</span> <span class="st">&quot;scripts/load-healthData.R&quot;</span>)</code></pre>
 </div>
 </section>
         </div>
