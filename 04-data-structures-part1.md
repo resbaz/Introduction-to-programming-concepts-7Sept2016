@@ -14,7 +14,7 @@ minutes: 90
 > - To be able to ask questions from R about the type, class, and structure of an object.
 >
 
-One of R's most powerful features is its ability to deal with tabular data - like what you might already have in a spreadsheet or a CSV. Let's start by making a toy dataset in your `data/` directory, called `feline-data.csv`:
+One of R's most powerful features is its ability to deal with tabular data - like what you might already have in a spreadsheet or a CSV. Let's start by making a toy dataset in your current directory, called `feline-data.csv`:
 
 
 ~~~{.r}
