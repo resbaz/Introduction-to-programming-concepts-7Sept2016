@@ -774,15 +774,13 @@ healthStudy[healthStudy$education %in%<span class="st"> </span><span class="kw">
 <ol style="list-style-type: decimal">
 <li>Why does <code>healthStudy[1:20]</code> return an error? How does it differ from <code>healthStudy[1:20, ]</code>?</li>
 </ol>
-</div>
-</section>
-<blockquote>
 <p>Answer: <code>healthStudy</code> is a data.frame so needs to be subsetted on two dimensions. <code>healthStudy[1:20, ]</code> subsets the data to give the first 20 rows and all columns.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Create a new <code>data.frame</code> called <code>healthStudy_small</code> that only contains rows 1 through 9 and 19 through 23. You can do this in one or two steps.</li>
 </ol>
 <pre class="sourceCode r"><code class="sourceCode r">healthStudy_small &lt;-<span class="st"> </span>healthStudy[<span class="kw">c</span>(<span class="dv">1</span>:<span class="dv">9</span>, <span class="dv">19</span>:<span class="dv">23</span>),]</code></pre>
-</blockquote>
+</div>
+</section>
         </div>
       </div>
       </article>

@@ -870,7 +870,7 @@ be changed with the third argument, `drop = FALSE`).
  healthStudy_small <- healthStudy[c(1:9, 19:23),]
 > ```
 > 1. Why does `healthStudy[1:20]` return an error? How does it differ from `healthStudy[1:20, ]`?
-
+>
 > Answer: `healthStudy` is a data.frame so needs to be subsetted on two dimensions. `healthStudy[1:20, ]` subsets the data to give the first 20 rows and all columns.
 >
 > 2. Create a new `data.frame` called `healthStudy_small` that only contains rows 1 through 9
