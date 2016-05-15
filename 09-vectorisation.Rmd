@@ -9,7 +9,7 @@ minutes: 30
 source("tools/chunk-options.R")
 opts_chunk$set(fig.path = "fig/09-vectorisation-")
 # Silently load in the data so the rest of the lesson works
-gapminder <- read.csv("data/gapminder-FiveYearData.csv", header=TRUE)
+healthStudy <- read.csv("data/THCombo051311.csv", header=TRUE)
 library(ggplot2)
 ```
 
@@ -51,22 +51,23 @@ y:  6  7  8  9
 
 > ## Challenge 1 {.challenge}
 >
-> Let's try this on the `pop` column of the `gapminder` dataset.
+> Let's try this on the `health` column of the `healthStudy` dataset.
 >
-> Make a new column in the `gapminder` data frame that
-> contains population in units of millions of people.
+> Make a new column in the `healthStudy` data frame that
+> contains health rounded to the nearest integer.
 > Check the head or tail of the data frame to make sure
 > it worked.
+>
+> Hint: R has a round() function
 >
 
 > ## Challenge 2 {.challenge}
 >
-> On a single graph, plot population, in
-> millions, against year, for all countries. Don't worry about
->identifying which country is which.
+> On a single graph, plot neuroticism against health rounded to the nearest integer, 
+> for each of the study groups.
 >
-> Repeat the exercise, graphing only for China, India, and
->Indonesia. Again, don't worry about which is which.
+> Repeat the exercise, graphing only for people with: conscientiousnss greater than 5, 
+> self-rated health below 7, and alcohol use in young adulthood of 2.
 >
 
 Comparison operators, logical operators, and many functions are also
@@ -157,30 +158,37 @@ m * -1
 
 > ## Solution to challenge 1 {.challenge}
 >
-> Let's try this on the `pop` column of the `gapminder` dataset.
+> Let's try this on the `health` column of the `healthStudy` dataset.
 >
-> Make a new column in the `gapminder` data frame that
-> contains population in units of millions of people.
+> Make a new column in the `healthStudy` data frame that
+> contains health rounded to the nearest integer.
 > Check the head or tail of the data frame to make sure
 > it worked.
 >
+> Hint: R has a round() function
+>
 > ```{r}
-> gapminder$pop_millions <- gapminder$pop / 1e6
+> healthStudy$healthInteger <- round(healthStudy$health)
 > head(gapminder)
 > ```
 >
 
 > ## Solution to challenge 2 {.challenge}
 >
-> Refresh your plotting skills by plotting population in millions against year.
+>
+> On a single graph, plot neuroticism against health rounded to the nearest integer, 
+> for each of the study groups.
+>
+> Repeat the exercise, graphing only for people with: conscientiousnss greater than 5, 
+> self-rated health below 7, and alcohol use in young adulthood of 2.
+>
 >
 > ```{r ch2-sol}
-> ggplot(gapminder, aes(x = year, y = pop_millions)) + 
->  geom_point()
-> countryset <- c("China","India","Indonesia")
-> ggplot(gapminder[gapminder$country %in% countryset,],
->        aes(x = year, y = pop_millions)) + 
->   geom_point()
+ ggplot(healthStudy, aes(x = healthInteger, y = neuroticism)) + 
+  geom_point()
+ ggplot(healthStudy[healthStudy$conscientiousness > 5 & healthStudy$selfRatedHealth < 7 & healthStudy$alcoholUseInYoungAdulthood == 2,],
+        aes(x = healthInteger, y = neuroticism)) + 
+   geom_point()
 > ```
 >
 
