@@ -30,7 +30,7 @@ We can load this into R via the following:
 
 
 ~~~{.r}
-cats <- read.csv(file = "data/feline-data.csv")
+cats <- read.csv(file = "feline-data.csv")
 cats
 ~~~
 
@@ -158,7 +158,7 @@ Reload your cats data like before, and check what type of data we find in the `w
 
 
 ~~~{.r}
-cats <- read.csv(file="data/feline-data.csv")
+cats <- read.csv(file="feline-data.csv")
 typeof(cats$weight[1])
 ~~~
 
@@ -197,7 +197,7 @@ tabby,3.2,TRUE
 And back in RStudio:
 
 ```
-cats <- read.csv(file="data/feline-data.csv")
+cats <- read.csv(file="feline-data.csv")
 ```
 
 ## Vectors & Type Coercion
@@ -382,14 +382,14 @@ ab_vector
 
 
 ~~~{.r}
-concat_example <- c(ab_vector, 'SWC')
+concat_example <- c(ab_vector, 'RES')
 concat_example
 ~~~
 
 
 
 ~~~{.output}
-[1] "a"   "b"   "SWC"
+[1] "a"   "b"   "RES"
 
 ~~~
 
@@ -515,7 +515,7 @@ b
 > ## Challenge 1 {.challenge}
 > Start by making a vector with the numbers 11 to 20.
 > Then use the functions we just learned to extract the 3rd through 5th element in that vector into a new vector;
-> name the elements in that new vector 'S', 'W', 'C'.
+> name the elements in that new vector 'R', 'E', 'S'.
 >
 
 ## Factors
@@ -893,14 +893,14 @@ matrix_example
 > ~~~{.r}
 > x <- c(11:20)
 > subset <- x[3:5]
-> names(subset) <- c('S', 'W', 'C')
+> names(subset) <- c('R', 'E', 'S')
 > ~~~
 >
 
 > ## Solution to Challenge 2 {.challenge}
 > 
 > ~~~{.r}
-> cats <- read.csv(file="data/feline-data.csv", stringsAsFactors=FALSE)
+> cats <- read.csv(file="feline-data.csv", stringsAsFactors=FALSE)
 > str(cats$coat)
 > ~~~
 > 

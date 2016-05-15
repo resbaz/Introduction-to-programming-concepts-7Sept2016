@@ -6,3 +6,4 @@ _site
 pandoc
 ssh-keygen.txt.pub
 ssh-keygen.txt
+feline-data.csv

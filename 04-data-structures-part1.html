@@ -47,7 +47,7 @@ calico,<span class="fl">2.1</span>,<span class="ot">TRUE</span>
 black,<span class="fl">5.0</span>,<span class="ot">FALSE</span>
 tabby,<span class="fl">3.2</span>,<span class="ot">TRUE</span></code></pre>
 <p>We can load this into R via the following:</p>
-<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;data/feline-data.csv&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file =</span> <span class="st">&quot;feline-data.csv&quot;</span>)
 cats</code></pre>
 <pre class="output"><code>    coat weight likes_string
 1 calico    2.1         TRUE
@@ -89,7 +89,7 @@ typeof(&#39;banana&#39;)</code></pre>
 <p>Note the <code>L</code> suffix to insist that a number is an integer. No matter how complicated our analyses become, all data in R is interpreted as one of these basic data types. This strictness has some really important consequences. Go back to your text editor and add add this line to feline-data.csv:</p>
 <pre class="sourceCode r"><code class="sourceCode r">tabby,<span class="fl">2.3</span> or <span class="fl">2.4</span>,<span class="ot">TRUE</span></code></pre>
 <p>Reload your cats data like before, and check what type of data we find in the <code>weight</code> column:</p>
-<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/feline-data.csv&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;feline-data.csv&quot;</span>)
 <span class="kw">typeof</span>(cats$weight[<span class="dv">1</span>])</code></pre>
 <pre class="output"><code>[1] &quot;double&quot;
 </code></pre>
@@ -104,7 +104,7 @@ calico,2.1,TRUE
 black,5.0,FALSE
 tabby,3.2,TRUE</code></pre>
 <p>And back in RStudio:</p>
-<pre><code>cats &lt;- read.csv(file=&quot;data/feline-data.csv&quot;)</code></pre>
+<pre><code>cats &lt;- read.csv(file=&quot;feline-data.csv&quot;)</code></pre>
 <h2 id="vectors-type-coercion">Vectors &amp; Type Coercion</h2>
 <p>To better understand the behavior we just saw, let’s meet another of the data structures: the <em>vector</em>.</p>
 <pre class="sourceCode r"><code class="sourceCode r">my_vector &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">length=</span><span class="dv">3</span>)
@@ -168,9 +168,9 @@ numeric_coerced_to_logical</code></pre>
 ab_vector</code></pre>
 <pre class="output"><code>[1] &quot;a&quot; &quot;b&quot;
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">concat_example &lt;-<span class="st"> </span><span class="kw">c</span>(ab_vector, <span class="st">&#39;SWC&#39;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">concat_example &lt;-<span class="st"> </span><span class="kw">c</span>(ab_vector, <span class="st">&#39;RES&#39;</span>)
 concat_example</code></pre>
-<pre class="output"><code>[1] &quot;a&quot;   &quot;b&quot;   &quot;SWC&quot;
+<pre class="output"><code>[1] &quot;a&quot;   &quot;b&quot;   &quot;RES&quot;
 </code></pre>
 <p>You can also make series of numbers:</p>
 <pre class="sourceCode r"><code class="sourceCode r">mySeries &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">10</span>
@@ -216,7 +216,7 @@ names_example</code></pre>
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 1</h2>
 </div>
 <div class="panel-body">
-<p>Start by making a vector with the numbers 11 to 20. Then use the functions we just learned to extract the 3rd through 5th element in that vector into a new vector; name the elements in that new vector ‘S’, ‘W’, ‘C’.</p>
+<p>Start by making a vector with the numbers 11 to 20. Then use the functions we just learned to extract the 3rd through 5th element in that vector into a new vector; name the elements in that new vector ‘R’, ‘E’, ‘S’.</p>
 </div>
 </section>
 <h2 id="factors">Factors</h2>
@@ -399,7 +399,7 @@ matrix_example[<span class="dv">1</span>,<span class="dv">1</span>]</code></pre>
 <div class="panel-body">
 <pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">11</span>:<span class="dv">20</span>)
 subset &lt;-<span class="st"> </span>x[<span class="dv">3</span>:<span class="dv">5</span>]
-<span class="kw">names</span>(subset) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;S&#39;</span>, <span class="st">&#39;W&#39;</span>, <span class="st">&#39;C&#39;</span>)</code></pre>
+<span class="kw">names</span>(subset) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;R&#39;</span>, <span class="st">&#39;E&#39;</span>, <span class="st">&#39;S&#39;</span>)</code></pre>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -407,7 +407,7 @@ subset &lt;-<span class="st"> </span>x[<span class="dv">3</span>:<span class="dv
 <h2><span class="glyphicon glyphicon-pencil"></span>Solution to Challenge 2</h2>
 </div>
 <div class="panel-body">
-<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/feline-data.csv&quot;</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
+<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;feline-data.csv&quot;</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
 <span class="kw">str</span>(cats$coat)</code></pre>
 <pre class="output"><code> chr [1:3] &quot;calico&quot; &quot;black&quot; &quot;tabby&quot;
 </code></pre>

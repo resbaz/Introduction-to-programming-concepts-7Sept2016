@@ -29,13 +29,13 @@ tabby,3.2,TRUE
 cats.df <- data.frame(coat = c("calico", "black", "tabby"), 
                       weight = c(2.1, 5.0, 3.2), 
                       likes_string = c(TRUE, FALSE, TRUE))
-write.csv(cats.df, "data/feline-data.csv", row.names = FALSE)
+write.csv(cats.df, "feline-data.csv", row.names = FALSE)
 ```
 
 We can load this into R via the following:
 
 ```{r}
-cats <- read.csv(file = "data/feline-data.csv")
+cats <- read.csv(file = "feline-data.csv")
 cats
 ```
 
@@ -83,7 +83,7 @@ tabby,2.3 or 2.4,TRUE
 Reload your cats data like before, and check what type of data we find in the `weight` column:
 
 ```{r}
-cats <- read.csv(file="data/feline-data.csv")
+cats <- read.csv(file="feline-data.csv")
 typeof(cats$weight[1])
 ```
 
@@ -107,7 +107,7 @@ tabby,3.2,TRUE
 And back in RStudio:
 
 ```
-cats <- read.csv(file="data/feline-data.csv")
+cats <- read.csv(file="feline-data.csv")
 ```
 
 ## Vectors & Type Coercion
@@ -186,7 +186,7 @@ Concatenate will also append things to an existing vector:
 ```{r}
 ab_vector <- c('a', 'b')
 ab_vector
-concat_example <- c(ab_vector, 'SWC')
+concat_example <- c(ab_vector, 'RES')
 concat_example
 ```
 
@@ -220,7 +220,7 @@ names_example['b']
 > ## Challenge 1 {.challenge}
 > Start by making a vector with the numbers 11 to 20.
 > Then use the functions we just learned to extract the 3rd through 5th element in that vector into a new vector;
-> name the elements in that new vector 'S', 'W', 'C'.
+> name the elements in that new vector 'R', 'E', 'S'.
 >
 
 ## Factors
@@ -388,13 +388,13 @@ matrix_example
 > ```{r}
 > x <- c(11:20)
 > subset <- x[3:5]
-> names(subset) <- c('S', 'W', 'C')
+> names(subset) <- c('R', 'E', 'S')
 > ```
 >
 
 > ## Solution to Challenge 2 {.challenge}
 > ```{r}
-> cats <- read.csv(file="data/feline-data.csv", stringsAsFactors=FALSE)
+> cats <- read.csv(file="feline-data.csv", stringsAsFactors=FALSE)
 > str(cats$coat)
 > ```
 > Note: new students find the help files difficult to understand; make sure to let them know
