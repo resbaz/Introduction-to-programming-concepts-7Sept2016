@@ -141,6 +141,7 @@ kelvin_to_celsius <- function(temp) {
 > by reusing the two functions above (or using your own functions if you prefer).
 >
 
+## Applying functions to datasets
 
 We're going to define
 a function that calculates the average year of birth in our health dataset:
@@ -175,7 +176,7 @@ of the function.
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy)
+calcBirthYearAverage(healthData)
 ~~~
 
 
@@ -212,39 +213,39 @@ Let's take a look at what happens when we specify the study group:
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy,0)
+calcBirthYearAverage(healthData,0)
 ~~~
 
 
 
 ~~~{.output}
-[1] 1910.041
+[1] NaN
 
 ~~~
 
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy,1)
+calcBirthYearAverage(healthData,1)
 ~~~
 
 
 
 ~~~{.output}
-[1] 1955.426
+[1] NaN
 
 ~~~
 
 
 
 ~~~{.r}
-calcBirthYearAverage(healthStudy)
+calcBirthYearAverage(healthData)
 ~~~
 
 
 
 ~~~{.output}
-[1] 1955.426
+[1] NaN
 
 ~~~
 

@@ -9,7 +9,7 @@ minutes: 70
 source("tools/chunk-options.R")
 opts_chunk$set(fig.path = "fig/08-plot-ggplot2-")
 # Silently load in the data so the rest of the lesson works
-healthStudy <- read.csv("data/THCombo051311.csv", header = TRUE)
+healthData <- read.csv("https://goo.gl/oqQGKF", header=TRUE)
 ```
 
 > ## Learning Objectives {.objectives}
@@ -52,7 +52,7 @@ Let's start off with an example:
 
 ```{r lifeExp-vs-gdpPercap-scatter, message=FALSE}
 library("ggplot2")
-ggplot(data = healthStudy, aes(x = education, y = health)) +
+ggplot(data = healthData, aes(x = education, y = health)) +
   geom_point()
 ```
 
@@ -68,13 +68,13 @@ tells `ggplot` how variables in the **data** map to *aesthetic* properties of
 the figure, in this case the **x** and **y** locations. Here we told `ggplot` we
 want to plot the "education" column of the gapminder data frame on the x-axis, and
 the "health" column on the y-axis. Notice that we didn't need to explicitly
-pass `aes` these columns (e.g. `x = healthStudy[, "education"]`), this is because
+pass `aes` these columns (e.g. `x = healthData[, "education"]`), this is because
 `ggplot` is smart enough to know to look in the **data** for that column!
 
 By itself, the call to `ggplot` isn't enough to draw a figure:
 
 ```{r}
-ggplot(data = healthStudy, aes(x = education, y = health))
+ggplot(data = healthData, aes(x = education, y = health))
 ```
 
 We need to tell `ggplot` how we want to visually represent the data, which we
@@ -83,7 +83,7 @@ tells `ggplot` we want to visually represent the relationship between **x** and
 **y** as a scatterplot of points:
 
 ```{r education-vs-health-scatter2}
-ggplot(data = healthStudy, aes(x = education, y = health)) +
+ggplot(data = healthData, aes(x = education, y = health)) +
   geom_point()
 ```
 
@@ -93,7 +93,7 @@ ggplot(data = healthStudy, aes(x = education, y = health)) +
 > varies with extraversion:
 >
 > ```{r, eval=FALSE}
-> ggplot(data = healthStudy, aes(x = education, y = health)) + geom_point()
+> ggplot(data = healthData, aes(x = education, y = health)) + geom_point()
 > ```
 >
 
@@ -112,7 +112,7 @@ We could also make a line plot.
 Instead, let's tell `ggplot` to visualise the data as a line plot:
 
 ```{r health-line}
-ggplot(data = healthStudy, aes(x=education, y=health, by=HIGroup, color=sex)) +
+ggplot(data = healthData, aes(x=education, y=health, by=HIGroup, color=sex)) +
   geom_line()
 ```
 
@@ -124,7 +124,7 @@ But what if we want to visualise both lines and points on the plot? We can
 simply add another layer to the plot:
 
 ```{r health-line-point}
-ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
  geom_point() + geom_line()
 ```
 
@@ -133,7 +133,7 @@ this example, the points have been drawn *on top of* the lines. Here's a
 demonstration:
 
 ```{r health-layer-example-1}
-ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
   geom_point() + geom_line(aes(colour=sex))
 
 ```
@@ -155,7 +155,7 @@ Ggplot also makes it easy to overlay statistical models over the data. To
 demonstrate we'll go back to our first example:
 
 ```{r health-vs-gdpPercap-scatter3, message=FALSE}
-ggplot(data = healthStudy, aes(x = health, y = agreeableness, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = agreeableness, color=sex)) +
   geom_point()
 ```
 
@@ -167,7 +167,7 @@ the *scale* functions. These control the mapping between the data values and
 visual values of an aesthetic.
 
 ```{r axis-scale}
-ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
   geom_point() + scale_y_log10()
 ```
 
@@ -182,7 +182,7 @@ We can fit a simple relationship to the data by adding another layer,
 `geom_smooth`:
 
 ```{r lm-fit}
-ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
    geom_point() + geom_smooth(method="lm")
 ```
 
@@ -190,7 +190,7 @@ We can make the line thicker by *setting* the **size** aesthetic in the
 `geom_smooth` layer:
 
 ```{r lm-fit2}
-ggplot(data = healthStudy, aes(x = health, y = education, color=sex)) +
+ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
    geom_point() + geom_smooth(method="lm", size = 1.5)
 ```
 
@@ -214,13 +214,13 @@ in one plot. Alternatively, we can split this out over multiple panels
 by adding a layer of **facet** panels:
 
 ```{r facet}
-ggplot(data = healthStudy, aes(x = education, y = health, color=HIGroup)) +
+ggplot(data = healthData, aes(x = education, y = health, color=HIGroup)) +
   geom_line() + facet_wrap( ~ sex)
 ```
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the HIGroup column
-of the healthStudy dataset.
+of the healthData dataset.
 
 ## Modifying text
 
@@ -233,7 +233,7 @@ for changing the axis labels. To change the legend title, we need to use the
 **scales** layer.
 
 ```{r theme}
-ggplot(healthStudy, aes(x = education, y = health, color=HIGroup)) +
+ggplot(healthData, aes(x = education, y = health, color=HIGroup)) +
   geom_line() + facet_wrap( ~ sex) +
   xlab("Education level") + ylab("Health rating from teacher") + ggtitle("Figure 1") +
   scale_colour_discrete(name="Study group", labels= c("Hawaii","Teman")) +
@@ -266,7 +266,7 @@ code to modify!
 > varies with extraversion:
 >
 > ```{r ch1-sol}
-> ggplot(healthStudy, aes(x = agreeableness, y = extraversion)) + geom_point()
+> ggplot(healthData, aes(x = agreeableness, y = extraversion)) + geom_point()
 > ```
 >
 
@@ -279,7 +279,7 @@ code to modify!
 > column. What trends do you see in the data? Are they what you expected?
 >
 > ```{r ch2-sol}
-> ggplot(healthStudy, aes(x = agreeableness, y = extraversion, colour=sex)) + 
+> ggplot(healthData, aes(x = agreeableness, y = extraversion, colour=sex)) + 
 > geom_point()
 > ```
 >
@@ -290,7 +290,7 @@ code to modify!
 > happened?
 >
 > ```{r ch3-sol}
-ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) + 
+ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
   geom_line(aes(colour=sex)) + geom_point() 
 > ```
 > 
@@ -306,7 +306,7 @@ ggplot(healthStudy, aes(x = health, y = extraversion, colour=sex)) +
 > Hint: do not use the `aes` function.
 >
 > ```{r ch4-sol}
-ggplot(data = healthStudy, aes(x = health, y = education)) +
+ggplot(data = healthData, aes(x = health, y = education)) +
   geom_point(size=3, color="orange") + 
   geom_smooth(method="lm", size=1.5)
 > ```

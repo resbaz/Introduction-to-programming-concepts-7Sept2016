@@ -124,17 +124,17 @@ x
 > ## Challenge 1 {.challenge}
 >
 > Use an `if` statement to print a suitable message
-> reporting whether there are any records from 2002 in
-> the `gapminder` dataset.
-> Now do the same for 2012.
+> reporting whether there are any years of birth from 1812 in
+> the `healthData` dataset.
+> Now do the same for 1910.
 >
 
 Did anyone get a warning message like this?
 
 
 ~~~{.error}
-Warning in if (gapminder$year == 2012) {: the condition has length > 1 and
-only the first element will be used
+Warning in if (healthData$birthYear == 1812) {: the condition has length >
+1 and only the first element will be used
 
 ~~~
 
@@ -348,21 +348,159 @@ output_vector2
 
 > ## Challenge 3 {.challenge}
 >
-> Write a script that loops through the `gapminder` data by continent and prints out
-> whether the mean life expectancy is smaller or larger than 50
-> years.
->
+> Write a script that loops through the `healthData` data by illness level and prints 
+> out whether the mean health measure is smaller or larger than 8 units.
+> Hint: you may want to check out the functions na.rm(), is.na() and unique()
 
 > ## Challenge 4 {.challenge}
 >
 > Modify the script from Challenge 4 to also loop over each
-> country. This time print out whether the life expectancy is
-> smaller than 50, between 50 and 70, or greater than 70.
+> study. This time print out whether the health measure is
+> smaller than 5, between 5 and 8, or greater than 8.
 >
 
+<!-- I don't think so
 > ## Challenge 5 - Advanced {.challenge}
 >
 > Write a script that loops over each country in the `gapminder` dataset,
 > tests whether the country starts with a 'B', and graphs life expectancy
 > against time as a line graph if the mean life expectancy is under 50 years.
 >
+-->
+
+## Challenge solutions
+
+> ## Solution to challenge 1 {.challenge}
+>
+> Use an `if` statement to print a suitable message
+> reporting whether there are any years of birth from 1812 in
+> the `healthData` dataset.
+> Now do the same for 1910.
+>
+> 
+> ~~~{.r}
+> if (any(healthData$birthYear == 1812)){
+>   print("There was at least one person born in 1812 in the dataset")
+> } else {
+>   print("There are no people in the dataset who were born in 1812")
+> }
+> ~~~
+> 
+> 
+> 
+> ~~~{.output}
+> [1] "There are no people in the dataset who were born in 1812"
+> 
+> ~~~
+> 
+> 
+> 
+> ~~~{.r}
+> if (any(healthData$birthYear == 1910)){
+>   print("There was at least one person born in 1910 in the dataset")
+> } else {
+>   print("There are no people in the dataset who were born in 1910")
+> }
+> ~~~
+> 
+> 
+> 
+> ~~~{.output}
+> [1] "There was at least one person born in 1910 in the dataset"
+> 
+> ~~~
+
+> ## Solution to challenge 2 {.challenge}
+> Compare the objects output_vector and
+> output_vector2. Are they the same? If not, why not?
+> How would you change the last block of code to make output_vector2
+> the same as output_vector?
+>
+> The rows and columns have been swapped between output_vector and output_vector2
+>
+>~~~{.r}
+>output_matrix <- matrix(nrow=5, ncol=5)
+>j_vector <- c('a', 'b', 'c', 'd', 'e')
+>for (i in 1:5){
+>  for(j in 1:5){
+>    temp_j_value <- j_vector[j]
+>    temp_output <- paste(i, temp_j_value)
+>    output_matrix[j, i] <- temp_output
+>  }
+>}
+>output_vector2 <- as.vector(output_matrix)
+>output_vector2
+>~~~
+>
+>
+>
+>~~~{.output}
+> [1] "1 a" "1 b" "1 c" "1 d" "1 e" "2 a" "2 b" "2 c" "2 d" "2 e" "3 a"
+>[12] "3 b" "3 c" "3 d" "3 e" "4 a" "4 b" "4 c" "4 d" "4 e" "5 a" "5 b"
+>[23] "5 c" "5 d" "5 e"
+>
+>~~~
+
+> ## Solution to challenge 3 {.challenge}
+>
+> Write a script that loops through the `healthData` data by illness level and prints 
+> out whether the mean health measure is smaller or larger than 8 units.
+>
+> 
+> ~~~{.r}
+> for (illness in sort(unique(healthData$illnessReversed[!is.na(healthData$illnessReversed)]))){
+>   if ((mean(healthData$health[healthData$illnessReversed == illness], na.rm=T) > 8)){
+>   print(paste("The mean health measure for people with", illness, "illness is greater than 8 units"))
+>   } else {
+>   print(paste("The mean health measure for people with", illness, "illness is less than 8 units"))
+>   }
+> }
+> ~~~
+> 
+> 
+> 
+> ~~~{.output}
+> [1] "The mean health measure for people with 1 illness is less than 8 units"
+> [1] "The mean health measure for people with 2 illness is less than 8 units"
+> [1] "The mean health measure for people with 3 illness is less than 8 units"
+> [1] "The mean health measure for people with 4 illness is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness is greater than 8 units"
+> 
+> ~~~
+
+> ## Solution to challenge 4 {.challenge}
+>
+> Modify the script from Challenge 4 to also loop over each
+> study. This time print out whether the health measure is
+> smaller than 5, between 5 and 8, or greater than 8.
+>
+> 
+> ~~~{.r}
+> for (illness in sort(unique(healthData$illnessReversed[!is.na(healthData$illnessReversed)]))){
+>   for (group in unique(healthData$HIGroup)){
+>     if ((ans <- mean(healthData$health[healthData$illnessReversed == illness & healthData$HIGroup == group], na.rm=T)) > 8){
+>       print(paste("The mean health measure for people with", illness, "illness in group", group, "is greater than 8 units"))
+>     } else if (ans < 5){
+>       print(paste("The mean health measure for people with", illness, "illness in group", group, "is less than 5 units"))
+>     } else {
+>       print(paste("The mean health measure for people with", illness, "illness in group", group, "is between 5 and 8 units"))
+>     }
+>   }
+> }
+> ~~~
+> 
+> 
+> 
+> ~~~{.output}
+> [1] "The mean health measure for people with 1 illness in group Group 1 is less than 5 units"
+> [1] "The mean health measure for people with 1 illness in group Group 2 is less than 5 units"
+> [1] "The mean health measure for people with 2 illness in group Group 1 is between 5 and 8 units"
+> [1] "The mean health measure for people with 2 illness in group Group 2 is between 5 and 8 units"
+> [1] "The mean health measure for people with 3 illness in group Group 1 is between 5 and 8 units"
+> [1] "The mean health measure for people with 3 illness in group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 4 illness in group Group 1 is greater than 8 units"
+> [1] "The mean health measure for people with 4 illness in group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness in group Group 1 is greater than 8 units"
+> [1] "The mean health measure for people with 5 illness in group Group 2 is greater than 8 units"
+> 
+> ~~~

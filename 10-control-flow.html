@@ -102,12 +102,12 @@ x</code></pre>
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 1</h2>
 </div>
 <div class="panel-body">
-<p>Use an <code>if</code> statement to print a suitable message reporting whether there are any records from 2002 in the <code>gapminder</code> dataset. Now do the same for 2012.</p>
+<p>Use an <code>if</code> statement to print a suitable message reporting whether there are any years of birth from 1812 in the <code>healthData</code> dataset. Now do the same for 1910.</p>
 </div>
 </section>
 <p>Did anyone get a warning message like this?</p>
-<pre class="error"><code>Warning in if (gapminder$year == 2012) {: the condition has length &gt; 1 and
-only the first element will be used
+<pre class="error"><code>Warning in if (healthData$birthYear == 1812) {: the condition has length &gt;
+1 and only the first element will be used
 </code></pre>
 <p>If your condition evaluates to a vector with more than one logical element, the function <code>if</code> will still run, but will only evaluate the condition in the first element. Here you need to make sure your condition is of length 1.</p>
 <blockquote>
@@ -237,7 +237,7 @@ while(z &gt;<span class="st"> </span><span class="fl">0.1</span>){
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 3</h2>
 </div>
 <div class="panel-body">
-<p>Write a script that loops through the <code>gapminder</code> data by continent and prints out whether the mean life expectancy is smaller or larger than 50 years.</p>
+<p>Write a script that loops through the <code>healthData</code> data by illness level and prints out whether the mean health measure is smaller or larger than 8 units. Hint: you may want to check out the functions na.rm(), is.na() and unique()</p>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -245,15 +245,114 @@ while(z &gt;<span class="st"> </span><span class="fl">0.1</span>){
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 4</h2>
 </div>
 <div class="panel-body">
-<p>Modify the script from Challenge 4 to also loop over each country. This time print out whether the life expectancy is smaller than 50, between 50 and 70, or greater than 70.</p>
+<p>Modify the script from Challenge 4 to also loop over each study. This time print out whether the health measure is smaller than 5, between 5 and 8, or greater than 8.</p>
+</div>
+</section>
+<!-- I don't think so
+> ## Challenge 5 - Advanced {.challenge}
+>
+> Write a script that loops over each country in the `gapminder` dataset,
+> tests whether the country starts with a 'B', and graphs life expectancy
+> against time as a line graph if the mean life expectancy is under 50 years.
+>
+-->
+
+<h2 id="challenge-solutions">Challenge solutions</h2>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 1</h2>
+</div>
+<div class="panel-body">
+<p>Use an <code>if</code> statement to print a suitable message reporting whether there are any years of birth from 1812 in the <code>healthData</code> dataset. Now do the same for 1910.</p>
+<pre class="sourceCode r"><code class="sourceCode r">if (<span class="kw">any</span>(healthData$birthYear ==<span class="st"> </span><span class="dv">1812</span>)){
+  <span class="kw">print</span>(<span class="st">&quot;There was at least one person born in 1812 in the dataset&quot;</span>)
+} else {
+  <span class="kw">print</span>(<span class="st">&quot;There are no people in the dataset who were born in 1812&quot;</span>)
+}</code></pre>
+<pre class="output"><code>[1] &quot;There are no people in the dataset who were born in 1812&quot;
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">if (<span class="kw">any</span>(healthData$birthYear ==<span class="st"> </span><span class="dv">1910</span>)){
+  <span class="kw">print</span>(<span class="st">&quot;There was at least one person born in 1910 in the dataset&quot;</span>)
+} else {
+  <span class="kw">print</span>(<span class="st">&quot;There are no people in the dataset who were born in 1910&quot;</span>)
+}</code></pre>
+<pre class="output"><code>[1] &quot;There was at least one person born in 1910 in the dataset&quot;
+</code></pre>
 </div>
 </section>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Challenge 5 - Advanced</h2>
+<h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 2</h2>
 </div>
 <div class="panel-body">
-<p>Write a script that loops over each country in the <code>gapminder</code> dataset, tests whether the country starts with a ‘B’, and graphs life expectancy against time as a line graph if the mean life expectancy is under 50 years.</p>
+<p>Compare the objects output_vector and output_vector2. Are they the same? If not, why not? How would you change the last block of code to make output_vector2 the same as output_vector?</p>
+<p>The rows and columns have been swapped between output_vector and output_vector2</p>
+<pre class="sourceCode r"><code class="sourceCode r">output_matrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">nrow=</span><span class="dv">5</span>, <span class="dt">ncol=</span><span class="dv">5</span>)
+j_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>, <span class="st">&#39;c&#39;</span>, <span class="st">&#39;d&#39;</span>, <span class="st">&#39;e&#39;</span>)
+for (i in <span class="dv">1</span>:<span class="dv">5</span>){
+ for(j in <span class="dv">1</span>:<span class="dv">5</span>){
+   temp_j_value &lt;-<span class="st"> </span>j_vector[j]
+   temp_output &lt;-<span class="st"> </span><span class="kw">paste</span>(i, temp_j_value)
+   output_matrix[j, i] &lt;-<span class="st"> </span>temp_output
+ }
+}
+output_vector2 &lt;-<span class="st"> </span><span class="kw">as.vector</span>(output_matrix)
+output_vector2</code></pre>
+<pre class="output"><code>[1] &quot;1 a&quot; &quot;1 b&quot; &quot;1 c&quot; &quot;1 d&quot; &quot;1 e&quot; &quot;2 a&quot; &quot;2 b&quot; &quot;2 c&quot; &quot;2 d&quot; &quot;2 e&quot; &quot;3 a&quot;
+[12] &quot;3 b&quot; &quot;3 c&quot; &quot;3 d&quot; &quot;3 e&quot; &quot;4 a&quot; &quot;4 b&quot; &quot;4 c&quot; &quot;4 d&quot; &quot;4 e&quot; &quot;5 a&quot; &quot;5 b&quot;
+[23] &quot;5 c&quot; &quot;5 d&quot; &quot;5 e&quot;
+</code></pre>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 3</h2>
+</div>
+<div class="panel-body">
+<p>Write a script that loops through the <code>healthData</code> data by illness level and prints out whether the mean health measure is smaller or larger than 8 units.</p>
+<pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">sort</span>(<span class="kw">unique</span>(healthData$illnessReversed[!<span class="kw">is.na</span>(healthData$illnessReversed)]))){
+  if ((<span class="kw">mean</span>(healthData$health[healthData$illnessReversed ==<span class="st"> </span>illness], <span class="dt">na.rm=</span>T) &gt;<span class="st"> </span><span class="dv">8</span>)){
+  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness is greater than 8 units&quot;</span>))
+  } else {
+  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness is less than 8 units&quot;</span>))
+  }
+}</code></pre>
+<pre class="output"><code>[1] &quot;The mean health measure for people with 1 illness is less than 8 units&quot;
+[1] &quot;The mean health measure for people with 2 illness is less than 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness is less than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness is greater than 8 units&quot;
+</code></pre>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Solution to challenge 4</h2>
+</div>
+<div class="panel-body">
+<p>Modify the script from Challenge 4 to also loop over each study. This time print out whether the health measure is smaller than 5, between 5 and 8, or greater than 8.</p>
+<pre class="sourceCode r"><code class="sourceCode r">for (illness in <span class="kw">sort</span>(<span class="kw">unique</span>(healthData$illnessReversed[!<span class="kw">is.na</span>(healthData$illnessReversed)]))){
+  for (group in <span class="kw">unique</span>(healthData$HIGroup)){
+    if ((ans &lt;-<span class="st"> </span><span class="kw">mean</span>(healthData$health[healthData$illnessReversed ==<span class="st"> </span>illness &amp;<span class="st"> </span>healthData$HIGroup ==<span class="st"> </span>group], <span class="dt">na.rm=</span>T)) &gt;<span class="st"> </span><span class="dv">8</span>){
+      <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in group&quot;</span>, group, <span class="st">&quot;is greater than 8 units&quot;</span>))
+    } else if (ans &lt;<span class="st"> </span><span class="dv">5</span>){
+      <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in group&quot;</span>, group, <span class="st">&quot;is less than 5 units&quot;</span>))
+    } else {
+      <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;The mean health measure for people with&quot;</span>, illness, <span class="st">&quot;illness in group&quot;</span>, group, <span class="st">&quot;is between 5 and 8 units&quot;</span>))
+    }
+  }
+}</code></pre>
+<pre class="output"><code>[1] &quot;The mean health measure for people with 1 illness in group Group 1 is less than 5 units&quot;
+[1] &quot;The mean health measure for people with 1 illness in group Group 2 is less than 5 units&quot;
+[1] &quot;The mean health measure for people with 2 illness in group Group 1 is between 5 and 8 units&quot;
+[1] &quot;The mean health measure for people with 2 illness in group Group 2 is between 5 and 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness in group Group 1 is between 5 and 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness in group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness in group Group 1 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 4 illness in group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness in group Group 1 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 5 illness in group Group 2 is greater than 8 units&quot;
+</code></pre>
 </div>
 </section>
         </div>
