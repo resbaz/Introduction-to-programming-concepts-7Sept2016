@@ -10,7 +10,7 @@ source("tools/chunk-options.R")
 opts_chunk$set(fig.path = "fig/11-writing-data-")
 # Silently load in the data so the rest of the lesson works
 library(ggplot2)
-gapminder <- read.csv("data/gapminder-FiveYearData.csv", header=TRUE)
+healthData <- read.csv("https://goo.gl/oqQGKF", header=TRUE)
 # Temporarily create a cleaned-data directory so that the writing examples work
 # The students should have created this in topic 2.
 dir.create("cleaned-data")
@@ -46,9 +46,9 @@ In this case you can use a more flexible approach. The function
 using the arguments to this function.
 
 ```{r, eval=FALSE}
-pdf("Life_Exp_vs_time.pdf", width=12, height=4)
-ggplot(data=gapminder, aes(x=year, y=lifeExp, colour=country)) +
-  geom_line()
+pdf("Health_vs_SelfRatedHealth.pdf", width=12, height=4)
+ggplot(data=healthData, aes(x=selfRatedHealth, y=health, colour=HIGroup)) +
+  geom_point()
 
 # You then have to make sure to turn off the pdf device!
 
@@ -61,7 +61,7 @@ Open up this document and have a look.
 >
 > Rewrite your 'pdf' command to print a second
 > page in the pdf, showing a facet plot (hint: use `facet_grid`)
-> of the same data with one panel per continent.
+> of the same data with one panel per education year.
 >
 
 
@@ -75,24 +75,20 @@ At some point, you'll also want to write out data from R.
 We can use the `write.table` function for this, which is
 very similar to `read.table` from before.
 
-Let's create a data-cleaning script, for this analysis, we
-only want to focus on the gapminder data for Australia:
+Let's create a data-cleaning script. For this analysis, we
+only want to focus on the health data for males from sample group 1:
 
 ```{r}
-aust_subset <- gapminder[gapminder$country == "Australia",]
+healthData_subset <- healthData[healthData$sex == "Male" & 
+                                  healthData$HIGroup == "Group 1",]
 
-write.table(aust_subset,
-  file="cleaned-data/gapminder-aus.csv",
+write.table(healthData_subset,
+  file="cleaned-data/healthData_subset.csv",
   sep=","
 )
 ```
 
-Let's switch back to the shell to take a look at the data to make sure it looks
-OK:
-
-```{r, engine='bash'}
-head cleaned-data/gapminder-aus.csv
-```
+Now let's have a look at the data. Provided data files aren't very large, this can be achieved easily in R by simply opening the file from the file explorer.
 
 Hmm, that's not quite what we wanted. Where did all these
 quotation marks come from? Also the row numbers are
@@ -113,24 +109,21 @@ Let's fix this:
 
 ```{r}
 write.table(
-  gapminder[gapminder$country == "Australia",],
-  file="cleaned-data/gapminder-aus.csv",
+  healthData_subset,
+  file="cleaned-data/healthData_subset.csv",
   sep=",", quote=FALSE, row.names=FALSE
 )
 ```
 
-Now lets look at the data again using our shell skills:
-
-```{r, engine='bash'}
-head cleaned-data/gapminder-aus.csv
-```
+Now lets look at the data again.
 
 That looks better!
 
 > ## Challenge 2 {.challenge}
 >
-> Write a data-cleaning script file that subsets the gapminder
-> data to include only data points collected since 1990.
+> Write a data-cleaning script file that subsets the health
+> data to include only data points collected collected for students in year
+> 8.
 >
 > Use this script to write out the new subset to a file
 > in the `cleaned-data/` directory.

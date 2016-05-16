@@ -39,9 +39,9 @@ using the arguments to this function.
 
 
 ~~~{.r}
-pdf("Life_Exp_vs_time.pdf", width=12, height=4)
-ggplot(data=gapminder, aes(x=year, y=lifeExp, colour=country)) +
-  geom_line()
+pdf("Health_vs_SelfRatedHealth.pdf", width=12, height=4)
+ggplot(data=healthData, aes(x=selfRatedHealth, y=health, colour=HIGroup)) +
+  geom_point()
 
 # You then have to make sure to turn off the pdf device!
 
@@ -54,7 +54,7 @@ Open up this document and have a look.
 >
 > Rewrite your 'pdf' command to print a second
 > page in the pdf, showing a facet plot (hint: use `facet_grid`)
-> of the same data with one panel per continent.
+> of the same data with one panel per education year.
 >
 
 
@@ -68,43 +68,21 @@ At some point, you'll also want to write out data from R.
 We can use the `write.table` function for this, which is
 very similar to `read.table` from before.
 
-Let's create a data-cleaning script, for this analysis, we
-only want to focus on the gapminder data for Australia:
+Let's create a data-cleaning script. For this analysis, we
+only want to focus on the health data for males from sample group 1:
 
 
 ~~~{.r}
-aust_subset <- gapminder[gapminder$country == "Australia",]
+healthData_subset <- healthData[healthData$sex == "Male" & 
+                                  healthData$HIGroup == "Group 1",]
 
-write.table(aust_subset,
-  file="cleaned-data/gapminder-aus.csv",
+write.table(healthData_subset,
+  file="cleaned-data/healthData_subset.csv",
   sep=","
 )
 ~~~
 
-Let's switch back to the shell to take a look at the data to make sure it looks
-OK:
-
-
-~~~{.r}
-head cleaned-data/gapminder-aus.csv
-~~~
-
-
-
-
-~~~{.output}
-"country","year","pop","continent","lifeExp","gdpPercap"
-"61","Australia",1952,8691212,"Oceania",69.12,10039.59564
-"62","Australia",1957,9712569,"Oceania",70.33,10949.64959
-"63","Australia",1962,10794968,"Oceania",70.93,12217.22686
-"64","Australia",1967,11872264,"Oceania",71.1,14526.12465
-"65","Australia",1972,13177000,"Oceania",71.93,16788.62948
-"66","Australia",1977,14074100,"Oceania",73.49,18334.19751
-"67","Australia",1982,15184200,"Oceania",74.74,19477.00928
-"68","Australia",1987,16257249,"Oceania",76.32,21888.88903
-"69","Australia",1992,17481977,"Oceania",77.56,23424.76683
-
-~~~
+Now let's have a look at the data. Provided data files aren't very large, this can be achieved easily in R by simply opening the file from the file explorer.
 
 Hmm, that's not quite what we wanted. Where did all these
 quotation marks come from? Also the row numbers are
@@ -127,42 +105,21 @@ Let's fix this:
 
 ~~~{.r}
 write.table(
-  gapminder[gapminder$country == "Australia",],
-  file="cleaned-data/gapminder-aus.csv",
+  healthData_subset,
+  file="cleaned-data/healthData_subset.csv",
   sep=",", quote=FALSE, row.names=FALSE
 )
 ~~~
 
-Now lets look at the data again using our shell skills:
-
-
-~~~{.r}
-head cleaned-data/gapminder-aus.csv
-~~~
-
-
-
-
-~~~{.output}
-country,year,pop,continent,lifeExp,gdpPercap
-Australia,1952,8691212,Oceania,69.12,10039.59564
-Australia,1957,9712569,Oceania,70.33,10949.64959
-Australia,1962,10794968,Oceania,70.93,12217.22686
-Australia,1967,11872264,Oceania,71.1,14526.12465
-Australia,1972,13177000,Oceania,71.93,16788.62948
-Australia,1977,14074100,Oceania,73.49,18334.19751
-Australia,1982,15184200,Oceania,74.74,19477.00928
-Australia,1987,16257249,Oceania,76.32,21888.88903
-Australia,1992,17481977,Oceania,77.56,23424.76683
-
-~~~
+Now lets look at the data again.
 
 That looks better!
 
 > ## Challenge 2 {.challenge}
 >
-> Write a data-cleaning script file that subsets the gapminder
-> data to include only data points collected since 1990.
+> Write a data-cleaning script file that subsets the health
+> data to include only data points collected collected for students in year
+> 8.
 >
 > Use this script to write out the new subset to a file
 > in the `cleaned-data/` directory.
