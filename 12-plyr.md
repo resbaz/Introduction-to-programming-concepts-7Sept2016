@@ -13,71 +13,62 @@ minutes: 45
 >
 
 Previously we looked at how you can use functions to simplify your code.
-We defined the `calcGDP` function, which takes the gapminder dataset,
-and multiplies the population and GDP per capita column. We also defined
-additional arguments so we could filter by `year` and `country`:
+We defined the `calcBirthYearAverage` function, which takes the healthData dataset,
+and calculates the average birth year in the data. We also defined an
+additional argument so we could filter by HIGroup:
 
 
 ~~~{.r}
-# Takes a dataset and multiplies the population column
-# with the GDP per capita column.
-calcGDP <- function(dat, year=NULL, country=NULL) {
-  if(!is.null(year)) {
-    dat <- dat[dat$year %in% year, ]
-  }
-  if (!is.null(country)) {
-    dat <- dat[dat$country %in% country,]
-  }
-  gdp <- dat$pop * dat$gdpPercap
-
-  new <- cbind(dat, gdp=gdp)
-  return(new)
+# Takes a dataset and calculates the average year of birth for a
+# specified study group.
+calcBirthYearAverage <- function(dat, group = 1) {
+  birthYearAverage <- mean(dat[dat$HIGroup == group, ]$birthYear)
+  return(birthYearAverage)
 }
 ~~~
 
-A common task you'll encounter when working with data, is that you'll want to
-run calculations on different groups within the data. In the above, we were
-simply calculating the GDP by multiplying two columns together. But what if
-we wanted to calculated the mean GDP per continent?
+A common task you'll encounter when working with data is that you'll want to
+run calculations on different groups within the data. In the above, we are
+simply calculating the mean birth year in the data. But what if
+we wanted to calculated the mean birth year per sex, or per year of school?
 
-We could run `calcGPD` and then take the mean of each continent:
+We could, for example, run `calcBirthYearAverage` and on each subsetted dataset:
 
 
 ~~~{.r}
-withGDP <- calcGDP(gapminder)
-mean(withGDP[withGDP$continent == "Africa", "gdp"])
+calcBirthYearAverage(healthData[healthData$education == 1,],1)
 ~~~
 
 
 
 ~~~{.output}
-[1] 20904782844
-
-~~~
-
-
-
-~~~{.r}
-mean(withGDP[withGDP$continent == "Americas", "gdp"])
-~~~
-
-
-
-~~~{.output}
-[1] 379262350210
+[1] NA
 
 ~~~
 
 
 
 ~~~{.r}
-mean(withGDP[withGDP$continent == "Asia", "gdp"])
+calcBirthYearAverage(healthData[healthData$education == 2,],1)
 ~~~
 
 
 
 ~~~{.output}
-[1] 227233738153
+[1] NA
+
+~~~
+
+
+
+~~~{.r}
+calcBirthYearAverage(healthData[healthData$education == 3,],1)
+~~~
+
+
+
+~~~{.output}
+[1] NA
 
 ~~~
 
@@ -86,14 +77,14 @@ substantial amount of repetition. That **is** nice. But there is still
 repetition. Repeating yourself will cost you time, both now and later, and
 potentially introduce some nasty bugs.
 
-We could write a new function that is flexible like `calcGDP`, but this
+We could write a new function that potentially more flexible than `calcBirthYearAverage`, but this
 also takes a substantial amount of effort and testing to get right.
 
-The abstract problem we're encountering here is know as "split-apply-combine":
+The abstract problem we're encountering here is known as "split-apply-combine":
 
 ![Split apply combine](fig/splitapply.png)
 
-We want to *split* our data into groups, in this case continents, *apply*
+We want to *split* our data into groups, in this case education levels, *apply*
 some calculations on that group, then optionally *combine* the results
 together afterwards.
 
@@ -105,7 +96,7 @@ going to introduce you to another method for solving the "split-apply-combine"
 problem. The [plyr](http://had.co.nz/plyr/) package provides a set of
 functions that we find more user friendly for solving this problem.
 
-We installed this package in an earlier challenge. Let's load it now:
+Let's load plyr now:
 
 
 ~~~{.r}
@@ -149,26 +140,31 @@ xxply(.data, .variables, .fun)
 * .variables - identifies the splitting variables
 * .fun - gives the function to be called on each piece
 
-Now we can quickly calculate the mean GDP per continent:
+Now we can quickly calculate the mean birth year per education level:
 
 
 ~~~{.r}
 ddply(
- .data = calcGDP(gapminder),
- .variables = "continent",
- .fun = function(x) mean(x$gdp)
+ .data = healthData,
+ .variables = "education",
+ .fun = function(x) mean(x$birthYear)
 )
 ~~~
 
 
 
 ~~~{.output}
-  continent           V1
-1    Africa  20904782844
-2  Americas 379262350210
-3      Asia 227233738153
-4    Europe 269442085301
-5   Oceania 188187105354
+   education       V1
+1          1 1955.200
+2          2 1946.600
+3          3 1948.510
+4          4 1946.634
+5          5 1936.333
+6          6 1922.328
+7          7 1944.333
+8          8 1927.964
+9          9 1923.568
+10        NA 1955.647
 
 ~~~
 
@@ -177,9 +173,8 @@ Let's walk through what just happened:
 - The `ddply` function feeds in a `data.frame` (function starts with **d**) and
 returns another `data.frame` (2nd letter is a **d**) i
 - the first argument we gave was the data.frame we wanted to operate on: in this
-  case the gapminder data. We called `calcGDP` on it first so that it would have
-  the additional `gdp` column added to it.
-- The second argument indicated our split criteria: in this case the "continent"
+  case the healthData dataset.
+- The second argument indicated our split criteria: in this case the "education"
   column. Note that we just gave the name of the column, not the actual column
   itself like we've done previously with subsetting. Plyr takes care of these
   implementation details for you.
@@ -194,39 +189,59 @@ What if we want a different type of output data structure?:
 
 ~~~{.r}
 dlply(
- .data = calcGDP(gapminder),
- .variables = "continent",
- .fun = function(x) mean(x$gdp)
+ .data = healthData,
+ .variables = "education",
+ .fun = function(x) mean(x$birthYear)
 )
 ~~~
 
 
 
 ~~~{.output}
-$Africa
-[1] 20904782844
+$`1`
+[1] 1955.2
 
-$Americas
-[1] 379262350210
+$`2`
+[1] 1946.6
 
-$Asia
-[1] 227233738153
+$`3`
+[1] 1948.51
 
-$Europe
-[1] 269442085301
+$`4`
+[1] 1946.634
 
-$Oceania
-[1] 188187105354
+$`5`
+[1] 1936.333
+
+$`6`
+[1] 1922.328
+
+$`7`
+[1] 1944.333
+
+$`8`
+[1] 1927.964
+
+$`9`
+[1] 1923.568
+
+$`NA`
+[1] 1955.647
 
 attr(,"split_type")
 [1] "data.frame"
 attr(,"split_labels")
-  continent
-1    Africa
-2  Americas
-3      Asia
-4    Europe
-5   Oceania
+   education
+1          1
+2          2
+3          3
+4          4
+5          5
+6          6
+7          7
+8          8
+9          9
+10        NA
 
 ~~~
 
@@ -238,112 +253,63 @@ We can specify multiple columns to group by:
 
 ~~~{.r}
 ddply(
- .data = calcGDP(gapminder),
- .variables = c("continent", "year"),
- .fun = function(x) mean(x$gdp)
+ .data = healthData,
+ .variables = c("education","sex"),
+ .fun = function(x) mean(x$birthYear)
 )
 ~~~
 
 
 
 ~~~{.output}
-   continent year           V1
-1     Africa 1952   5992294608
-2     Africa 1957   7359188796
-3     Africa 1962   8784876958
-4     Africa 1967  11443994101
-5     Africa 1972  15072241974
-6     Africa 1977  18694898732
-7     Africa 1982  22040401045
-8     Africa 1987  24107264108
-9     Africa 1992  26256977719
-10    Africa 1997  30023173824
-11    Africa 2002  35303511424
-12    Africa 2007  45778570846
-13  Americas 1952 117738997171
-14  Americas 1957 140817061264
-15  Americas 1962 169153069442
-16  Americas 1967 217867530844
-17  Americas 1972 268159178814
-18  Americas 1977 324085389022
-19  Americas 1982 363314008350
-20  Americas 1987 439447790357
-21  Americas 1992 489899820623
-22  Americas 1997 582693307146
-23  Americas 2002 661248623419
-24  Americas 2007 776723426068
-25      Asia 1952  34095762661
-26      Asia 1957  47267432088
-27      Asia 1962  60136869012
-28      Asia 1967  84648519224
-29      Asia 1972 124385747313
-30      Asia 1977 159802590186
-31      Asia 1982 194429049919
-32      Asia 1987 241784763369
-33      Asia 1992 307100497486
-34      Asia 1997 387597655323
-35      Asia 2002 458042336179
-36      Asia 2007 627513635079
-37    Europe 1952  84971341466
-38    Europe 1957 109989505140
-39    Europe 1962 138984693095
-40    Europe 1967 173366641137
-41    Europe 1972 218691462733
-42    Europe 1977 255367522034
-43    Europe 1982 279484077072
-44    Europe 1987 316507473546
-45    Europe 1992 342703247405
-46    Europe 1997 383606933833
-47    Europe 2002 436448815097
-48    Europe 2007 493183311052
-49   Oceania 1952  54157223944
-50   Oceania 1957  66826828013
-51   Oceania 1962  82336453245
-52   Oceania 1967 105958863585
-53   Oceania 1972 134112109227
-54   Oceania 1977 154707711162
-55   Oceania 1982 176177151380
-56   Oceania 1987 209451563998
-57   Oceania 1992 236319179826
-58   Oceania 1997 289304255183
-59   Oceania 2002 345236880176
-60   Oceania 2007 403657044512
+   education    sex       V1
+1          1 Female 1955.500
+2          1   Male 1955.000
+3          2 Female 1933.000
+4          2   Male 1955.667
+5          3 Female 1946.059
+6          3   Male 1949.812
+7          4 Female 1948.621
+8          4   Male 1945.099
+9          5 Female 1927.278
+10         5   Male 1942.725
+11         6 Female 1921.538
+12         6   Male 1923.106
+13         7 Female 1945.255
+14         7   Male 1943.491
+15         8 Female 1928.059
+16         8   Male 1927.860
+17         9 Female 1928.753
+18         9   Male 1920.663
+19        NA Female 1955.833
+20        NA   Male 1955.438
 
 ~~~
 
 
 ~~~{.r}
 daply(
- .data = calcGDP(gapminder),
- .variables = c("continent", "year"),
- .fun = function(x) mean(x$gdp)
+ .data = healthData,
+ .variables = c("education","sex"),
+ .fun = function(x) mean(x$birthYear)
 )
 ~~~
 
 
 
 ~~~{.output}
-          year
-continent          1952         1957         1962         1967
-  Africa     5992294608   7359188796   8784876958  11443994101
-  Americas 117738997171 140817061264 169153069442 217867530844
-  Asia      34095762661  47267432088  60136869012  84648519224
-  Europe    84971341466 109989505140 138984693095 173366641137
-  Oceania   54157223944  66826828013  82336453245 105958863585
-          year
-continent          1972         1977         1982         1987
-  Africa    15072241974  18694898732  22040401045  24107264108
-  Americas 268159178814 324085389022 363314008350 439447790357
-  Asia     124385747313 159802590186 194429049919 241784763369
-  Europe   218691462733 255367522034 279484077072 316507473546
-  Oceania  134112109227 154707711162 176177151380 209451563998
-          year
-continent          1992         1997         2002         2007
-  Africa    26256977719  30023173824  35303511424  45778570846
-  Americas 489899820623 582693307146 661248623419 776723426068
-  Asia     307100497486 387597655323 458042336179 627513635079
-  Europe   342703247405 383606933833 436448815097 493183311052
-  Oceania  236319179826 289304255183 345236880176 403657044512
+         sex
+education   Female     Male
+     1    1955.500 1955.000
+     2    1933.000 1955.667
+     3    1946.059 1949.812
+     4    1948.621 1945.099
+     5    1927.278 1942.725
+     6    1921.538 1923.106
+     7    1945.255 1943.491
+     8    1928.059 1927.860
+     9    1928.753 1920.663
+     <NA> 1955.833 1955.438
 
 ~~~
 
@@ -353,13 +319,13 @@ do so): just write the body of the for loop in the anonymous function:
 
 ~~~{.r}
 d_ply(
-  .data=gapminder,
-  .variables = "continent",
+  .data=healthData,
+  .variables = "education",
   .fun = function(x) {
-    meanGDPperCap <- mean(x$gdpPercap)
+    meanBirthYear <- mean(x$birthYear)
     print(paste(
-      "The mean GDP per capita for", unique(x$continent),
-      "is", format(meanGDPperCap, big.mark=",")
+      "The mean year of birth for education level", unique(x$education),
+      "is", format(meanBirthYear, big.mark=",")
    ))
   }
 )
@@ -368,11 +334,16 @@ d_ply(
 
 
 ~~~{.output}
-[1] "The mean GDP per capita for Africa is 2,193.755"
-[1] "The mean GDP per capita for Americas is 7,136.11"
-[1] "The mean GDP per capita for Asia is 7,902.15"
-[1] "The mean GDP per capita for Europe is 14,469.48"
-[1] "The mean GDP per capita for Oceania is 18,621.61"
+[1] "The mean year of birth for education level 1 is 1,955.2"
+[1] "The mean year of birth for education level 2 is 1,946.6"
+[1] "The mean year of birth for education level 3 is 1,948.51"
+[1] "The mean year of birth for education level 4 is 1,946.634"
+[1] "The mean year of birth for education level 5 is 1,936.333"
+[1] "The mean year of birth for education level 6 is 1,922.328"
+[1] "The mean year of birth for education level 7 is 1,944.333"
+[1] "The mean year of birth for education level 8 is 1,927.964"
+[1] "The mean year of birth for education level 9 is 1,923.568"
+[1] "The mean year of birth for education level NA is 1,955.647"
 
 ~~~
 
@@ -385,37 +356,35 @@ d_ply(
 
 > ## Challenge 1 {.challenge}
 >
-> Calculate the average life expectancy per continent. Which has the longest?
-> Which had the shortest?
+> Calculate the average intellect per education level. Which has the highest?
+> Which had the lowest?
 >
 
 > ## Challenge 2 {.challenge}
 >
-> Calculate the average life expectancy per continent and year. Which had the
-> longest and shortest in 2007? Which had the greatest change in between 1952
-> and 2007?
+> Calculate the average intellect per mental adjustment value and sex. Which had the
+> highest and lowest in HIGroup 2? Which had the greatest change across between groups?
 >
 
 > ## Advanced Challenge {.challenge}
 >
-> Calculate the difference in mean life expectancy between
-> the years 1952 and 2007 from the output of challenge 2
+> Calculate the difference in intellect between
+> education level 5 and 9 from the output of challenge 2
 > using one of the `plyr` functions.
 >
 
 > ## Alternate Challenge if class seems lost {.challenge}
 >
-> Without running them, which of the following will calculate the average
-> life expectancy per continent:
+> Without running them, which of the following will calculate the average conscientiousness > per education year:
 >
 > 1.
 > 
 > ~~~{.r}
 > ddply(
->   .data = gapminder,
->   .variables = gapminder$continent,
+>   .data = healthData,
+>   .variables = healthData$education,
 >   .fun = function(dataGroup) {
->      mean(dataGroup$lifeExp)
+>      mean(dataGroup$conscientiousness)
 >   }
 > )
 > ~~~
@@ -424,9 +393,9 @@ d_ply(
 > 
 > ~~~{.r}
 > ddply(
->   .data = gapminder,
->   .variables = "continent",
->   .fun = mean(dataGroup$lifeExp)
+>   .data = healthData,
+>   .variables = "education",
+>   .fun = mean(dataGroup$conscientiousness)
 > )
 > ~~~
 >
@@ -434,10 +403,10 @@ d_ply(
 > 
 > ~~~{.r}
 > ddply(
->   .data = gapminder,
->   .variables = "continent",
+>   .data = healthData,
+>   .variables = "education",
 >   .fun = function(dataGroup) {
->      mean(dataGroup$lifeExp)
+>      mean(dataGroup$concientiousness)
 >   }
 > )
 > ~~~
@@ -446,10 +415,10 @@ d_ply(
 > 
 > ~~~{.r}
 > adply(
->   .data = gapminder,
->   .variables = "continent",
+>   .data = healthData,
+>   .variables = "education",
 >   .fun = function(dataGroup) {
->      mean(dataGroup$lifeExp)
+>      mean(dataGroup$conscientiousness)
 >   }
 > )
 > ~~~
