@@ -16,39 +16,26 @@ Manipulation of dataframes means many things to many researchers, we often selec
 
 
 ~~~{.r}
-mean(gapminder[gapminder$continent == "Africa", "gdpPercap"])
+mean(healthData[healthData$HIGroup == "Group 1", "health"])
 ~~~
 
 
 
 ~~~{.output}
-[1] 2193.755
+[1] 9.199115
 
 ~~~
 
 
 
 ~~~{.r}
-mean(gapminder[gapminder$continent == "Americas", "gdpPercap"])
+mean(healthData[healthData$HIGroup == "Group 2", "health"])
 ~~~
 
 
 
 ~~~{.output}
-[1] 7136.11
-
-~~~
-
-
-
-~~~{.r}
-mean(gapminder[gapminder$continent == "Asia", "gdpPercap"])
-~~~
-
-
-
-~~~{.output}
-[1] 7902.15
+[1] 9.660906
 
 ~~~
 
@@ -86,140 +73,162 @@ If, for example, we wanted to move forward with only a few of the variables in o
 
 
 ~~~{.r}
-year_country_gdp <- select(gapminder,year,country,gdpPercap)
+sex_health_neuroticism <- select(healthData,sex,health,neuroticism)
 ~~~
 
 ![](fig/13-dplyr-fig1.png)
 
-If we open up `year_country_gdp` we'll see that it only contains the year, country and gdpPercap. Above we used 'normal' grammar, but the strengths of `dplyr` lie in combining several functions using pipes. Since the pipes grammar is unlike anything we've seen in R before, let's repeat what we've done above using pipes.
+If we open up `sex_health_neuroticism` we'll see that it only contains the sex, health and neuroticism columns. Above we used 'normal' grammar, but the strengths of `dplyr` lie in combining several functions using pipes. Since the pipes grammar is unlike anything we've seen in R before, let's repeat what we've done above using pipes.
 
 
 ~~~{.r}
-year_country_gdp <- gapminder %>% select(year,country,gdpPercap)
+sex_health_neuroticism <- healthData %>% select(sex,health,neuroticism)
 ~~~
 
-To help you understand why we wrote that in that way, let's walk through it step by step. First we summon the gapminder dataframe and pass it on, using the pipe symbol `%>%`, to the next step, which is the `select()` function. In this case we don't specify which data object we use in the `select()` function since in gets that from the previous pipe. **Fun Fact**: There is a good chance you have encountered pipes before in the shell. In R, a pipe symbol is `%>%` while in the shell it is `|` but the concept is the same!
+To help you understand why we wrote that in that way, let's walk through it step by step. First we summon the healthData dataframe and pass it on, using the pipe symbol `%>%`, to the next step, which is the `select()` function. In this case we don't specify which data object we use in the `select()` function since in gets that from the previous pipe.
 
 ## Using filter()
 
-If we now wanted to move forward with the above, but only with European countries, we can combine `select` and `filter`
+If we now wanted to move forward with the above, but only with data for females, we can combine `select` and `filter`
 
 
 ~~~{.r}
-year_country_gdp_euro <- gapminder %>%
-    filter(continent=="Europe") %>%
-    select(year,country,gdpPercap)
+sex_health_neuroticism_female <- health %>%
+    filter(sex=="Female") %>%
+    select(sex,health,neuroticism)
+~~~
+
+
+
+~~~{.error}
+Error in eval(expr, envir, enclos): object 'health' not found
+
 ~~~
 
 > ## Challenge 1 {.challenge}
 >
-> Write a single command (which can span multiple lines and includes pipes) that will produce a dataframe that has the African values for `lifeExp`, `country` and `year`, but not for other Continents. 
+> Write a single command (which can span multiple lines and includes pipes) that will produce a dataframe that has the values for `conscientiousness`, `extraversion` and `intellect` for males. 
 >How many rows does your dataframe have and why?
 >
 
 
-As with last time, first we pass the gapminder dataframe to the `filter()` function, then we pass the filtered version of the gapminder dataframe to the `select()` function. **Note:** The order of operations is very important in this case. If we used 'select' first, filter would not be able to find the variable continent since we would have removed it in the previous step.
+As with last time, first we pass the healthData dataframe to the `filter()` function, then we pass the filtered version of the healthData dataframe to the `select()` function. **Note:** The order of operations is very important in this case. If we used 'select' first, filter would not be able to find the variable sex since we would have removed it in the previous step.
 
 ## Using group_by() and summarize()
 
-Now, we were supposed to be reducing the error prone repetitiveness of what can be done with base R, but up to now we haven't done that since we would have to repeat the above for each continent. Instead of `filter()`, which will only pass observations that meet your criteria (in the above: `continent=="Europe"`), we can use `group_by()`, which will essentially use every unique criteria that you could have used in filter.
+Now, we were supposed to be reducing the error prone repetitiveness of what can be done with base R, but up to now we haven't done that since we would have to repeat the above for each sex. Instead of `filter()`, which will only pass observations that meet your criteria (in the above: `sex=="Female"`), we can use `group_by()`, which will essentially use every unique criteria that you could have used in filter.
 
 
 ~~~{.r}
-str(gapminder)
+str(healthData)
 ~~~
 
 
 
 ~~~{.output}
-'data.frame':	1704 obs. of  6 variables:
- $ country  : Factor w/ 142 levels "Afghanistan",..: 1 1 1 1 1 1 1 1 1 1 ...
- $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
- $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
- $ continent: Factor w/ 5 levels "Africa","Americas",..: 3 3 3 3 3 3 3 3 3 3 ...
- $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
- $ gdpPercap: num  779 821 853 836 740 ...
+'data.frame':	2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : Factor w/ 95 levels ".","1.000","1.408",..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : Factor w/ 56 levels ".","1.000","1.051",..: 34 56 17 34 26 34 42 23 39 23 ...
+ $ neuroticism               : Factor w/ 43 levels ".","1.000","1.442",..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ sex                       : Factor w/ 2 levels "Female","Male": 2 2 2 2 2 2 2 2 2 2 ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : Factor w/ 2 levels "Group 1","Group 2": 1 1 1 1 1 1 1 1 1 1 ...
 
 ~~~
 
 
 
 ~~~{.r}
-str(gapminder %>% group_by(continent))
+str(healthData %>% group_by(sex))
 ~~~
 
 
 
 ~~~{.output}
-Classes 'grouped_df', 'tbl_df', 'tbl' and 'data.frame':	1704 obs. of  6 variables:
- $ country  : Factor w/ 142 levels "Afghanistan",..: 1 1 1 1 1 1 1 1 1 1 ...
- $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
- $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
- $ continent: Factor w/ 5 levels "Africa","Americas",..: 3 3 3 3 3 3 3 3 3 3 ...
- $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
- $ gdpPercap: num  779 821 853 836 740 ...
+Classes 'grouped_df', 'tbl_df', 'tbl' and 'data.frame':	2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : Factor w/ 95 levels ".","1.000","1.408",..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : Factor w/ 56 levels ".","1.000","1.051",..: 34 56 17 34 26 34 42 23 39 23 ...
+ $ neuroticism               : Factor w/ 43 levels ".","1.000","1.442",..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ sex                       : Factor w/ 2 levels "Female","Male": 2 2 2 2 2 2 2 2 2 2 ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : Factor w/ 2 levels "Group 1","Group 2": 1 1 1 1 1 1 1 1 1 1 ...
  - attr(*, "vars")=List of 1
-  ..$ : symbol continent
+  ..$ : symbol sex
  - attr(*, "drop")= logi TRUE
- - attr(*, "indices")=List of 5
-  ..$ : int  24 25 26 27 28 29 30 31 32 33 ...
-  ..$ : int  48 49 50 51 52 53 54 55 56 57 ...
+ - attr(*, "indices")=List of 2
+  ..$ : int  1231 1232 1233 1234 1235 1236 1237 1238 1239 1240 ...
   ..$ : int  0 1 2 3 4 5 6 7 8 9 ...
-  ..$ : int  12 13 14 15 16 17 18 19 20 21 ...
-  ..$ : int  60 61 62 63 64 65 66 67 68 69 ...
- - attr(*, "group_sizes")= int  624 300 396 360 24
- - attr(*, "biggest_group_size")= int 624
- - attr(*, "labels")='data.frame':	5 obs. of  1 variable:
-  ..$ continent: Factor w/ 5 levels "Africa","Americas",..: 1 2 3 4 5
+ - attr(*, "group_sizes")= int  1024 1231
+ - attr(*, "biggest_group_size")= int 1231
+ - attr(*, "labels")='data.frame':	2 obs. of  1 variable:
+  ..$ sex: Factor w/ 2 levels "Female","Male": 1 2
   ..- attr(*, "vars")=List of 1
-  .. ..$ : symbol continent
+  .. ..$ : symbol sex
   ..- attr(*, "drop")= logi TRUE
 
 ~~~
-You will notice that the structure of the dataframe where we used `group_by()` (`grouped_df`) is not the same as the original `gapminder` (`data.frame`). A `grouped_df` can be thought of as a `list` where each item in the `list`is a `data.frame` which contains only the rows that correspond to the a particular value `continent` (at least in the example above).
+You will notice that the structure of the dataframe where we used `group_by()` (`grouped_df`) is not the same as the original `healthData` (`data.frame`). A `grouped_df` can be thought of as a `list` where each item in the `list`is a `data.frame` which contains only the rows that correspond to the a particular value `sex` (at least in the example above).
 
 ![](fig/13-dplyr-fig2.png)
 
 ## Using summarize()
 
-The above was a bit on the uneventful side because `group_by()` much more exciting in conjunction with `summarize()`. This will allow use to create new variable(s) by using functions that repeat for each of the continent-specific data frames. That is to say, using the `group_by()` function, we split our original dataframe into multiple pieces, then we can run functions (e.g. `mean()` or `sd()`) within `summarize()`.
+The above was a bit on the uneventful side because `group_by()` is much more exciting in conjunction with `summarize()`. This will allow you to create new variable(s) by using functions that repeat for each of the sex-specific data frames. That is to say, using the `group_by()` function, we split our original dataframe into multiple pieces, then we can run functions (e.g. `mean()` or `sd()`) within `summarize()`.
 
 
 ~~~{.r}
-gdp_bycontinents <- gapminder %>%
-    group_by(continent) %>%
-    summarize(mean_gdpPercap=mean(gdpPercap))
+conscientiousness_by_sex <- healthData %>%
+    group_by(sex) %>%
+    summarize(mean_conscientiousness=mean(conscientiousness))
 ~~~
 
 ![](fig/13-dplyr-fig3.png)
 
-That allowed us to calculate the mean gdpPercap for each continent, but it gets even better.
+That allowed us to calculate the mean conscientiousness for each sex, but it gets even better.
 
 > ## Challenge 2 {.challenge}
 >
-> Calculate the average life expectancy per country. Which had the longest life expectancy and which had the shortest life expectancy?
+> Calculate the average mentalAdjustment per education. Which had the highest mentalAdjustment and which had the lowest?
 >
 
-The function `group_by()` allows us to group by multiple variables. Let's group by `year` and `continent`.
+The function `group_by()` allows us to group by multiple variables. Let's group by `sex` and `education`.
 
 
 
 ~~~{.r}
-gdp_bycontinents_byyear <- gapminder %>%
-    group_by(continent,year) %>%
-    summarize(mean_gdpPercap=mean(gdpPercap))
+intellect_bysex_byeducation <- healthData %>%
+    group_by(sex,education) %>%
+    summarize(max_intellect=max(intellect))
 ~~~
 
 That is already quite powerful, but it gets even better! You're not limited to defining 1 new variable in `summarize()`.
 
 
 ~~~{.r}
-gdp_pop_bycontinents_byyear <- gapminder %>%
-    group_by(continent,year) %>%
-    summarize(mean_gdpPercap=mean(gdpPercap),
-              sd_gdpPercap=sd(gdpPercap),
-              mean_pop=mean(pop),
-              sd_pop=sd(pop))
+intellect_health_bysex_byeducation <- healthData %>%
+    group_by(sex,education) %>%
+    summarize(mean_intellect=mean(intellect),
+              sd_intellect=sd(intellect),
+              mean_health=mean(health),
+              sd_health=sd(health))
 ~~~
 
 ## Using mutate()
@@ -227,52 +236,67 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
 We can also create new variables prior to (or even after) summarizing information using `mutate()`.
 
 ~~~{.r}
-gdp_pop_bycontinents_byyear <- gapminder %>%
-    mutate(gdp_billion=gdpPercap*pop/10^9) %>%
-    group_by(continent,year) %>%
-    summarize(mean_gdpPercap=mean(gdpPercap),
-              sd_gdpPercap=sd(gdpPercap),
-              mean_pop=mean(pop),
-              sd_pop=sd(pop),
-              mean_pop=mean(pop),
-              sd_pop=sd(pop))
+intellect_health_bysex_byeducation <- healthData %>%
+    mutate(serialKiller=intellect/mentalAdjustment) %>%
+    group_by(sex,education) %>%
+    summarize(mean_intellect=mean(intellect),
+              sd_intellect=sd(intellect),
+              mean_health=mean(health),
+              sd_health=sd(health),
+              mean_killer=mean(serialKiller),
+              sd_killer=sd(serialKiller))
 ~~~
 
 
 
-
-
-
 > ## Advanced Challenge {.challenge}
-> Calculate the average life expectancy in 2002 of 2 randomly selected countries for each continent. Then arrange the continent names in reverse order.
+> Calculate the average intellect for 5 randomly selected females in each sample group. Then arrange the groups in reverse alphabetical order.
 > **Hint:** Use the `dplyr` functions `arrange()` and `sample_n()`, they have similar syntax to other dplyr functions.
 >
 
 > ## Solution to Challenge 1 {.challenge}
 >
 >~~~{.r}
->year_country_lifeExp_Africa <- gapminder %>%
->                            filter(continent=="Africa") %>%
->                            select(year,country,lifeExp)
+>conscientiousness_extraversion_intellect_males <- healthData %>%
+>                            filter(sex=="Male") %>%
+>                            select("conscientiousness","extraversion","intellect")
+>~~~
+>
+>
+>
+>~~~{.error}
+>Error: All select() inputs must resolve to integer column positions.
+>The following do not:
+>*  "conscientiousness"
+>*  "extraversion"
+>*  "intellect"
+>
 >~~~
 
 > ## Solution to Challenge 2 {.challenge}
 >
 >~~~{.r}
->lifeExp_bycountry <- gapminder %>%
->    group_by(country) %>%
->    summarize(mean_lifeExp=mean(lifeExp))
+>mentalAdjustment_byeducation <- healthData %>%
+>    group_by(education) %>%
+>    summarize(mean_mentalAdjustment=mean(mentalAdjustment))
 >~~~
 
 > ## Solution to Advanced Challenge {.challenge}
 >
 >~~~{.r}
->lifeExp_2countries_bycontinents <- gapminder %>% 
->    filter(year==2002) %>%
->    group_by(continent) %>%
->    sample_n(2) %>%
->    summarize(mean_lifeExp=mean(lifeExp)) %>%
->    arrange(desc(mean_lifeExp))
+>intellect_5ids_byHIGroup <- healthData %>% 
+>    filter(sex=="Female") %>%
+>    group_by(HIGroup) %>%
+>    sample_n(5) %>%
+>    summarize(mean_intellect=mean(intellect)) %>%
+>    arrange(desc("HIGroup"))
+>~~~
+>
+>
+>
+>~~~{.error}
+>Error in eval(expr, envir, enclos): incorrect size (1), expecting : 2
+>
 >~~~
 
 ## Other great resources
