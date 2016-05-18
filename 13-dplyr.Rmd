@@ -182,7 +182,7 @@ intellect_health_bysex_byeducation <- healthData %>%
 >    group_by(HIGroup) %>%
 >    sample_n(5) %>%
 >    summarize(mean_intellect=mean(intellect)) %>%
->    arrange(desc("HIGroup"))
+>    arrange(desc(HIGroup))
 >```
 
 ## Other great resources
