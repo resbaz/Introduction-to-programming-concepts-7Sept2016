@@ -154,10 +154,10 @@ one to store the analysis scripts.
 Now we have a good directory structure we will now place/save the data file in the `data/` directory.
 
 > ## Challenge 1 {.challenge}
-> Download the gapminder data from [here](https://raw.githubusercontent.com/resbaz/r-novice-gapminder-files/master/data/gapminder-FiveYearData.csv).
+> Download the healthData data from [here](https://raw.githubusercontent.com/resbaz/Introductory-R-Workshop-For-Positive-Psychology/gh-pages/data/THCombo051311.csv).
 >
 > 1. Download the file (CTRL + S, right mouse click -> "Save as", or File -> "Save page as")
-> 2. Make sure it's saved under the name `gapminder-FiveYearData.csv`
+> 2. Make sure it's saved under the name `THCombo051311.csv`
 > 3. Save the file in the `data/` folder within your project.
 >
 > We will load and inspect these data later.

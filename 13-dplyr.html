@@ -224,9 +224,7 @@ The following do not:
 <span class="st">   </span><span class="kw">group_by</span>(HIGroup) %&gt;%
 <span class="st">   </span><span class="kw">sample_n</span>(<span class="dv">5</span>) %&gt;%
 <span class="st">   </span><span class="kw">summarize</span>(<span class="dt">mean_intellect=</span><span class="kw">mean</span>(intellect)) %&gt;%
-<span class="st">   </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="st">&quot;HIGroup&quot;</span>))</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): incorrect size (1), expecting : 2
-</code></pre>
+<span class="st">   </span><span class="kw">arrange</span>(<span class="kw">desc</span>(HIGroup))</code></pre>
 </div>
 </section>
 <h2 id="other-great-resources">Other great resources</h2>

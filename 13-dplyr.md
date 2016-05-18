@@ -289,14 +289,7 @@ intellect_health_bysex_byeducation <- healthData %>%
 >    group_by(HIGroup) %>%
 >    sample_n(5) %>%
 >    summarize(mean_intellect=mean(intellect)) %>%
->    arrange(desc("HIGroup"))
->~~~
->
->
->
->~~~{.error}
->Error in eval(expr, envir, enclos): incorrect size (1), expecting : 2
->
+>    arrange(desc(HIGroup))
 >~~~
 
 ## Other great resources
