@@ -38,505 +38,370 @@ Load the packages
 
 ~~~{.r}
 library("tidyr")
-~~~
-
-
-
-~~~{.error}
-Error in library("tidyr"): there is no package called 'tidyr'
-
-~~~
-
-
-
-~~~{.r}
 library("dplyr")
 ~~~
 
-First, lets look at the structure of our original gapminder dataframe:
+First, lets look at the structure of our original healthData dataframe:
 
 ~~~{.r}
-str(gapminder)
+str(healthData)
 ~~~
 
 
 
 ~~~{.output}
-'data.frame':	1704 obs. of  6 variables:
- $ country  : chr  "Afghanistan" "Afghanistan" "Afghanistan" "Afghanistan" ...
- $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
- $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
- $ continent: chr  "Asia" "Asia" "Asia" "Asia" ...
- $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
- $ gdpPercap: num  779 821 853 836 740 ...
+'data.frame':	2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : chr  "3.986" "7.016" "2.697" "2.504" ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : chr  "4.613" "6.649" "3.087" "4.613" ...
+ $ neuroticism               : chr  "3.649" "6.299" "4.091" "3.649" ...
+ $ sex                       : chr  "Male" "Male" "Male" "Male" ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : chr  "Group 1" "Group 1" "Group 1" "Group 1" ...
 
 ~~~
 
 > ## Challenge 1 {.challenge}
 >
-> Is gapminder a purely long, purely wide, or some intermediate format?
+> Is healthData a purely long, purely wide, or some intermediate format?
 >
 
-Sometimes, as with the gapminder dataset, we have multiple types of observed data. It is somewhere in between the purely 'long' and 'wide' data formats. We have 3 "ID variables" (`continent`, `country`, `year`) and 3 "Observation variables" (`pop`,`lifeExp`,`gdpPercap`). I usually prefer my data in this intermediate format in most cases despite not having ALL observations in 1 column given that all 3 observation variables have different units. There are few operations that would need us to stretch out this dataframe any longer (i.e. 4 ID variables and 1 Observation variable).
+Sometimes, we have multiple types of observed data. It is somewhere in between the purely 'long' and 'wide' data formats. We have 2 "ID variables" (`id`,`HIGroup`) and 13 "Observation variables". I usually prefer my data in this intermediate format in most cases despite not having ALL observations in 1 column given that all observation variables have different units. There are few operations that would need us to stretch out this dataframe any longer (i.e. 3 ID variables and 1 Observation variable).
 
-While using many of the functions in R, which are often vector based, you usually do not want to do mathematical operations on values with different units. For example, using the purely long format, a single mean for all of the values of population, life expectancy, and GDP would not be meaningful since it would return the mean of values with 3 incompatible units. The solution is that we first manipulate the data either by grouping (see the lesson on `dplyr`), or we change the structure of the dataframe.
+While using many of the functions in R, which are often vector based, you usually do not want to do mathematical operations on values with different units. For example, using the purely long format, a single mean for all of the values of intellect, conscientiousness and health would not be meaningful since it would return the mean of values with 3 incompatible units. The solution is that we first manipulate the data either by grouping (see the lesson on `dplyr`), or we change the structure of the dataframe.
 **Note:** Some plotting functions in R actually work better in the wide format data.
 
-## From wide to long format with gather()
-Until now, we've been using the nicely formatted original gapminder dataset, but 'real' data (i.e. our own research data) will never be so well organized. Here let's start with the wide format version of the gapminder dataset.
+## From intermediate to long format with gather()
+Until now, we've been using the nicely formatted original healthData dataset, but 'real' data (i.e. our own research data) may not be so well organized. To demonstrate, let's engineer a less usefully structure dataset using tidyr's `gather()` function.
 
 
 ~~~{.r}
-str(gap_wide)
+str(healthData)
 ~~~
 
 
 
 ~~~{.output}
-'data.frame':	142 obs. of  38 variables:
- $ continent     : chr  "Africa" "Africa" "Africa" "Africa" ...
- $ country       : chr  "Algeria" "Angola" "Benin" "Botswana" ...
- $ gdpPercap_1952: num  2449 3521 1063 851 543 ...
- $ gdpPercap_1957: num  3014 3828 960 918 617 ...
- $ gdpPercap_1962: num  2551 4269 949 984 723 ...
- $ gdpPercap_1967: num  3247 5523 1036 1215 795 ...
- $ gdpPercap_1972: num  4183 5473 1086 2264 855 ...
- $ gdpPercap_1977: num  4910 3009 1029 3215 743 ...
- $ gdpPercap_1982: num  5745 2757 1278 4551 807 ...
- $ gdpPercap_1987: num  5681 2430 1226 6206 912 ...
- $ gdpPercap_1992: num  5023 2628 1191 7954 932 ...
- $ gdpPercap_1997: num  4797 2277 1233 8647 946 ...
- $ gdpPercap_2002: num  5288 2773 1373 11004 1038 ...
- $ gdpPercap_2007: num  6223 4797 1441 12570 1217 ...
- $ lifeExp_1952  : num  43.1 30 38.2 47.6 32 ...
- $ lifeExp_1957  : num  45.7 32 40.4 49.6 34.9 ...
- $ lifeExp_1962  : num  48.3 34 42.6 51.5 37.8 ...
- $ lifeExp_1967  : num  51.4 36 44.9 53.3 40.7 ...
- $ lifeExp_1972  : num  54.5 37.9 47 56 43.6 ...
- $ lifeExp_1977  : num  58 39.5 49.2 59.3 46.1 ...
- $ lifeExp_1982  : num  61.4 39.9 50.9 61.5 48.1 ...
- $ lifeExp_1987  : num  65.8 39.9 52.3 63.6 49.6 ...
- $ lifeExp_1992  : num  67.7 40.6 53.9 62.7 50.3 ...
- $ lifeExp_1997  : num  69.2 41 54.8 52.6 50.3 ...
- $ lifeExp_2002  : num  71 41 54.4 46.6 50.6 ...
- $ lifeExp_2007  : num  72.3 42.7 56.7 50.7 52.3 ...
- $ pop_1952      : num  9279525 4232095 1738315 442308 4469979 ...
- $ pop_1957      : num  10270856 4561361 1925173 474639 4713416 ...
- $ pop_1962      : num  11000948 4826015 2151895 512764 4919632 ...
- $ pop_1967      : num  12760499 5247469 2427334 553541 5127935 ...
- $ pop_1972      : num  14760787 5894858 2761407 619351 5433886 ...
- $ pop_1977      : num  17152804 6162675 3168267 781472 5889574 ...
- $ pop_1982      : num  20033753 7016384 3641603 970347 6634596 ...
- $ pop_1987      : num  23254956 7874230 4243788 1151184 7586551 ...
- $ pop_1992      : num  26298373 8735988 4981671 1342614 8878303 ...
- $ pop_1997      : num  29072015 9875024 6066080 1536536 10352843 ...
- $ pop_2002      : int  31287142 10866106 7026113 1630347 12251209 7021078 15929988 4048013 8835739 614382 ...
- $ pop_2007      : int  33333216 12420476 8078314 1639131 14326203 8390505 17696293 4369038 10238807 710960 ...
+'data.frame':	2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : chr  "3.986" "7.016" "2.697" "2.504" ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : chr  "4.613" "6.649" "3.087" "4.613" ...
+ $ neuroticism               : chr  "3.649" "6.299" "4.091" "3.649" ...
+ $ sex                       : chr  "Male" "Male" "Male" "Male" ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : chr  "Group 1" "Group 1" "Group 1" "Group 1" ...
 
 ~~~
 
-![](fig/14-tidyr-fig2.png)
-
-The first step towards getting our nice intermediate data format is to first convert from the wide to the long format. The `tidyr` function `gather()` will 'gather' your observation variables into a single variable.
+The `tidyr` function `gather()` can 'gather' your observation variables into a single variable.
 
 
 ~~~{.r}
-gap_long <- gap_wide %>% gather(obstype_year,obs_values,starts_with('pop'),starts_with('lifeExp'),starts_with('gdpPercap'))
+healthData_long <- healthData %>% gather(obsType,obsValues,-id,-HIGroup)
+# OR
+# healthData_long <- healthData %>% gather(obsType,obsValues,conscientiousness,extraversion,intellect,
+#                        agreeableness,neuroticism,sex,selfRatedHealth,mentalAdjustment,illnessReversed,
+#                        health,alcoholIseInYoungAdulthood,education,birthYear)
+str(healthData_long)
 ~~~
 
 
 
-~~~{.error}
-Error in function_list[[k]](value): could not find function "gather"
+~~~{.output}
+'data.frame':	29315 obs. of  4 variables:
+ $ id       : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ HIGroup  : chr  "Group 1" "Group 1" "Group 1" "Group 1" ...
+ $ obsType  : chr  "conscientiousness" "conscientiousness" "conscientiousness" "conscientiousness" ...
+ $ obsValues: chr  "5.825" "7.732" "6.498" "5.881" ...
 
 ~~~
 
+Here we have used piping syntax which is similar to what we were doing in the previous lesson with dplyr. In fact, these are compatible and you can use a mix of tidyr and dplyr functions by piping them together.
 
-
-~~~{.r}
-str(gap_long)
-~~~
-
-
-
-~~~{.error}
-Error in str(gap_long): object 'gap_long' not found
-
-~~~
-
-Here we have used piping syntax which is similar to what we were doing in the previous lesson with dplyr. In fact, these are compatible and you can use a mix of tidyr and dplyr functions by piping them together
-
-Inside `gather()` we first name the new column for the new ID variable (`obstype_year`), the name for the new amalgamated observation variable (`obs_value`), then the names of the old observation variable. We could have typed out all the observation variables, but as in the `select()` function (see `dplyr` lesson), we can use the `starts_with()` argument to select all variables that starts with the desired character sring. Gather also allows the alternative syntax of using the `-` symbol to identify which variables are not to be gathered (i.e. ID variables)
-
-![](fig/14-tidyr-fig3.png)
-
-
-~~~{.r}
-gap_long <- gap_wide %>% gather(obstype_year,obs_values,-continent,-country)
-~~~
-
-
-
-~~~{.error}
-Error in function_list[[k]](value): could not find function "gather"
-
-~~~
-
-
-
-~~~{.r}
-str(gap_long)
-~~~
-
-
-
-~~~{.error}
-Error in str(gap_long): object 'gap_long' not found
-
-~~~
+Inside `gather()` we first name the new column for the new ID variable (`obsType`), the name for the new amalgamated observation variable (`obsValue`), then the names of the old observation variable. We could have typed out all the observation variables, but gather also allows the alternative syntax of using the `-` symbol to identify which variables are not to be gathered (i.e. ID variables).
 
 That may seem trivial with this particular dataframe, but sometimes you have 1 ID variable and 40 Observation variables with irregular variables names. The flexibility is a huge time saver!
 
-
-Now `obstype_year` actually contains 2 pieces of information, the observation type (`pop`,`lifeExp`, or `gdpPercap`) and the `year`. We can use the `separate()` function to split the character strings into multiple variables
-
-
-~~~{.r}
-gap_long <- gap_long %>% separate(obstype_year,into=c('obs_type','year'),sep="_")
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_long' not found
-
-~~~
-
-
-
-~~~{.r}
-gap_long$year <- as.integer(gap_long$year)
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_long' not found
-
-~~~
-
-
-> ## Challenge 2 {.challenge}
->
-> Using `gap_long`, calculate the mean life expectancy, population, and gdpPercap for each continent.
->**Hint:** use the `group_by()` and `summarize()` functions we learned in the `dplyr` lesson
->
+Now `obsType` actually contains the observation type (`conscientiousness`,`intellect`, `health` etc), and `obsValue` contains the values for that observation for that particular id. Due to the coersion rules we introduced earlier, since some of the observation variables where character data types, all the observations are now represented as strings. As a result of the structure change, we now have many rows per id, where before we had only one row per id. The resulting data.frame is much longer.
 
 ## From long to intermediate format with spread()
-Now just to double-check our work, let's use the opposite of `gather()` to spread our observation variables back out with the aptly named `spread()`. We can then spread our `gap_long()` to the original intermediate format or the widest format. Let's start with the intermediate format.
+Now just to double-check our work, let's use the opposite of `gather()` to spread our observation variables back out with the aptly named `spread()`. We can then spread our `healthData_long` to the original intermediate format or the widest format. Let's start with the intermediate format.
 
 
 ~~~{.r}
-gap_normal <- gap_long %>% spread(obs_type,obs_values)
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_long' not found
-
-~~~
-
-
-
-~~~{.r}
-dim(gap_normal)
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_normal' not found
-
-~~~
-
-
-
-~~~{.r}
-dim(gapminder)
+healthData_normal <- healthData_long %>% spread(obsType,obsValues)
+dim(healthData_normal)
 ~~~
 
 
 
 ~~~{.output}
-[1] 1704    6
+[1] 2255   15
 
 ~~~
 
 
 
 ~~~{.r}
-names(gap_normal)
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_normal' not found
-
-~~~
-
-
-
-~~~{.r}
-names(gapminder)
+dim(healthData)
 ~~~
 
 
 
 ~~~{.output}
-[1] "country"   "year"      "pop"       "continent" "lifeExp"   "gdpPercap"
-
-~~~
-
-Now we've got an intermediate dataframe `gap_normal` with the same dimensions as the original `gapminder`, but the order of the variables is different. Let's fix that before checking if they are `all.equal()`.
-
-
-~~~{.r}
-gap_normal <- gap_normal[,names(gapminder)]
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_normal' not found
+[1] 2255   15
 
 ~~~
 
 
 
 ~~~{.r}
-all.equal(gap_normal,gapminder)
-~~~
-
-
-
-~~~{.error}
-Error in all.equal(gap_normal, gapminder): object 'gap_normal' not found
-
-~~~
-
-
-
-~~~{.r}
-head(gap_normal)
-~~~
-
-
-
-~~~{.error}
-Error in head(gap_normal): object 'gap_normal' not found
-
-~~~
-
-
-
-~~~{.r}
-head(gapminder)
+names(healthData_normal)
 ~~~
 
 
 
 ~~~{.output}
-      country year      pop continent lifeExp gdpPercap
-1 Afghanistan 1952  8425333      Asia  28.801  779.4453
-2 Afghanistan 1957  9240934      Asia  30.332  820.8530
-3 Afghanistan 1962 10267083      Asia  31.997  853.1007
-4 Afghanistan 1967 11537966      Asia  34.020  836.1971
-5 Afghanistan 1972 13079460      Asia  36.088  739.9811
-6 Afghanistan 1977 14880372      Asia  38.438  786.1134
-
-~~~
-
-We're almost there, the original was sorted by `country`, `continent`, then `year`.
-
-
-~~~{.r}
-gap_normal <- gap_normal %>% arrange(country,continent,year)
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_normal' not found
+ [1] "id"                         "HIGroup"                   
+ [3] "agreeableness"              "alcoholUseInYoungAdulthood"
+ [5] "birthYear"                  "conscientiousness"         
+ [7] "education"                  "extraversion"              
+ [9] "health"                     "illnessReversed"           
+[11] "intellect"                  "mentalAdjustment"          
+[13] "neuroticism"                "selfRatedHealth"           
+[15] "sex"                       
 
 ~~~
 
 
 
 ~~~{.r}
-all.equal(gap_normal,gapminder)
+names(healthData)
 ~~~
 
 
 
-~~~{.error}
-Error in all.equal(gap_normal, gapminder): object 'gap_normal' not found
+~~~{.output}
+ [1] "id"                         "conscientiousness"         
+ [3] "extraversion"               "intellect"                 
+ [5] "agreeableness"              "neuroticism"               
+ [7] "sex"                        "selfRatedHealth"           
+ [9] "mentalAdjustment"           "illnessReversed"           
+[11] "health"                     "alcoholUseInYoungAdulthood"
+[13] "education"                  "birthYear"                 
+[15] "HIGroup"                   
+
+~~~
+
+Now we've got an intermediate dataframe `healthData_normal` with the same dimensions as the original `healthData`, but the order of the variables is different. Let's fix that before checking if they are `all.equal()`.
+
+
+~~~{.r}
+healthData_normal <- healthData_normal[,names(healthData)]
+all.equal(healthData_normal,healthData)
+~~~
+
+
+
+~~~{.output}
+ [1] "Component \"id\": Mean relative difference: 0.5459826"                            
+ [2] "Component \"conscientiousness\": Modes: character, numeric"                       
+ [3] "Component \"conscientiousness\": target is character, current is numeric"         
+ [4] "Component \"extraversion\": 2199 string mismatches"                               
+ [5] "Component \"intellect\": Modes: character, numeric"                               
+ [6] "Component \"intellect\": target is character, current is numeric"                 
+ [7] "Component \"agreeableness\": 2159 string mismatches"                              
+ [8] "Component \"neuroticism\": 2153 string mismatches"                                
+ [9] "Component \"sex\": 1088 string mismatches"                                        
+[10] "Component \"selfRatedHealth\": Modes: character, numeric"                         
+[11] "Component \"selfRatedHealth\": target is character, current is numeric"           
+[12] "Component \"mentalAdjustment\": Modes: character, numeric"                        
+[13] "Component \"mentalAdjustment\": target is character, current is numeric"          
+[14] "Component \"illnessReversed\": Modes: character, numeric"                         
+[15] "Component \"illnessReversed\": target is character, current is numeric"           
+[16] "Component \"health\": Modes: character, numeric"                                  
+[17] "Component \"health\": target is character, current is numeric"                    
+[18] "Component \"alcoholUseInYoungAdulthood\": Modes: character, numeric"              
+[19] "Component \"alcoholUseInYoungAdulthood\": target is character, current is numeric"
+[20] "Component \"education\": Modes: character, numeric"                               
+[21] "Component \"education\": target is character, current is numeric"                 
+[22] "Component \"birthYear\": Modes: character, numeric"                               
+[23] "Component \"birthYear\": target is character, current is numeric"                 
+[24] "Component \"HIGroup\": 942 string mismatches"                                     
+
+~~~
+
+
+
+~~~{.r}
+head(healthData_normal)
+~~~
+
+
+
+~~~{.output}
+  id conscientiousness extraversion intellect agreeableness neuroticism
+1  1             4.815        3.342     3.587         3.087       4.091
+2  2              5.32        3.342     5.204         2.069           .
+3  3             5.825        3.986     6.044         4.613       3.649
+4  4             7.732        7.016     6.821         6.649       6.299
+5  7             6.498        2.697     5.527         3.087       4.091
+6  8             5.881        2.504     4.234         4.613       3.649
+     sex selfRatedHealth mentalAdjustment illnessReversed health
+1 Female               4                3               3   8.31
+2 Female               4                1               3   5.17
+3   Male               4                2               3   6.74
+4   Male               5                3               5  11.96
+5   Male               3                3               4   8.05
+6   Male               3                2               4   6.48
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+1                          1         5      1913 Group 1
+2                          1         8      1911 Group 1
+3                          2         9      1909 Group 1
+4                          3         8      1905 Group 1
+5                          2         6      1910 Group 1
+6                          1         8      1905 Group 1
+
+~~~
+
+
+
+~~~{.r}
+head(healthData)
+~~~
+
+
+
+~~~{.output}
+  id conscientiousness extraversion intellect agreeableness neuroticism
+1  3             5.825        3.986     6.044         4.613       3.649
+2  4             7.732        7.016     6.821         6.649       6.299
+3  7             6.498        2.697     5.527         3.087       4.091
+4  8             5.881        2.504     4.234         4.613       3.649
+5 10             4.254        5.147     4.751         3.850       3.208
+6 12             7.508        3.535     6.821         4.613       5.415
+   sex selfRatedHealth mentalAdjustment illnessReversed health
+1 Male               4                2               3   6.74
+2 Male               5                3               5  11.96
+3 Male               3                3               4   8.05
+4 Male               3                2               4   6.48
+5 Male               4                2               3   6.74
+6 Male               4                2               5   9.01
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+1                          2         9      1909 Group 1
+2                          3         8      1905 Group 1
+3                          2         6      1910 Group 1
+4                          1         8      1905 Group 1
+5                          2         9      1910 Group 1
+6                          2         4      1911 Group 1
+
+~~~
+
+We're almost there, but the data doesn't match quite. The output of the `head()` function shows that each data.frame is sorted differently. To ensure consistent sorting, we can use the `arrange()` function from the dplyr package.
+
+
+~~~{.r}
+healthData_normal <- healthData_normal %>% arrange(id)
+healthData <- healthData %>% arrange(id)
+str(healthData_normal)
+~~~
+
+
+
+~~~{.output}
+'data.frame':	2255 obs. of  15 variables:
+ $ id                        : int  1 2 3 4 7 8 10 12 14 15 ...
+ $ conscientiousness         : chr  "4.815" "5.32" "5.825" "7.732" ...
+ $ extraversion              : chr  "3.342" "3.342" "3.986" "7.016" ...
+ $ intellect                 : chr  "3.587" "5.204" "6.044" "6.821" ...
+ $ agreeableness             : chr  "3.087" "2.069" "4.613" "6.649" ...
+ $ neuroticism               : chr  "4.091" "." "3.649" "6.299" ...
+ $ sex                       : chr  "Female" "Female" "Male" "Male" ...
+ $ selfRatedHealth           : chr  "4" "4" "4" "5" ...
+ $ mentalAdjustment          : chr  "3" "1" "2" "3" ...
+ $ illnessReversed           : chr  "3" "3" "3" "5" ...
+ $ health                    : chr  "8.31" "5.17" "6.74" "11.96" ...
+ $ alcoholUseInYoungAdulthood: chr  "1" "1" "2" "3" ...
+ $ education                 : chr  "5" "8" "9" "8" ...
+ $ birthYear                 : chr  "1913" "1911" "1909" "1905" ...
+ $ HIGroup                   : chr  "Group 1" "Group 1" "Group 1" "Group 1" ...
+
+~~~
+
+
+
+~~~{.r}
+str(healthData)
+~~~
+
+
+
+~~~{.output}
+'data.frame':	2255 obs. of  15 variables:
+ $ id                        : int  1 2 3 4 7 8 10 12 14 15 ...
+ $ conscientiousness         : num  4.82 5.32 5.83 7.73 6.5 ...
+ $ extraversion              : chr  "3.342" "3.342" "3.986" "7.016" ...
+ $ intellect                 : num  3.59 5.2 6.04 6.82 5.53 ...
+ $ agreeableness             : chr  "3.087" "2.069" "4.613" "6.649" ...
+ $ neuroticism               : chr  "4.091" "." "3.649" "6.299" ...
+ $ sex                       : chr  "Female" "Female" "Male" "Male" ...
+ $ selfRatedHealth           : int  4 4 4 5 3 3 4 4 4 4 ...
+ $ mentalAdjustment          : int  3 1 2 3 3 2 2 2 3 3 ...
+ $ illnessReversed           : int  3 3 3 5 4 4 3 5 5 2 ...
+ $ health                    : num  8.31 5.17 6.74 11.96 8.05 ...
+ $ alcoholUseInYoungAdulthood: int  1 1 2 3 2 1 2 2 1 1 ...
+ $ education                 : int  5 8 9 8 6 8 9 4 6 6 ...
+ $ birthYear                 : int  1913 1911 1909 1905 1910 1905 1910 1911 1904 1903 ...
+ $ HIGroup                   : chr  "Group 1" "Group 1" "Group 1" "Group 1" ...
+
+~~~
+
+Now we can see that the data matches, but the datatypes are different for some columns due to the coersion that occured earlier.
+
+
+~~~{.r}
+healthData_normal$conscientiousness <- as.numeric(healthData_normal$conscientiousness)
+healthData_normal$intellect <- as.numeric(healthData_normal$intellect)
+healthData_normal$selfRatedHealth <- as.integer(healthData_normal$selfRatedHealth)
+healthData_normal$mentalAdjustment <- as.integer(healthData_normal$mentalAdjustment)
+healthData_normal$illnessReversed <- as.integer(healthData_normal$illnessReversed)
+healthData_normal$health <- as.numeric(healthData_normal$health)
+healthData_normal$alcoholUseInYoungAdulthood <- as.integer(healthData_normal$alcoholUseInYoungAdulthood)
+healthData_normal$education <- as.integer(healthData_normal$education)
+healthData_normal$birthYear <- as.integer(healthData_normal$birthYear)
+
+all.equal(healthData_normal,healthData)
+~~~
+
+
+
+~~~{.output}
+[1] TRUE
 
 ~~~
 
 That's great! We've gone from the longest format back to the intermediate and we didn't introduce any errors in our code.
 
-Now lets convert the long all the way back to the wide. In the wide format, we will keep country and continent as ID variables and spread the observations across the 3 metrics (`pop`,`lifeExp`,`gdpPercap`) and time (`year`). First we need to create appropriate labels for all our new variables (time*metric combinations) and we also need to unify our ID variables to simplify the process of defining `gap_wide`
-
-
-~~~{.r}
-gap_temp <- gap_long %>% unite(var_ID,continent,country,sep="_")
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_long' not found
-
-~~~
-
-
-
-~~~{.r}
-str(gap_temp)
-~~~
-
-
-
-~~~{.error}
-Error in str(gap_temp): object 'gap_temp' not found
-
-~~~
-
-
-
-~~~{.r}
-gap_temp <- gap_long %>%
-    unite(ID_var,continent,country,sep="_") %>%
-    unite(var_names,obs_type,year,sep="_")
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_long' not found
-
-~~~
-
-
-
-~~~{.r}
-str(gap_temp)
-~~~
-
-
-
-~~~{.error}
-Error in str(gap_temp): object 'gap_temp' not found
-
-~~~
-
-Using `unite()` we now have a single ID variable which is a combination of `continent`,`country`,and we have defined variable names. We're now ready to pipe in `spread()`  
-
-
-~~~{.r}
-gap_wide_new <- gap_long %>% 
-    unite(ID_var,continent,country,sep="_") %>%
-    unite(var_names,obs_type,year,sep="_") %>%
-    spread(var_names,obs_values)
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_long' not found
-
-~~~
-
-
-
-~~~{.r}
-str(gap_wide_new)
-~~~
-
-
-
-~~~{.error}
-Error in str(gap_wide_new): object 'gap_wide_new' not found
-
-~~~
-
-> ## Challenge 3 {.challenge}
+> ## Challenge 2 {.challenge}
 >
-> Take this 1 step further and create a `gap_ludicrously_wide` format data by spreading over countries, year and the 3 metrics?
->**Hint** this new dataframe should only have 5 rows.
+> Convert the original healthData data.frame to a wide format which has the 2 original id columns (`id` and `HIGroup`), as well as columns for `education`, `birthYear` and `sex`. Combine all other observation columns (`conscientiousness`,`extraversion`,`intellect` etc) into a single pair of columns - one which hold observation type, and one with the observation value.
 >
-
-Now we have a great 'wide' format dataframe, but the `ID_var` could be more usable, let's separate it into 2 variables with `separate()`
-
-
-
-~~~{.r}
-gap_wide_betterID <- separate(gap_wide_new,ID_var,c("continent","country"),sep="_")
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): could not find function "separate"
-
-~~~
-
-
-
-~~~{.r}
-gap_wide_betterID <- gap_long %>% 
-    unite(ID_var,continent,country,sep="_") %>%
-    unite(var_names,obs_type,year,sep="_") %>%
-    spread(var_names,obs_values) %>%
-    separate(ID_var,c("continent","country"),sep="_")
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'gap_long' not found
-
-~~~
-
-
-
-~~~{.r}
-str(gap_wide_betterID)
-~~~
-
-
-
-~~~{.error}
-Error in str(gap_wide_betterID): object 'gap_wide_betterID' not found
-
-~~~
-
-
-
-~~~{.r}
-all.equal(gap_wide,gap_wide_betterID)
-~~~
-
-
-
-~~~{.error}
-Error in all.equal.default(gap_wide, gap_wide_betterID): object 'gap_wide_betterID' not found
-
-~~~
-
-There and back again!
 
 > ## Solution to Challenge 1 {.challenge}
 >
@@ -547,30 +412,7 @@ There and back again!
 > ## Solution to Challenge 2 {.challenge}
 >
 >~~~{.r}
->gap_long %>% group_by(continent,obs_type) %>%
->    summarize(means=mean(obs_values))
->~~~
->
->
->
->~~~{.error}
->Error in eval(expr, envir, enclos): object 'gap_long' not found
->
->~~~
-
-> ## Solution to Challenge 3 {.challenge}
->
->~~~{.r}
->gap_ludicrously_wide <- gap_long %>% 
->    unite(var_names,obs_type,year,country,sep="_") %>%
->    spread(var_names,obs_values)
->~~~
->
->
->
->~~~{.error}
->Error in eval(expr, envir, enclos): object 'gap_long' not found
->
+> healthData_longish <- healthData %>% gather(obsType,obsValues,-id,-HIGroup,-education,-birthYear,-sex)
 >~~~
 
 

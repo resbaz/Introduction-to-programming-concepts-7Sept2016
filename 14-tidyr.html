@@ -55,205 +55,239 @@
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;tidyr&quot;)</span>
 <span class="co">#install.packages(&quot;dplyr&quot;)</span></code></pre>
 <p>Load the packages</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;tidyr&quot;</span>)</code></pre>
-<pre class="error"><code>Error in library(&quot;tidyr&quot;): there is no package called &#39;tidyr&#39;
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</code></pre>
-<p>First, lets look at the structure of our original gapminder dataframe:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gapminder)</code></pre>
-<pre class="output"><code>&#39;data.frame&#39;:   1704 obs. of  6 variables:
- $ country  : chr  &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; ...
- $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
- $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
- $ continent: chr  &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; ...
- $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
- $ gdpPercap: num  779 821 853 836 740 ...
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;tidyr&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</code></pre>
+<p>First, lets look at the structure of our original healthData dataframe:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(healthData)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : chr  &quot;3.986&quot; &quot;7.016&quot; &quot;2.697&quot; &quot;2.504&quot; ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : chr  &quot;4.613&quot; &quot;6.649&quot; &quot;3.087&quot; &quot;4.613&quot; ...
+ $ neuroticism               : chr  &quot;3.649&quot; &quot;6.299&quot; &quot;4.091&quot; &quot;3.649&quot; ...
+ $ sex                       : chr  &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : chr  &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; ...
 </code></pre>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 1</h2>
 </div>
 <div class="panel-body">
-<p>Is gapminder a purely long, purely wide, or some intermediate format?</p>
+<p>Is healthData a purely long, purely wide, or some intermediate format?</p>
 </div>
 </section>
-<p>Sometimes, as with the gapminder dataset, we have multiple types of observed data. It is somewhere in between the purely ‘long’ and ‘wide’ data formats. We have 3 “ID variables” (<code>continent</code>, <code>country</code>, <code>year</code>) and 3 “Observation variables” (<code>pop</code>,<code>lifeExp</code>,<code>gdpPercap</code>). I usually prefer my data in this intermediate format in most cases despite not having ALL observations in 1 column given that all 3 observation variables have different units. There are few operations that would need us to stretch out this dataframe any longer (i.e. 4 ID variables and 1 Observation variable).</p>
-<p>While using many of the functions in R, which are often vector based, you usually do not want to do mathematical operations on values with different units. For example, using the purely long format, a single mean for all of the values of population, life expectancy, and GDP would not be meaningful since it would return the mean of values with 3 incompatible units. The solution is that we first manipulate the data either by grouping (see the lesson on <code>dplyr</code>), or we change the structure of the dataframe. <strong>Note:</strong> Some plotting functions in R actually work better in the wide format data.</p>
-<h2 id="from-wide-to-long-format-with-gather">From wide to long format with gather()</h2>
-<p>Until now, we’ve been using the nicely formatted original gapminder dataset, but ‘real’ data (i.e. our own research data) will never be so well organized. Here let’s start with the wide format version of the gapminder dataset.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gap_wide)</code></pre>
-<pre class="output"><code>&#39;data.frame&#39;:   142 obs. of  38 variables:
- $ continent     : chr  &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...
- $ country       : chr  &quot;Algeria&quot; &quot;Angola&quot; &quot;Benin&quot; &quot;Botswana&quot; ...
- $ gdpPercap_1952: num  2449 3521 1063 851 543 ...
- $ gdpPercap_1957: num  3014 3828 960 918 617 ...
- $ gdpPercap_1962: num  2551 4269 949 984 723 ...
- $ gdpPercap_1967: num  3247 5523 1036 1215 795 ...
- $ gdpPercap_1972: num  4183 5473 1086 2264 855 ...
- $ gdpPercap_1977: num  4910 3009 1029 3215 743 ...
- $ gdpPercap_1982: num  5745 2757 1278 4551 807 ...
- $ gdpPercap_1987: num  5681 2430 1226 6206 912 ...
- $ gdpPercap_1992: num  5023 2628 1191 7954 932 ...
- $ gdpPercap_1997: num  4797 2277 1233 8647 946 ...
- $ gdpPercap_2002: num  5288 2773 1373 11004 1038 ...
- $ gdpPercap_2007: num  6223 4797 1441 12570 1217 ...
- $ lifeExp_1952  : num  43.1 30 38.2 47.6 32 ...
- $ lifeExp_1957  : num  45.7 32 40.4 49.6 34.9 ...
- $ lifeExp_1962  : num  48.3 34 42.6 51.5 37.8 ...
- $ lifeExp_1967  : num  51.4 36 44.9 53.3 40.7 ...
- $ lifeExp_1972  : num  54.5 37.9 47 56 43.6 ...
- $ lifeExp_1977  : num  58 39.5 49.2 59.3 46.1 ...
- $ lifeExp_1982  : num  61.4 39.9 50.9 61.5 48.1 ...
- $ lifeExp_1987  : num  65.8 39.9 52.3 63.6 49.6 ...
- $ lifeExp_1992  : num  67.7 40.6 53.9 62.7 50.3 ...
- $ lifeExp_1997  : num  69.2 41 54.8 52.6 50.3 ...
- $ lifeExp_2002  : num  71 41 54.4 46.6 50.6 ...
- $ lifeExp_2007  : num  72.3 42.7 56.7 50.7 52.3 ...
- $ pop_1952      : num  9279525 4232095 1738315 442308 4469979 ...
- $ pop_1957      : num  10270856 4561361 1925173 474639 4713416 ...
- $ pop_1962      : num  11000948 4826015 2151895 512764 4919632 ...
- $ pop_1967      : num  12760499 5247469 2427334 553541 5127935 ...
- $ pop_1972      : num  14760787 5894858 2761407 619351 5433886 ...
- $ pop_1977      : num  17152804 6162675 3168267 781472 5889574 ...
- $ pop_1982      : num  20033753 7016384 3641603 970347 6634596 ...
- $ pop_1987      : num  23254956 7874230 4243788 1151184 7586551 ...
- $ pop_1992      : num  26298373 8735988 4981671 1342614 8878303 ...
- $ pop_1997      : num  29072015 9875024 6066080 1536536 10352843 ...
- $ pop_2002      : int  31287142 10866106 7026113 1630347 12251209 7021078 15929988 4048013 8835739 614382 ...
- $ pop_2007      : int  33333216 12420476 8078314 1639131 14326203 8390505 17696293 4369038 10238807 710960 ...
+<p>Sometimes, we have multiple types of observed data. It is somewhere in between the purely ‘long’ and ‘wide’ data formats. We have 2 “ID variables” (<code>id</code>,<code>HIGroup</code>) and 13 “Observation variables”. I usually prefer my data in this intermediate format in most cases despite not having ALL observations in 1 column given that all observation variables have different units. There are few operations that would need us to stretch out this dataframe any longer (i.e. 3 ID variables and 1 Observation variable).</p>
+<p>While using many of the functions in R, which are often vector based, you usually do not want to do mathematical operations on values with different units. For example, using the purely long format, a single mean for all of the values of intellect, conscientiousness and health would not be meaningful since it would return the mean of values with 3 incompatible units. The solution is that we first manipulate the data either by grouping (see the lesson on <code>dplyr</code>), or we change the structure of the dataframe. <strong>Note:</strong> Some plotting functions in R actually work better in the wide format data.</p>
+<h2 id="from-intermediate-to-long-format-with-gather">From intermediate to long format with gather()</h2>
+<p>Until now, we’ve been using the nicely formatted original healthData dataset, but ‘real’ data (i.e. our own research data) may not be so well organized. To demonstrate, let’s engineer a less usefully structure dataset using tidyr’s <code>gather()</code> function.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(healthData)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   2255 obs. of  15 variables:
+ $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
+ $ extraversion              : chr  &quot;3.986&quot; &quot;7.016&quot; &quot;2.697&quot; &quot;2.504&quot; ...
+ $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
+ $ agreeableness             : chr  &quot;4.613&quot; &quot;6.649&quot; &quot;3.087&quot; &quot;4.613&quot; ...
+ $ neuroticism               : chr  &quot;3.649&quot; &quot;6.299&quot; &quot;4.091&quot; &quot;3.649&quot; ...
+ $ sex                       : chr  &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; ...
+ $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
+ $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
+ $ illnessReversed           : int  3 5 4 4 3 5 2 4 5 4 ...
+ $ health                    : num  6.74 11.96 8.05 6.48 6.74 ...
+ $ alcoholUseInYoungAdulthood: int  2 3 2 1 2 2 1 1 1 2 ...
+ $ education                 : int  9 8 6 8 9 4 6 7 9 9 ...
+ $ birthYear                 : int  1909 1905 1910 1905 1910 1911 1903 1908 1909 1911 ...
+ $ HIGroup                   : chr  &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; ...
 </code></pre>
-<div class="figure">
-<img src="fig/14-tidyr-fig2.png" />
-</div>
-<p>The first step towards getting our nice intermediate data format is to first convert from the wide to the long format. The <code>tidyr</code> function <code>gather()</code> will ‘gather’ your observation variables into a single variable.</p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_long &lt;-<span class="st"> </span>gap_wide %&gt;%<span class="st"> </span><span class="kw">gather</span>(obstype_year,obs_values,<span class="kw">starts_with</span>(<span class="st">&#39;pop&#39;</span>),<span class="kw">starts_with</span>(<span class="st">&#39;lifeExp&#39;</span>),<span class="kw">starts_with</span>(<span class="st">&#39;gdpPercap&#39;</span>))</code></pre>
-<pre class="error"><code>Error in function_list[[k]](value): could not find function &quot;gather&quot;
+<p>The <code>tidyr</code> function <code>gather()</code> can ‘gather’ your observation variables into a single variable.</p>
+<pre class="sourceCode r"><code class="sourceCode r">healthData_long &lt;-<span class="st"> </span>healthData %&gt;%<span class="st"> </span><span class="kw">gather</span>(obsType,obsValues,-id,-HIGroup)
+<span class="co"># OR</span>
+<span class="co"># healthData_long &lt;- healthData %&gt;% gather(obsType,obsValues,conscientiousness,extraversion,intellect,</span>
+<span class="co">#                        agreeableness,neuroticism,sex,selfRatedHealth,mentalAdjustment,illnessReversed,</span>
+<span class="co">#                        health,alcoholIseInYoungAdulthood,education,birthYear)</span>
+<span class="kw">str</span>(healthData_long)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   29315 obs. of  4 variables:
+ $ id       : int  3 4 7 8 10 12 15 17 18 20 ...
+ $ HIGroup  : chr  &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; ...
+ $ obsType  : chr  &quot;conscientiousness&quot; &quot;conscientiousness&quot; &quot;conscientiousness&quot; &quot;conscientiousness&quot; ...
+ $ obsValues: chr  &quot;5.825&quot; &quot;7.732&quot; &quot;6.498&quot; &quot;5.881&quot; ...
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gap_long)</code></pre>
-<pre class="error"><code>Error in str(gap_long): object &#39;gap_long&#39; not found
-</code></pre>
-<p>Here we have used piping syntax which is similar to what we were doing in the previous lesson with dplyr. In fact, these are compatible and you can use a mix of tidyr and dplyr functions by piping them together</p>
-<p>Inside <code>gather()</code> we first name the new column for the new ID variable (<code>obstype_year</code>), the name for the new amalgamated observation variable (<code>obs_value</code>), then the names of the old observation variable. We could have typed out all the observation variables, but as in the <code>select()</code> function (see <code>dplyr</code> lesson), we can use the <code>starts_with()</code> argument to select all variables that starts with the desired character sring. Gather also allows the alternative syntax of using the <code>-</code> symbol to identify which variables are not to be gathered (i.e. ID variables)</p>
-<div class="figure">
-<img src="fig/14-tidyr-fig3.png" />
-</div>
-<pre class="sourceCode r"><code class="sourceCode r">gap_long &lt;-<span class="st"> </span>gap_wide %&gt;%<span class="st"> </span><span class="kw">gather</span>(obstype_year,obs_values,-continent,-country)</code></pre>
-<pre class="error"><code>Error in function_list[[k]](value): could not find function &quot;gather&quot;
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gap_long)</code></pre>
-<pre class="error"><code>Error in str(gap_long): object &#39;gap_long&#39; not found
-</code></pre>
+<p>Here we have used piping syntax which is similar to what we were doing in the previous lesson with dplyr. In fact, these are compatible and you can use a mix of tidyr and dplyr functions by piping them together.</p>
+<p>Inside <code>gather()</code> we first name the new column for the new ID variable (<code>obsType</code>), the name for the new amalgamated observation variable (<code>obsValue</code>), then the names of the old observation variable. We could have typed out all the observation variables, but gather also allows the alternative syntax of using the <code>-</code> symbol to identify which variables are not to be gathered (i.e. ID variables).</p>
 <p>That may seem trivial with this particular dataframe, but sometimes you have 1 ID variable and 40 Observation variables with irregular variables names. The flexibility is a huge time saver!</p>
-<p>Now <code>obstype_year</code> actually contains 2 pieces of information, the observation type (<code>pop</code>,<code>lifeExp</code>, or <code>gdpPercap</code>) and the <code>year</code>. We can use the <code>separate()</code> function to split the character strings into multiple variables</p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_long &lt;-<span class="st"> </span>gap_long %&gt;%<span class="st"> </span><span class="kw">separate</span>(obstype_year,<span class="dt">into=</span><span class="kw">c</span>(<span class="st">&#39;obs_type&#39;</span>,<span class="st">&#39;year&#39;</span>),<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
+<p>Now <code>obsType</code> actually contains the observation type (<code>conscientiousness</code>,<code>intellect</code>, <code>health</code> etc), and <code>obsValue</code> contains the values for that observation for that particular id. Due to the coersion rules we introduced earlier, since some of the observation variables where character data types, all the observations are now represented as strings. As a result of the structure change, we now have many rows per id, where before we had only one row per id. The resulting data.frame is much longer.</p>
+<h2 id="from-long-to-intermediate-format-with-spread">From long to intermediate format with spread()</h2>
+<p>Now just to double-check our work, let’s use the opposite of <code>gather()</code> to spread our observation variables back out with the aptly named <code>spread()</code>. We can then spread our <code>healthData_long</code> to the original intermediate format or the widest format. Let’s start with the intermediate format.</p>
+<pre class="sourceCode r"><code class="sourceCode r">healthData_normal &lt;-<span class="st"> </span>healthData_long %&gt;%<span class="st"> </span><span class="kw">spread</span>(obsType,obsValues)
+<span class="kw">dim</span>(healthData_normal)</code></pre>
+<pre class="output"><code>[1] 2255   15
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">gap_long$year &lt;-<span class="st"> </span><span class="kw">as.integer</span>(gap_long$year)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(healthData)</code></pre>
+<pre class="output"><code>[1] 2255   15
 </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(healthData_normal)</code></pre>
+<pre class="output"><code> [1] &quot;id&quot;                         &quot;HIGroup&quot;                   
+ [3] &quot;agreeableness&quot;              &quot;alcoholUseInYoungAdulthood&quot;
+ [5] &quot;birthYear&quot;                  &quot;conscientiousness&quot;         
+ [7] &quot;education&quot;                  &quot;extraversion&quot;              
+ [9] &quot;health&quot;                     &quot;illnessReversed&quot;           
+[11] &quot;intellect&quot;                  &quot;mentalAdjustment&quot;          
+[13] &quot;neuroticism&quot;                &quot;selfRatedHealth&quot;           
+[15] &quot;sex&quot;                       
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(healthData)</code></pre>
+<pre class="output"><code> [1] &quot;id&quot;                         &quot;conscientiousness&quot;         
+ [3] &quot;extraversion&quot;               &quot;intellect&quot;                 
+ [5] &quot;agreeableness&quot;              &quot;neuroticism&quot;               
+ [7] &quot;sex&quot;                        &quot;selfRatedHealth&quot;           
+ [9] &quot;mentalAdjustment&quot;           &quot;illnessReversed&quot;           
+[11] &quot;health&quot;                     &quot;alcoholUseInYoungAdulthood&quot;
+[13] &quot;education&quot;                  &quot;birthYear&quot;                 
+[15] &quot;HIGroup&quot;                   
+</code></pre>
+<p>Now we’ve got an intermediate dataframe <code>healthData_normal</code> with the same dimensions as the original <code>healthData</code>, but the order of the variables is different. Let’s fix that before checking if they are <code>all.equal()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">healthData_normal &lt;-<span class="st"> </span>healthData_normal[,<span class="kw">names</span>(healthData)]
+<span class="kw">all.equal</span>(healthData_normal,healthData)</code></pre>
+<pre class="output"><code> [1] &quot;Component \&quot;id\&quot;: Mean relative difference: 0.5459826&quot;                            
+ [2] &quot;Component \&quot;conscientiousness\&quot;: Modes: character, numeric&quot;                       
+ [3] &quot;Component \&quot;conscientiousness\&quot;: target is character, current is numeric&quot;         
+ [4] &quot;Component \&quot;extraversion\&quot;: 2199 string mismatches&quot;                               
+ [5] &quot;Component \&quot;intellect\&quot;: Modes: character, numeric&quot;                               
+ [6] &quot;Component \&quot;intellect\&quot;: target is character, current is numeric&quot;                 
+ [7] &quot;Component \&quot;agreeableness\&quot;: 2159 string mismatches&quot;                              
+ [8] &quot;Component \&quot;neuroticism\&quot;: 2153 string mismatches&quot;                                
+ [9] &quot;Component \&quot;sex\&quot;: 1088 string mismatches&quot;                                        
+[10] &quot;Component \&quot;selfRatedHealth\&quot;: Modes: character, numeric&quot;                         
+[11] &quot;Component \&quot;selfRatedHealth\&quot;: target is character, current is numeric&quot;           
+[12] &quot;Component \&quot;mentalAdjustment\&quot;: Modes: character, numeric&quot;                        
+[13] &quot;Component \&quot;mentalAdjustment\&quot;: target is character, current is numeric&quot;          
+[14] &quot;Component \&quot;illnessReversed\&quot;: Modes: character, numeric&quot;                         
+[15] &quot;Component \&quot;illnessReversed\&quot;: target is character, current is numeric&quot;           
+[16] &quot;Component \&quot;health\&quot;: Modes: character, numeric&quot;                                  
+[17] &quot;Component \&quot;health\&quot;: target is character, current is numeric&quot;                    
+[18] &quot;Component \&quot;alcoholUseInYoungAdulthood\&quot;: Modes: character, numeric&quot;              
+[19] &quot;Component \&quot;alcoholUseInYoungAdulthood\&quot;: target is character, current is numeric&quot;
+[20] &quot;Component \&quot;education\&quot;: Modes: character, numeric&quot;                               
+[21] &quot;Component \&quot;education\&quot;: target is character, current is numeric&quot;                 
+[22] &quot;Component \&quot;birthYear\&quot;: Modes: character, numeric&quot;                               
+[23] &quot;Component \&quot;birthYear\&quot;: target is character, current is numeric&quot;                 
+[24] &quot;Component \&quot;HIGroup\&quot;: 942 string mismatches&quot;                                     
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthData_normal)</code></pre>
+<pre class="output"><code>  id conscientiousness extraversion intellect agreeableness neuroticism
+1  1             4.815        3.342     3.587         3.087       4.091
+2  2              5.32        3.342     5.204         2.069           .
+3  3             5.825        3.986     6.044         4.613       3.649
+4  4             7.732        7.016     6.821         6.649       6.299
+5  7             6.498        2.697     5.527         3.087       4.091
+6  8             5.881        2.504     4.234         4.613       3.649
+     sex selfRatedHealth mentalAdjustment illnessReversed health
+1 Female               4                3               3   8.31
+2 Female               4                1               3   5.17
+3   Male               4                2               3   6.74
+4   Male               5                3               5  11.96
+5   Male               3                3               4   8.05
+6   Male               3                2               4   6.48
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+1                          1         5      1913 Group 1
+2                          1         8      1911 Group 1
+3                          2         9      1909 Group 1
+4                          3         8      1905 Group 1
+5                          2         6      1910 Group 1
+6                          1         8      1905 Group 1
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(healthData)</code></pre>
+<pre class="output"><code>  id conscientiousness extraversion intellect agreeableness neuroticism
+1  3             5.825        3.986     6.044         4.613       3.649
+2  4             7.732        7.016     6.821         6.649       6.299
+3  7             6.498        2.697     5.527         3.087       4.091
+4  8             5.881        2.504     4.234         4.613       3.649
+5 10             4.254        5.147     4.751         3.850       3.208
+6 12             7.508        3.535     6.821         4.613       5.415
+   sex selfRatedHealth mentalAdjustment illnessReversed health
+1 Male               4                2               3   6.74
+2 Male               5                3               5  11.96
+3 Male               3                3               4   8.05
+4 Male               3                2               4   6.48
+5 Male               4                2               3   6.74
+6 Male               4                2               5   9.01
+  alcoholUseInYoungAdulthood education birthYear HIGroup
+1                          2         9      1909 Group 1
+2                          3         8      1905 Group 1
+3                          2         6      1910 Group 1
+4                          1         8      1905 Group 1
+5                          2         9      1910 Group 1
+6                          2         4      1911 Group 1
+</code></pre>
+<p>We’re almost there, but the data doesn’t match quite. The output of the <code>head()</code> function shows that each data.frame is sorted differently. To ensure consistent sorting, we can use the <code>arrange()</code> function from the dplyr package.</p>
+<pre class="sourceCode r"><code class="sourceCode r">healthData_normal &lt;-<span class="st"> </span>healthData_normal %&gt;%<span class="st"> </span><span class="kw">arrange</span>(id)
+healthData &lt;-<span class="st"> </span>healthData %&gt;%<span class="st"> </span><span class="kw">arrange</span>(id)
+<span class="kw">str</span>(healthData_normal)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   2255 obs. of  15 variables:
+ $ id                        : int  1 2 3 4 7 8 10 12 14 15 ...
+ $ conscientiousness         : chr  &quot;4.815&quot; &quot;5.32&quot; &quot;5.825&quot; &quot;7.732&quot; ...
+ $ extraversion              : chr  &quot;3.342&quot; &quot;3.342&quot; &quot;3.986&quot; &quot;7.016&quot; ...
+ $ intellect                 : chr  &quot;3.587&quot; &quot;5.204&quot; &quot;6.044&quot; &quot;6.821&quot; ...
+ $ agreeableness             : chr  &quot;3.087&quot; &quot;2.069&quot; &quot;4.613&quot; &quot;6.649&quot; ...
+ $ neuroticism               : chr  &quot;4.091&quot; &quot;.&quot; &quot;3.649&quot; &quot;6.299&quot; ...
+ $ sex                       : chr  &quot;Female&quot; &quot;Female&quot; &quot;Male&quot; &quot;Male&quot; ...
+ $ selfRatedHealth           : chr  &quot;4&quot; &quot;4&quot; &quot;4&quot; &quot;5&quot; ...
+ $ mentalAdjustment          : chr  &quot;3&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; ...
+ $ illnessReversed           : chr  &quot;3&quot; &quot;3&quot; &quot;3&quot; &quot;5&quot; ...
+ $ health                    : chr  &quot;8.31&quot; &quot;5.17&quot; &quot;6.74&quot; &quot;11.96&quot; ...
+ $ alcoholUseInYoungAdulthood: chr  &quot;1&quot; &quot;1&quot; &quot;2&quot; &quot;3&quot; ...
+ $ education                 : chr  &quot;5&quot; &quot;8&quot; &quot;9&quot; &quot;8&quot; ...
+ $ birthYear                 : chr  &quot;1913&quot; &quot;1911&quot; &quot;1909&quot; &quot;1905&quot; ...
+ $ HIGroup                   : chr  &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; ...
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(healthData)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   2255 obs. of  15 variables:
+ $ id                        : int  1 2 3 4 7 8 10 12 14 15 ...
+ $ conscientiousness         : num  4.82 5.32 5.83 7.73 6.5 ...
+ $ extraversion              : chr  &quot;3.342&quot; &quot;3.342&quot; &quot;3.986&quot; &quot;7.016&quot; ...
+ $ intellect                 : num  3.59 5.2 6.04 6.82 5.53 ...
+ $ agreeableness             : chr  &quot;3.087&quot; &quot;2.069&quot; &quot;4.613&quot; &quot;6.649&quot; ...
+ $ neuroticism               : chr  &quot;4.091&quot; &quot;.&quot; &quot;3.649&quot; &quot;6.299&quot; ...
+ $ sex                       : chr  &quot;Female&quot; &quot;Female&quot; &quot;Male&quot; &quot;Male&quot; ...
+ $ selfRatedHealth           : int  4 4 4 5 3 3 4 4 4 4 ...
+ $ mentalAdjustment          : int  3 1 2 3 3 2 2 2 3 3 ...
+ $ illnessReversed           : int  3 3 3 5 4 4 3 5 5 2 ...
+ $ health                    : num  8.31 5.17 6.74 11.96 8.05 ...
+ $ alcoholUseInYoungAdulthood: int  1 1 2 3 2 1 2 2 1 1 ...
+ $ education                 : int  5 8 9 8 6 8 9 4 6 6 ...
+ $ birthYear                 : int  1913 1911 1909 1905 1910 1905 1910 1911 1904 1903 ...
+ $ HIGroup                   : chr  &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; &quot;Group 1&quot; ...
+</code></pre>
+<p>Now we can see that the data matches, but the datatypes are different for some columns due to the coersion that occured earlier.</p>
+<pre class="sourceCode r"><code class="sourceCode r">healthData_normal$conscientiousness &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(healthData_normal$conscientiousness)
+healthData_normal$intellect &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(healthData_normal$intellect)
+healthData_normal$selfRatedHealth &lt;-<span class="st"> </span><span class="kw">as.integer</span>(healthData_normal$selfRatedHealth)
+healthData_normal$mentalAdjustment &lt;-<span class="st"> </span><span class="kw">as.integer</span>(healthData_normal$mentalAdjustment)
+healthData_normal$illnessReversed &lt;-<span class="st"> </span><span class="kw">as.integer</span>(healthData_normal$illnessReversed)
+healthData_normal$health &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(healthData_normal$health)
+healthData_normal$alcoholUseInYoungAdulthood &lt;-<span class="st"> </span><span class="kw">as.integer</span>(healthData_normal$alcoholUseInYoungAdulthood)
+healthData_normal$education &lt;-<span class="st"> </span><span class="kw">as.integer</span>(healthData_normal$education)
+healthData_normal$birthYear &lt;-<span class="st"> </span><span class="kw">as.integer</span>(healthData_normal$birthYear)
+
+<span class="kw">all.equal</span>(healthData_normal,healthData)</code></pre>
+<pre class="output"><code>[1] TRUE
+</code></pre>
+<p>That’s great! We’ve gone from the longest format back to the intermediate and we didn’t introduce any errors in our code.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 2</h2>
 </div>
 <div class="panel-body">
-<p>Using <code>gap_long</code>, calculate the mean life expectancy, population, and gdpPercap for each continent. <strong>Hint:</strong> use the <code>group_by()</code> and <code>summarize()</code> functions we learned in the <code>dplyr</code> lesson</p>
+<p>Convert the original healthData data.frame to a wide format which has the 2 original id columns (<code>id</code> and <code>HIGroup</code>), as well as columns for <code>education</code>, <code>birthYear</code> and <code>sex</code>. Combine all other observation columns (<code>conscientiousness</code>,<code>extraversion</code>,<code>intellect</code> etc) into a single pair of columns - one which hold observation type, and one with the observation value.</p>
 </div>
 </section>
-<h2 id="from-long-to-intermediate-format-with-spread">From long to intermediate format with spread()</h2>
-<p>Now just to double-check our work, let’s use the opposite of <code>gather()</code> to spread our observation variables back out with the aptly named <code>spread()</code>. We can then spread our <code>gap_long()</code> to the original intermediate format or the widest format. Let’s start with the intermediate format.</p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_normal &lt;-<span class="st"> </span>gap_long %&gt;%<span class="st"> </span><span class="kw">spread</span>(obs_type,obs_values)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(gap_normal)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_normal&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(gapminder)</code></pre>
-<pre class="output"><code>[1] 1704    6
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(gap_normal)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_normal&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(gapminder)</code></pre>
-<pre class="output"><code>[1] &quot;country&quot;   &quot;year&quot;      &quot;pop&quot;       &quot;continent&quot; &quot;lifeExp&quot;   &quot;gdpPercap&quot;
-</code></pre>
-<p>Now we’ve got an intermediate dataframe <code>gap_normal</code> with the same dimensions as the original <code>gapminder</code>, but the order of the variables is different. Let’s fix that before checking if they are <code>all.equal()</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_normal &lt;-<span class="st"> </span>gap_normal[,<span class="kw">names</span>(gapminder)]</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_normal&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(gap_normal,gapminder)</code></pre>
-<pre class="error"><code>Error in all.equal(gap_normal, gapminder): object &#39;gap_normal&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(gap_normal)</code></pre>
-<pre class="error"><code>Error in head(gap_normal): object &#39;gap_normal&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(gapminder)</code></pre>
-<pre class="output"><code>      country year      pop continent lifeExp gdpPercap
-1 Afghanistan 1952  8425333      Asia  28.801  779.4453
-2 Afghanistan 1957  9240934      Asia  30.332  820.8530
-3 Afghanistan 1962 10267083      Asia  31.997  853.1007
-4 Afghanistan 1967 11537966      Asia  34.020  836.1971
-5 Afghanistan 1972 13079460      Asia  36.088  739.9811
-6 Afghanistan 1977 14880372      Asia  38.438  786.1134
-</code></pre>
-<p>We’re almost there, the original was sorted by <code>country</code>, <code>continent</code>, then <code>year</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_normal &lt;-<span class="st"> </span>gap_normal %&gt;%<span class="st"> </span><span class="kw">arrange</span>(country,continent,year)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_normal&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(gap_normal,gapminder)</code></pre>
-<pre class="error"><code>Error in all.equal(gap_normal, gapminder): object &#39;gap_normal&#39; not found
-</code></pre>
-<p>That’s great! We’ve gone from the longest format back to the intermediate and we didn’t introduce any errors in our code.</p>
-<p>Now lets convert the long all the way back to the wide. In the wide format, we will keep country and continent as ID variables and spread the observations across the 3 metrics (<code>pop</code>,<code>lifeExp</code>,<code>gdpPercap</code>) and time (<code>year</code>). First we need to create appropriate labels for all our new variables (time*metric combinations) and we also need to unify our ID variables to simplify the process of defining <code>gap_wide</code></p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_temp &lt;-<span class="st"> </span>gap_long %&gt;%<span class="st"> </span><span class="kw">unite</span>(var_ID,continent,country,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gap_temp)</code></pre>
-<pre class="error"><code>Error in str(gap_temp): object &#39;gap_temp&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">gap_temp &lt;-<span class="st"> </span>gap_long %&gt;%
-<span class="st">    </span><span class="kw">unite</span>(ID_var,continent,country,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>) %&gt;%
-<span class="st">    </span><span class="kw">unite</span>(var_names,obs_type,year,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gap_temp)</code></pre>
-<pre class="error"><code>Error in str(gap_temp): object &#39;gap_temp&#39; not found
-</code></pre>
-<p>Using <code>unite()</code> we now have a single ID variable which is a combination of <code>continent</code>,<code>country</code>,and we have defined variable names. We’re now ready to pipe in <code>spread()</code></p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_wide_new &lt;-<span class="st"> </span>gap_long %&gt;%<span class="st"> </span>
-<span class="st">    </span><span class="kw">unite</span>(ID_var,continent,country,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>) %&gt;%
-<span class="st">    </span><span class="kw">unite</span>(var_names,obs_type,year,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>) %&gt;%
-<span class="st">    </span><span class="kw">spread</span>(var_names,obs_values)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gap_wide_new)</code></pre>
-<pre class="error"><code>Error in str(gap_wide_new): object &#39;gap_wide_new&#39; not found
-</code></pre>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Challenge 3</h2>
-</div>
-<div class="panel-body">
-<p>Take this 1 step further and create a <code>gap_ludicrously_wide</code> format data by spreading over countries, year and the 3 metrics? <strong>Hint</strong> this new dataframe should only have 5 rows.</p>
-</div>
-</section>
-<p>Now we have a great ‘wide’ format dataframe, but the <code>ID_var</code> could be more usable, let’s separate it into 2 variables with <code>separate()</code></p>
-<pre class="sourceCode r"><code class="sourceCode r">gap_wide_betterID &lt;-<span class="st"> </span><span class="kw">separate</span>(gap_wide_new,ID_var,<span class="kw">c</span>(<span class="st">&quot;continent&quot;</span>,<span class="st">&quot;country&quot;</span>),<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): could not find function &quot;separate&quot;
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">gap_wide_betterID &lt;-<span class="st"> </span>gap_long %&gt;%<span class="st"> </span>
-<span class="st">    </span><span class="kw">unite</span>(ID_var,continent,country,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>) %&gt;%
-<span class="st">    </span><span class="kw">unite</span>(var_names,obs_type,year,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>) %&gt;%
-<span class="st">    </span><span class="kw">spread</span>(var_names,obs_values) %&gt;%
-<span class="st">    </span><span class="kw">separate</span>(ID_var,<span class="kw">c</span>(<span class="st">&quot;continent&quot;</span>,<span class="st">&quot;country&quot;</span>),<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(gap_wide_betterID)</code></pre>
-<pre class="error"><code>Error in str(gap_wide_betterID): object &#39;gap_wide_betterID&#39; not found
-</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(gap_wide,gap_wide_betterID)</code></pre>
-<pre class="error"><code>Error in all.equal.default(gap_wide, gap_wide_betterID): object &#39;gap_wide_betterID&#39; not found
-</code></pre>
-<p>There and back again!</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Solution to Challenge 1</h2>
@@ -267,22 +301,7 @@
 <h2><span class="glyphicon glyphicon-pencil"></span>Solution to Challenge 2</h2>
 </div>
 <div class="panel-body">
-<pre class="sourceCode r"><code class="sourceCode r">gap_long %&gt;%<span class="st"> </span><span class="kw">group_by</span>(continent,obs_type) %&gt;%
-<span class="st">   </span><span class="kw">summarize</span>(<span class="dt">means=</span><span class="kw">mean</span>(obs_values))</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
-</code></pre>
-</div>
-</section>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Solution to Challenge 3</h2>
-</div>
-<div class="panel-body">
-<pre class="sourceCode r"><code class="sourceCode r">gap_ludicrously_wide &lt;-<span class="st"> </span>gap_long %&gt;%<span class="st"> </span>
-<span class="st">   </span><span class="kw">unite</span>(var_names,obs_type,year,country,<span class="dt">sep=</span><span class="st">&quot;_&quot;</span>) %&gt;%
-<span class="st">   </span><span class="kw">spread</span>(var_names,obs_values)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;gap_long&#39; not found
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">healthData_longish &lt;-<span class="st"> </span>healthData %&gt;%<span class="st"> </span><span class="kw">gather</span>(obsType,obsValues,-id,-HIGroup,-education,-birthYear,-sex)</code></pre>
 </div>
 </section>
 <h2 id="other-great-resources">Other great resources</h2>
