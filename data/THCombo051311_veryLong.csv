@@ -1,4 +1,4 @@
-"id","education","birthYear","HIGroup","obs_type","obs_values"
+"id","education","birthYear","HIGroup","obsType","obsValues"
 3,9,1909,"Group 1","conscientiousness","5.825"
 4,8,1905,"Group 1","conscientiousness","7.732"
 7,6,1910,"Group 1","conscientiousness","6.498"
