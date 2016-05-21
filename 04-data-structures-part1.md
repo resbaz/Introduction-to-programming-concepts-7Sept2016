@@ -154,19 +154,13 @@ Note the `L` suffix to insist that a number is an integer. No matter how complic
 tabby,2.3 or 2.4,TRUE
 ~~~
 
+
 Reload your cats data like before, and check what type of data we find in the `weight` column:
 
 
 ~~~{.r}
 cats <- read.csv(file="feline-data.csv")
 typeof(cats$weight[1])
-~~~
-
-
-
-~~~{.output}
-[1] "double"
-
 ~~~
 
 Oh no, our weights aren't the double type anymore! If we try to do the same math we did on them before, we run into trouble:
@@ -178,8 +172,16 @@ cats$weight[1] + cats$weight[2]
 
 
 
+~~~{.error}
+Warning in Ops.factor(cats$weight[1], cats$weight[2]): '+' not meaningful
+for factors
+
+~~~
+
+
+
 ~~~{.output}
-[1] 7.1
+[1] NA
 
 ~~~
 
@@ -256,7 +258,7 @@ str(cats$weight)
 
 
 ~~~{.output}
- num [1:3] 2.1 5 3.2
+ Factor w/ 4 levels "2.1","2.3 or 2.4",..: 1 4 3 2
 
 ~~~
 
@@ -530,7 +532,7 @@ str(cats$weight)
 
 
 ~~~{.output}
- num [1:3] 2.1 5 3.2
+ Factor w/ 4 levels "2.1","2.3 or 2.4",..: 1 4 3 2
 
 ~~~
 
@@ -543,7 +545,7 @@ str(cats$likes_string)
 
 
 ~~~{.output}
- logi [1:3] TRUE FALSE TRUE
+ logi [1:4] TRUE FALSE TRUE TRUE
 
 ~~~
 
@@ -557,7 +559,7 @@ str(cats$coat)
 
 
 ~~~{.output}
- Factor w/ 3 levels "black","calico",..: 2 1 3
+ Factor w/ 3 levels "black","calico",..: 2 1 3 3
 
 ~~~
 

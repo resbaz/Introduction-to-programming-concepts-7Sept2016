@@ -79,10 +79,15 @@ Note the `L` suffix to insist that a number is an integer. No matter how complic
 ```{r, eval=FALSE}
 tabby,2.3 or 2.4,TRUE
 ```
+```{r, echo = FALSE}
+cats$weight <- as.character(cats$weight)
+cats <- rbind(cats,data.frame(coat = "tabby",weight="2.3 or 2.4",likes_string = TRUE))
+cats$weight <- as.factor(cats$weight)
+```
 
 Reload your cats data like before, and check what type of data we find in the `weight` column:
 
-```{r}
+```{r, eval=FALSE}
 cats <- read.csv(file="feline-data.csv")
 typeof(cats$weight[1])
 ```
