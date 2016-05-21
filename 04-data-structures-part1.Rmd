@@ -80,6 +80,7 @@ Note the `L` suffix to insist that a number is an integer. No matter how complic
 tabby,2.3 or 2.4,TRUE
 ```
 ```{r, echo = FALSE}
+cats_old <- cats
 cats$weight <- as.character(cats$weight)
 cats <- rbind(cats,data.frame(coat = "tabby",weight="2.3 or 2.4",likes_string = TRUE))
 cats$weight <- as.factor(cats$weight)
@@ -113,7 +114,7 @@ tabby,3.2,TRUE
 
 And back in RStudio:
 
-```
+```{r}
 cats <- read.csv(file="feline-data.csv")
 ```
 

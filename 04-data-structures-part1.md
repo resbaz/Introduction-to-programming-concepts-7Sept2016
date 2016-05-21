@@ -208,9 +208,10 @@ tabby,3.2,TRUE
 
 And back in RStudio:
 
-```
+
+~~~{.r}
 cats <- read.csv(file="feline-data.csv")
-```
+~~~
 
 ## Vectors & Type Coercion
 
@@ -268,7 +269,7 @@ str(cats$weight)
 
 
 ~~~{.output}
- Factor w/ 4 levels "2.1","2.3 or 2.4",..: 1 4 3 2
+ num [1:3] 2.1 5 3.2
 
 ~~~
 
@@ -542,7 +543,7 @@ str(cats$weight)
 
 
 ~~~{.output}
- Factor w/ 4 levels "2.1","2.3 or 2.4",..: 1 4 3 2
+ num [1:3] 2.1 5 3.2
 
 ~~~
 
@@ -555,7 +556,7 @@ str(cats$likes_string)
 
 
 ~~~{.output}
- logi [1:4] TRUE FALSE TRUE TRUE
+ logi [1:3] TRUE FALSE TRUE
 
 ~~~
 
@@ -569,7 +570,7 @@ str(cats$coat)
 
 
 ~~~{.output}
- Factor w/ 3 levels "black","calico",..: 2 1 3 3
+ Factor w/ 3 levels "black","calico",..: 2 1 3
 
 ~~~
 

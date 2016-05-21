@@ -279,7 +279,11 @@ cats
 > Finally, use `cbind` to add a column with each person's answer to the question, "Is it time for coffee break?"
 >
 
-So far, you've seen the basics of manipulating data.frames with our cat data; now, let's use those skills to digest a more realistic dataset. Lets read in some real data now. For the remainder of the workshop we will play with some child health data from positive psychology. The data is stored on the GitHub repository used for these training materials, and R can read the file directly from there:
+So far, you've seen the basics of manipulating data.frames with our cat data; now, let's use those skills to digest a more realistic dataset. Lets read in some real data now. For the remainder of the workshop we will play with some child health data from positive psychology, supplied by Dr Peggy Kern:
+
+Kern, M. L., Hampson, S. E., Goldberg, L. R., & Friedman, H. S. (2014). Integrating Prospective Longitudinal Data: Modeling Personality and Health in the Terman Life Cycle and Hawaii Longitudinal Studies. Developmental Psychology, 50(5), 1390–1406. http://doi.org/10.1037/a0030874.
+
+The data is stored on the GitHub repository used for these training materials, and R can read the file directly from there:
 
 
 ~~~{.r}

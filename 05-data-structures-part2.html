@@ -168,7 +168,9 @@ cats</code></pre>
 <p>Then use <code>rbind</code> to add an entry for the people sitting beside you. Finally, use <code>cbind</code> to add a column with each person’s answer to the question, “Is it time for coffee break?”</p>
 </div>
 </section>
-<p>So far, you’ve seen the basics of manipulating data.frames with our cat data; now, let’s use those skills to digest a more realistic dataset. Lets read in some real data now. For the remainder of the workshop we will play with some child health data from positive psychology. The data is stored on the GitHub repository used for these training materials, and R can read the file directly from there:</p>
+<p>So far, you’ve seen the basics of manipulating data.frames with our cat data; now, let’s use those skills to digest a more realistic dataset. Lets read in some real data now. For the remainder of the workshop we will play with some child health data from positive psychology, supplied by Dr Peggy Kern:</p>
+<p>Kern, M. L., Hampson, S. E., Goldberg, L. R., &amp; Friedman, H. S. (2014). Integrating Prospective Longitudinal Data: Modeling Personality and Health in the Terman Life Cycle and Hawaii Longitudinal Studies. Developmental Psychology, 50(5), 1390–1406. http://doi.org/10.1037/a0030874.</p>
+<p>The data is stored on the GitHub repository used for these training materials, and R can read the file directly from there:</p>
 <pre class="sourceCode r"><code class="sourceCode r">healthData &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://goo.gl/oqQGKF&quot;</span>)</code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
