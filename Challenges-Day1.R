@@ -3,6 +3,7 @@
 # These should be copied into the etherpad at appropriate times for attendees
 # to copy into their own R scripts, in order to save time on typing out the 
 # challenges
+# Navigate by section headings.
 #
 # Created by Nikki Rubinstein
 # 22 May, 2016
