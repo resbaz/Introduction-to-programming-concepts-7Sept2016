@@ -97,7 +97,8 @@
 # sections in this part of the workshop:
 # - Data types
 # - Data structures
-# Populate each character vector with the names of the data types and data structures we've seen so far.
+# Populate each character vector with the names of the data types and data structures 
+# we've seen so far.
 
 ## Challenge 6 
 # Consider the R output of the matrix below:
