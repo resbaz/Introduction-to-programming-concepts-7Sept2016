@@ -192,7 +192,7 @@ That's not very informative, since the dataset comprises data from two studies t
 ~~~{.r}
 # Takes a dataset and calculates the average year of birth for a
 # specified study group.
-calcBirthYearAverage <- function(dat, group = 1) {
+calcBirthYearAverage <- function(dat, group = "Group 1") {
   birthYearAverage <- mean(dat[dat$HIGroup == group, ]$birthYear)
   return(birthYearAverage)
 }
@@ -213,26 +213,26 @@ Let's take a look at what happens when we specify the study group:
 
 
 ~~~{.r}
-calcBirthYearAverage(healthData,0)
+calcBirthYearAverage(healthData,"Group 1")
 ~~~
 
 
 
 ~~~{.output}
-[1] NaN
+[1] 1910.041
 
 ~~~
 
 
 
 ~~~{.r}
-calcBirthYearAverage(healthData,1)
+calcBirthYearAverage(healthData,"Group 2")
 ~~~
 
 
 
 ~~~{.output}
-[1] NaN
+[1] 1955.426
 
 ~~~
 
@@ -245,7 +245,7 @@ calcBirthYearAverage(healthData)
 
 
 ~~~{.output}
-[1] NaN
+[1] 1910.041
 
 ~~~
 

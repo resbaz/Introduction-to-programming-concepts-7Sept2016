@@ -139,6 +139,7 @@ The data is stored on the GitHub repository used for these training materials, a
 healthData <- read.csv("https://goo.gl/oqQGKF")
 ```
 
+
 > ## Miscellaneous Tips {.callout}
 >
 > 1. Another type of file you might encounter are tab-separated

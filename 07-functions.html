@@ -139,7 +139,7 @@ calcBirthYearAverage &lt;-<span class="st"> </span>function(dat) {
 <p>That’s not very informative, since the dataset comprises data from two studies that were performed decades apart. Let’s add another argument so we can calculate the average year of birth for a particular study group.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Takes a dataset and calculates the average year of birth for a</span>
 <span class="co"># specified study group.</span>
-calcBirthYearAverage &lt;-<span class="st"> </span>function(dat, <span class="dt">group =</span> <span class="dv">1</span>) {
+calcBirthYearAverage &lt;-<span class="st"> </span>function(dat, <span class="dt">group =</span> <span class="st">&quot;Group 1&quot;</span>) {
   birthYearAverage &lt;-<span class="st"> </span><span class="kw">mean</span>(dat[dat$HIGroup ==<span class="st"> </span>group, ]$birthYear)
   <span class="kw">return</span>(birthYearAverage)
 }</code></pre>
@@ -147,14 +147,14 @@ calcBirthYearAverage &lt;-<span class="st"> </span>function(dat, <span class="dt
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">source</span>(<span class="st">&quot;functions/functions-lesson.R&quot;</span>)</code></pre>
 <p>The function now subsets the provided data by group before taking the average year of birth. A default value of 1 is given for group, so that if no value is specified when you call the function, the result of the function will be for group 1. You need to be careful when setting default values; sometimes you can get some unexpected behaviour from functions if you don’t realise that an argument has a default value.</p>
 <p>Let’s take a look at what happens when we specify the study group:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthData,<span class="dv">0</span>)</code></pre>
-<pre class="output"><code>[1] NaN
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthData,<span class="st">&quot;Group 1&quot;</span>)</code></pre>
+<pre class="output"><code>[1] 1910.041
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthData,<span class="dv">1</span>)</code></pre>
-<pre class="output"><code>[1] NaN
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthData,<span class="st">&quot;Group 2&quot;</span>)</code></pre>
+<pre class="output"><code>[1] 1955.426
 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">calcBirthYearAverage</span>(healthData)</code></pre>
-<pre class="output"><code>[1] NaN
+<pre class="output"><code>[1] 1910.041
 </code></pre>
 <p>What if we want to look at the average year of birth for specific year levels?</p>
 <section class="challenge panel panel-success">

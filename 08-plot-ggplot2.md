@@ -48,15 +48,8 @@ Let's start off with an example:
 
 ~~~{.r}
 library("ggplot2")
-ggplot(data = healthData, aes(x = education, y = health)) +
+ggplot(data = healthData, aes(x = selfRatedHealth, y = health)) +
   geom_point()
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing missing values (geom_point).
-
 ~~~
 
 <img src="fig/08-plot-ggplot2-lifeExp-vs-gdpPercap-scatter-1.png" title="plot of chunk lifeExp-vs-gdpPercap-scatter" alt="plot of chunk lifeExp-vs-gdpPercap-scatter" style="display: block; margin: auto;" />
@@ -80,7 +73,7 @@ By itself, the call to `ggplot` isn't enough to draw a figure:
 
 
 ~~~{.r}
-ggplot(data = healthData, aes(x = education, y = health))
+ggplot(healthData,aes(x=selfRatedHealth,y=health))
 ~~~
 
 <img src="fig/08-plot-ggplot2-unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
@@ -92,27 +85,21 @@ tells `ggplot` we want to visually represent the relationship between **x** and
 
 
 ~~~{.r}
-ggplot(data = healthData, aes(x = education, y = health)) +
+ggplot(healthData,aes(x=selfRatedHealth,y=health)) +
   geom_point()
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing missing values (geom_point).
-
 ~~~
 
 <img src="fig/08-plot-ggplot2-education-vs-health-scatter2-1.png" title="plot of chunk education-vs-health-scatter2" alt="plot of chunk education-vs-health-scatter2" style="display: block; margin: auto;" />
 
 > ## Challenge 1 {.challenge}
 >
-> Modify the example so that the figure visualises how agreeableness 
-> varies with extraversion:
+> Modify the following example so that the figure visualises how illnessReversed 
+> varies with health:
 >
 > 
 > ~~~{.r}
-> ggplot(data = healthData, aes(x = education, y = health)) + geom_point()
+> ggplot(healthData,aes(x=selfRatedHealth,y=health)) +
+>   geom_point()
 > ~~~
 >
 
@@ -121,9 +108,10 @@ Warning: Removed 34 rows containing missing values (geom_point).
 > In the previous examples and challenge we've used the `aes` function to tell
 > the scatterplot **geom** about the **x** and **y** locations of each point.
 > Another *aesthetic* property we can modify is the point *color*. Modify the
-> code from the previous challenge to **color** the points by the "sex"
-> column. What trends do you see in the data? Are they what you expected?
+> code from the previous challenge to **color** the points by the "education"
+> column.
 >
+> **HINT**: transform the education column to a factor using the `as.factor()` function.
 
 ## Layers
 
@@ -132,30 +120,28 @@ Instead, let's tell `ggplot` to visualise the data as a line plot:
 
 
 ~~~{.r}
-ggplot(data = healthData, aes(x=education, y=health, by=HIGroup, color=sex)) +
-  geom_line()
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing missing values (geom_path).
-
+ggplot(healthData,aes(x=health,y=illnessReversed,color=as.factor(education),by=sex)) + geom_line()
 ~~~
 
 <img src="fig/08-plot-ggplot2-health-line-1.png" title="plot of chunk health-line" alt="plot of chunk health-line" style="display: block; margin: auto;" />
 
 Instead of adding a `geom_point` layer, we've added a `geom_line` layer. We've
 added the **by** *aesthetic*, which tells `ggplot` to draw a line for each
-country.
+sex.
 
 But what if we want to visualise both lines and points on the plot? We can
 simply add another layer to the plot:
 
 
 ~~~{.r}
-ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
- geom_point() + geom_line()
+ggplot(healthData,aes(x=health,y=illnessReversed,color=as.factor(education),by=sex)) + geom_point() + geom_line()
+~~~
+
+
+
+~~~{.error}
+Warning: Removed 4 rows containing missing values (geom_point).
+
 ~~~
 
 <img src="fig/08-plot-ggplot2-health-line-point-1.png" title="plot of chunk health-line-point" alt="plot of chunk health-line-point" style="display: block; margin: auto;" />
@@ -166,8 +152,14 @@ demonstration:
 
 
 ~~~{.r}
-ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
-  geom_point() + geom_line(aes(colour=sex))
+ggplot(healthData,aes(x=health,y=illnessReversed,by=sex)) + geom_line(aes(color=as.factor(education))) + geom_point()
+~~~
+
+
+
+~~~{.error}
+Warning: Removed 4 rows containing missing values (geom_point).
+
 ~~~
 
 <img src="fig/08-plot-ggplot2-health-layer-example-1-1.png" title="plot of chunk health-layer-example-1" alt="plot of chunk health-layer-example-1" style="display: block; margin: auto;" />
@@ -190,7 +182,7 @@ demonstrate we'll go back to our first example:
 
 
 ~~~{.r}
-ggplot(data = healthData, aes(x = health, y = agreeableness, color=sex)) +
+ggplot(data = healthData, aes(x = selfRatedHealth, y = health,color=as.factor(education))) +
   geom_point()
 ~~~
 
@@ -230,22 +222,8 @@ We can fit a simple relationship to the data by adding another layer,
 
 
 ~~~{.r}
-ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
-   geom_point() + geom_smooth(method="lm")
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing non-finite values (stat_smooth).
-
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing missing values (geom_point).
-
+ggplot(data = healthData, aes(x = selfRatedHealth, y = health,color=as.factor(education))) +
+  geom_point() + geom_smooth(method="lm")
 ~~~
 
 <img src="fig/08-plot-ggplot2-lm-fit-1.png" title="plot of chunk lm-fit" alt="plot of chunk lm-fit" style="display: block; margin: auto;" />
@@ -255,22 +233,8 @@ We can make the line thicker by *setting* the **size** aesthetic in the
 
 
 ~~~{.r}
-ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
-   geom_point() + geom_smooth(method="lm", size = 1.5)
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing non-finite values (stat_smooth).
-
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing missing values (geom_point).
-
+ggplot(data = healthData, aes(x = selfRatedHealth, y = health,color=as.factor(education))) +
+  geom_point() + geom_smooth(method="lm", size = 1.5)
 ~~~
 
 <img src="fig/08-plot-ggplot2-lm-fit2-1.png" title="plot of chunk lm-fit2" alt="plot of chunk lm-fit2" style="display: block; margin: auto;" />
@@ -290,27 +254,19 @@ variables and their visual representation.
 
 ## Multi-panel figures
 
-Earlier we visualised the change in health with education across both genders
-in one plot. Alternatively, we can split this out over multiple panels
+Earlier we visualised the change in health with selfRatedHealth across education levels
+in one plot. Alternatively, we can split out different groups in the data into multiple panels
 by adding a layer of **facet** panels:
 
 
 ~~~{.r}
-ggplot(data = healthData, aes(x = education, y = health, color=HIGroup)) +
-  geom_line() + facet_wrap( ~ sex)
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 16 rows containing missing values (geom_path).
-
+ggplot(data = healthData, aes(x = selfRatedHealth, y = health,color=paste(sex,HIGroup))) + geom_smooth(method="lm") + facet_wrap( ~ alcoholUseInYoungAdulthood)
 ~~~
 
 <img src="fig/08-plot-ggplot2-facet-1.png" title="plot of chunk facet" alt="plot of chunk facet" style="display: block; margin: auto;" />
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
-(~). This tells R to draw a panel for each unique value in the HIGroup column
+(~). This tells R to draw a panel for each unique value in the alcohol column
 of the healthData dataset.
 
 ## Modifying text
@@ -325,18 +281,10 @@ for changing the axis labels. To change the legend title, we need to use the
 
 
 ~~~{.r}
-ggplot(healthData, aes(x = education, y = health, color=HIGroup)) +
-  geom_line() + facet_wrap( ~ sex) +
-  xlab("Education level") + ylab("Health rating from teacher") + ggtitle("Figure 1") +
-  scale_colour_discrete(name="Study group", labels= c("Hawaii","Teman")) +
+ggplot(data = healthData, aes(x = selfRatedHealth, y = health,color=paste(sex,HIGroup))) + geom_smooth(method="lm") + facet_wrap( ~ alcoholUseInYoungAdulthood) +
+  xlab("Self-reported health") + ylab("Health rating from teacher") + ggtitle("Figure 1") +
+  scale_colour_discrete(name="Study group and gender", labels= c("Hawaii - Female","Teman - Female","Hawaii - Male","Teman - Male")) +
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 16 rows containing missing values (geom_path).
-
 ~~~
 
 <img src="fig/08-plot-ggplot2-theme-1.png" title="plot of chunk theme" alt="plot of chunk theme" style="display: block; margin: auto;" />
@@ -363,12 +311,19 @@ code to modify!
 
 > ## Solution to challenge 1 {.challenge}
 >
-> Modify the example so that the figure visualises how agreeableness 
-> varies with extraversion:
+> Modify the example so that the figure visualises how illnessReversed 
+> varies with health:
 >
 > 
 > ~~~{.r}
-> ggplot(healthData, aes(x = agreeableness, y = extraversion)) + geom_point()
+> ggplot(healthData, aes(x = health, y = illnessReversed)) + geom_point()
+> ~~~
+> 
+> 
+> 
+> ~~~{.error}
+> Warning: Removed 4 rows containing missing values (geom_point).
+> 
 > ~~~
 > 
 > <img src="fig/08-plot-ggplot2-ch1-sol-1.png" title="plot of chunk ch1-sol" alt="plot of chunk ch1-sol" style="display: block; margin: auto;" />
@@ -379,13 +334,20 @@ code to modify!
 > In the previous examples and challenge we've used the `aes` function to tell
 > the scatterplot **geom** about the **x** and **y** locations of each point.
 > Another *aesthetic* property we can modify is the point *color*. Modify the
-> code from the previous challenge to **color** the points by the "sex"
-> column. What trends do you see in the data? Are they what you expected?
+> code from the previous challenge to **color** the points by the "education"
+> column.
 >
 > 
 > ~~~{.r}
-> ggplot(healthData, aes(x = agreeableness, y = extraversion, colour=sex)) + 
+> ggplot(healthData, aes(x = health, y = illnessReversed, colour=as.factor(education))) + 
 > geom_point()
+> ~~~
+> 
+> 
+> 
+> ~~~{.error}
+> Warning: Removed 4 rows containing missing values (geom_point).
+> 
 > ~~~
 > 
 > <img src="fig/08-plot-ggplot2-ch2-sol-1.png" title="plot of chunk ch2-sol" alt="plot of chunk ch2-sol" style="display: block; margin: auto;" />
@@ -398,13 +360,19 @@ code to modify!
 >
 > 
 > ~~~{.r}
-> ggplot(healthData, aes(x = health, y = extraversion, colour=sex)) + 
->   geom_line(aes(colour=sex)) + geom_point() 
+> ggplot(healthData,aes(x=health,y=illnessReversed,by=sex)) + geom_point() + geom_line(aes(color=as.factor(education)))
+> ~~~
+> 
+> 
+> 
+> ~~~{.error}
+> Warning: Removed 4 rows containing missing values (geom_point).
+> 
 > ~~~
 > 
 > <img src="fig/08-plot-ggplot2-ch3-sol-1.png" title="plot of chunk ch3-sol" alt="plot of chunk ch3-sol" style="display: block; margin: auto;" />
 > 
-> The points now get drawn over the lines!
+> The lines now get drawn over the points!
 >
 
 
@@ -417,23 +385,8 @@ code to modify!
 >
 > 
 > ~~~{.r}
-> ggplot(data = healthData, aes(x = health, y = education)) +
->   geom_point(size=3, color="orange") + 
->   geom_smooth(method="lm", size=1.5)
-> ~~~
-> 
-> 
-> 
-> ~~~{.error}
-> Warning: Removed 34 rows containing non-finite values (stat_smooth).
-> 
-> ~~~
-> 
-> 
-> 
-> ~~~{.error}
-> Warning: Removed 34 rows containing missing values (geom_point).
-> 
+> ggplot(data = healthData, aes(x = selfRatedHealth, y = health)) +
+>   geom_point(size=3,color="red") + geom_smooth(method="lm", size = 1.5)
 > ~~~
 > 
 > <img src="fig/08-plot-ggplot2-ch4-sol-1.png" title="plot of chunk ch4-sol" alt="plot of chunk ch4-sol" style="display: block; margin: auto;" />

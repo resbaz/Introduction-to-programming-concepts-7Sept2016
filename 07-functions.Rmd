@@ -167,7 +167,7 @@ That's not very informative, since the dataset comprises data from two studies t
 ```{r}
 # Takes a dataset and calculates the average year of birth for a
 # specified study group.
-calcBirthYearAverage <- function(dat, group = 1) {
+calcBirthYearAverage <- function(dat, group = "Group 1") {
   birthYearAverage <- mean(dat[dat$HIGroup == group, ]$birthYear)
   return(birthYearAverage)
 }
@@ -186,8 +186,8 @@ The function now subsets the provided data by group before taking the average ye
 Let's take a look at what happens when we specify the study group:
 
 ```{r}
-calcBirthYearAverage(healthData,0)
-calcBirthYearAverage(healthData,1)
+calcBirthYearAverage(healthData,"Group 1")
+calcBirthYearAverage(healthData,"Group 2")
 calcBirthYearAverage(healthData)
 ```
 
