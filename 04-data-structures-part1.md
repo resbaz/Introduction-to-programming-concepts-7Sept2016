@@ -160,7 +160,17 @@ Reload your cats data like before, and check what type of data we find in the `w
 
 ~~~{.r}
 cats <- read.csv(file="feline-data.csv")
+~~~
+
+~~~{.r}
 typeof(cats$weight[1])
+~~~
+
+
+
+~~~{.output}
+[1] "integer"
+
 ~~~
 
 Oh no, our weights aren't the double type anymore! If we try to do the same math we did on them before, we run into trouble:

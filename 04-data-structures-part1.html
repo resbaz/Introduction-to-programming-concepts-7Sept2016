@@ -89,8 +89,10 @@ typeof(&#39;banana&#39;)</code></pre>
 <p>Note the <code>L</code> suffix to insist that a number is an integer. No matter how complicated our analyses become, all data in R is interpreted as one of these basic data types. This strictness has some really important consequences. Go back to your text editor and add add this line to feline-data.csv:</p>
 <pre class="sourceCode r"><code class="sourceCode r">tabby,<span class="fl">2.3</span> or <span class="fl">2.4</span>,<span class="ot">TRUE</span></code></pre>
 <p>Reload your cats data like before, and check what type of data we find in the <code>weight</code> column:</p>
-<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;feline-data.csv&quot;</span>)
-<span class="kw">typeof</span>(cats$weight[<span class="dv">1</span>])</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">cats &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;feline-data.csv&quot;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(cats$weight[<span class="dv">1</span>])</code></pre>
+<pre class="output"><code>[1] &quot;integer&quot;
+</code></pre>
 <p>Oh no, our weights aren’t the double type anymore! If we try to do the same math we did on them before, we run into trouble:</p>
 <pre class="sourceCode r"><code class="sourceCode r">cats$weight[<span class="dv">1</span>] +<span class="st"> </span>cats$weight[<span class="dv">2</span>]</code></pre>
 <pre class="error"><code>Warning in Ops.factor(cats$weight[1], cats$weight[2]): &#39;+&#39; not meaningful

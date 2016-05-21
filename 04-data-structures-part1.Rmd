@@ -89,6 +89,8 @@ Reload your cats data like before, and check what type of data we find in the `w
 
 ```{r, eval=FALSE}
 cats <- read.csv(file="feline-data.csv")
+```
+```{r}
 typeof(cats$weight[1])
 ```
 
