@@ -90,13 +90,9 @@
 <p>Instead of adding a <code>geom_point</code> layer, we’ve added a <code>geom_line</code> layer. We’ve added the <strong>by</strong> <em>aesthetic</em>, which tells <code>ggplot</code> to draw a line for each sex.</p>
 <p>But what if we want to visualise both lines and points on the plot? We can simply add another layer to the plot:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(healthData,<span class="kw">aes</span>(<span class="dt">x=</span>health,<span class="dt">y=</span>illnessReversed,<span class="dt">color=</span><span class="kw">as.factor</span>(education),<span class="dt">by=</span>sex)) +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_line</span>()</code></pre>
-<pre class="error"><code>Warning: Removed 4 rows containing missing values (geom_point).
-</code></pre>
 <p><img src="fig/08-plot-ggplot2-health-line-point-1.png" title="plot of chunk health-line-point" alt="plot of chunk health-line-point" style="display: block; margin: auto;" /></p>
 <p>It’s important to note that each layer is drawn on top of the previous layer. In this example, the points have been drawn <em>on top of</em> the lines. Here’s a demonstration:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(healthData,<span class="kw">aes</span>(<span class="dt">x=</span>health,<span class="dt">y=</span>illnessReversed,<span class="dt">by=</span>sex)) +<span class="st"> </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color=</span><span class="kw">as.factor</span>(education))) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
-<pre class="error"><code>Warning: Removed 4 rows containing missing values (geom_point).
-</code></pre>
 <p><img src="fig/08-plot-ggplot2-health-layer-example-1-1.png" title="plot of chunk health-layer-example-1" alt="plot of chunk health-layer-example-1" style="display: block; margin: auto;" /></p>
 <p>In this example, the <em>aesthetic</em> mapping of <strong>color</strong> has been moved from the global plot options in <code>ggplot</code> to the <code>geom_line</code> layer so it no longer applies to the points. Now we can clearly see that the points are drawn on top of the lines.</p>
 <section class="challenge panel panel-success">
@@ -123,13 +119,6 @@ visual values of an aesthetic.
 ~~~{.r}
 ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
   geom_point() + scale_y_log10()
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing missing values (geom_point).
-
 ~~~
 
 <img src="fig/08-plot-ggplot2-axis-scale-1.png" title="plot of chunk axis-scale" alt="plot of chunk axis-scale" style="display: block; margin: auto;" />
@@ -181,6 +170,10 @@ y-axis. -->
 <p>What would you like to visualise from the dataset? Go ahead and try to do it using ggplot!</p>
 </div>
 </section>
+<p>Lastly, <code>ggplot2</code> has a very handy function, <code>ggsave()</code> for saving the current plot to a file:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsave</span>(<span class="st">&quot;fig/Figure1.pdf&quot;</span>)</code></pre>
+<pre class="output"><code>Saving 7 x 7 in image
+</code></pre>
 <h2 id="challenge-solutions">Challenge solutions</h2>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
@@ -189,8 +182,6 @@ y-axis. -->
 <div class="panel-body">
 <p>Modify the example so that the figure visualises how illnessReversed varies with health:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(healthData, <span class="kw">aes</span>(<span class="dt">x =</span> health, <span class="dt">y =</span> illnessReversed)) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
-<pre class="error"><code>Warning: Removed 4 rows containing missing values (geom_point).
-</code></pre>
 <p><img src="fig/08-plot-ggplot2-ch1-sol-1.png" title="plot of chunk ch1-sol" alt="plot of chunk ch1-sol" style="display: block; margin: auto;" /></p>
 </div>
 </section>
@@ -202,8 +193,6 @@ y-axis. -->
 <p>In the previous examples and challenge we’ve used the <code>aes</code> function to tell the scatterplot <strong>geom</strong> about the <strong>x</strong> and <strong>y</strong> locations of each point. Another <em>aesthetic</em> property we can modify is the point <em>color</em>. Modify the code from the previous challenge to <strong>color</strong> the points by the “education” column.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(healthData, <span class="kw">aes</span>(<span class="dt">x =</span> health, <span class="dt">y =</span> illnessReversed, <span class="dt">colour=</span><span class="kw">as.factor</span>(education))) +<span class="st"> </span>
 <span class="kw">geom_point</span>()</code></pre>
-<pre class="error"><code>Warning: Removed 4 rows containing missing values (geom_point).
-</code></pre>
 <p><img src="fig/08-plot-ggplot2-ch2-sol-1.png" title="plot of chunk ch2-sol" alt="plot of chunk ch2-sol" style="display: block; margin: auto;" /></p>
 </div>
 </section>
@@ -214,8 +203,6 @@ y-axis. -->
 <div class="panel-body">
 <p>Switch the order of the point and line layers from the previous example. What happened?</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(healthData,<span class="kw">aes</span>(<span class="dt">x=</span>health,<span class="dt">y=</span>illnessReversed,<span class="dt">by=</span>sex)) +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color=</span><span class="kw">as.factor</span>(education)))</code></pre>
-<pre class="error"><code>Warning: Removed 4 rows containing missing values (geom_point).
-</code></pre>
 <p><img src="fig/08-plot-ggplot2-ch3-sol-1.png" title="plot of chunk ch3-sol" alt="plot of chunk ch3-sol" style="display: block; margin: auto;" /></p>
 <p>The lines now get drawn over the points!</p>
 </div>

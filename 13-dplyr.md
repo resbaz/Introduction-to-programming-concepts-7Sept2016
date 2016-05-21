@@ -22,7 +22,7 @@ mean(healthData[healthData$HIGroup == "Group 1", "health"])
 
 
 ~~~{.output}
-[1] 9.199115
+[1] 9.197253
 
 ~~~
 
@@ -35,7 +35,7 @@ mean(healthData[healthData$HIGroup == "Group 2", "health"])
 
 
 ~~~{.output}
-[1] 9.660906
+[1] 9.64024
 
 ~~~
 
@@ -93,16 +93,9 @@ If we now wanted to move forward with the above, but only with data for females,
 
 
 ~~~{.r}
-sex_health_neuroticism_female <- health %>%
+sex_health_neuroticism_female <- healthData %>%
     filter(sex=="Female") %>%
     select(sex,health,neuroticism)
-~~~
-
-
-
-~~~{.error}
-Error in eval(expr, envir, enclos): object 'health' not found
-
 ~~~
 
 > ## Challenge 1 {.challenge}
@@ -126,13 +119,13 @@ str(healthData)
 
 
 ~~~{.output}
-'data.frame':	2255 obs. of  15 variables:
+'data.frame':	2034 obs. of  15 variables:
  $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
  $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
- $ extraversion              : Factor w/ 95 levels ".","1.000","1.408",..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ extraversion              : num  3.99 7.02 2.7 2.5 5.15 ...
  $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
- $ agreeableness             : Factor w/ 56 levels ".","1.000","1.051",..: 34 56 17 34 26 34 42 23 39 23 ...
- $ neuroticism               : Factor w/ 43 levels ".","1.000","1.442",..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ agreeableness             : num  4.61 6.65 3.09 4.61 3.85 ...
+ $ neuroticism               : num  3.65 6.3 4.09 3.65 3.21 ...
  $ sex                       : Factor w/ 2 levels "Female","Male": 2 2 2 2 2 2 2 2 2 2 ...
  $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
  $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
@@ -154,13 +147,13 @@ str(healthData %>% group_by(sex))
 
 
 ~~~{.output}
-Classes 'grouped_df', 'tbl_df', 'tbl' and 'data.frame':	2255 obs. of  15 variables:
+Classes 'grouped_df', 'tbl_df', 'tbl' and 'data.frame':	2034 obs. of  15 variables:
  $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
  $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
- $ extraversion              : Factor w/ 95 levels ".","1.000","1.408",..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ extraversion              : num  3.99 7.02 2.7 2.5 5.15 ...
  $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
- $ agreeableness             : Factor w/ 56 levels ".","1.000","1.051",..: 34 56 17 34 26 34 42 23 39 23 ...
- $ neuroticism               : Factor w/ 43 levels ".","1.000","1.442",..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ agreeableness             : num  4.61 6.65 3.09 4.61 3.85 ...
+ $ neuroticism               : num  3.65 6.3 4.09 3.65 3.21 ...
  $ sex                       : Factor w/ 2 levels "Female","Male": 2 2 2 2 2 2 2 2 2 2 ...
  $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
  $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
@@ -174,10 +167,10 @@ Classes 'grouped_df', 'tbl_df', 'tbl' and 'data.frame':	2255 obs. of  15 variabl
   ..$ : symbol sex
  - attr(*, "drop")= logi TRUE
  - attr(*, "indices")=List of 2
-  ..$ : int  1231 1232 1233 1234 1235 1236 1237 1238 1239 1240 ...
+  ..$ : int  1118 1119 1120 1121 1122 1123 1124 1125 1126 1127 ...
   ..$ : int  0 1 2 3 4 5 6 7 8 9 ...
- - attr(*, "group_sizes")= int  1024 1231
- - attr(*, "biggest_group_size")= int 1231
+ - attr(*, "group_sizes")= int  916 1118
+ - attr(*, "biggest_group_size")= int 1118
  - attr(*, "labels")='data.frame':	2 obs. of  1 variable:
   ..$ sex: Factor w/ 2 levels "Female","Male": 1 2
   ..- attr(*, "vars")=List of 1
@@ -198,6 +191,19 @@ The above was a bit on the uneventful side because `group_by()` is much more exc
 conscientiousness_by_sex <- healthData %>%
     group_by(sex) %>%
     summarize(mean_conscientiousness=mean(conscientiousness))
+conscientiousness_by_sex
+~~~
+
+
+
+~~~{.output}
+Source: local data frame [2 x 2]
+
+     sex mean_conscientiousness
+  (fctr)                  (dbl)
+1 Female               6.086473
+2   Male               5.685394
+
 ~~~
 
 ![](fig/13-dplyr-fig3.png)
@@ -259,18 +265,7 @@ intellect_health_bysex_byeducation <- healthData %>%
 >~~~{.r}
 >conscientiousness_extraversion_intellect_males <- healthData %>%
 >                            filter(sex=="Male") %>%
->                            select("conscientiousness","extraversion","intellect")
->~~~
->
->
->
->~~~{.error}
->Error: All select() inputs must resolve to integer column positions.
->The following do not:
->*  "conscientiousness"
->*  "extraversion"
->*  "intellect"
->
+>                            select(conscientiousness,extraversion,intellect)
 >~~~
 
 > ## Solution to Challenge 2 {.challenge}
@@ -294,4 +289,5 @@ intellect_health_bysex_byeducation <- healthData %>%
 
 ## Other great resources
 [Data Wrangling Cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
 [Introduction to dplyr](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)

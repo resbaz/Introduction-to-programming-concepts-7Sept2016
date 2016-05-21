@@ -13,71 +13,71 @@ minutes: 45
 >
 
 Previously we looked at how you can use functions to simplify your code.
-We defined the `calcBirthYearAverage` function, which takes the healthData dataset,
-and calculates the average birth year in the data. We also defined an
-additional argument so we could filter by HIGroup:
+For example we could define a `calcAverageHealth` function, which takes the healthData dataset,
+and calculates the average health metric in the data. We can also define an
+additional argument so we can filter by HIGroup:
 
 
 ~~~{.r}
-# Takes a dataset and calculates the average year of birth for a
+# Takes a dataset and calculates the average health metric for a
 # specified study group.
-calcBirthYearAverage <- function(dat, group = 1) {
-  birthYearAverage <- mean(dat[dat$HIGroup == group, ]$birthYear)
-  return(birthYearAverage)
+calcAverageHealth <- function(dat, group = "Group 1") {
+  healthAverage <- mean(dat[dat$HIGroup == group, ]$health)
+  return(healthAverage)
 }
 ~~~
 
 A common task you'll encounter when working with data is that you'll want to
 run calculations on different groups within the data. In the above, we are
-simply calculating the mean birth year in the data. But what if
-we wanted to calculated the mean birth year per sex, or per year of school?
+simply calculating the mean health metric in the data. But what if
+we wanted to calculated the mean health per group, or per education level?
 
-We could, for example, run `calcBirthYearAverage` and on each subsetted dataset:
+We could, for example, run `calcAverageHealth` and on each subsetted dataset:
 
 
 ~~~{.r}
-calcBirthYearAverage(healthData[healthData$education == 1,],1)
+calcAverageHealth(healthData[healthData$education == 4,],"Group 2")
 ~~~
 
 
 
 ~~~{.output}
-[1] NA
-
-~~~
-
-
-
-~~~{.r}
-calcBirthYearAverage(healthData[healthData$education == 2,],1)
-~~~
-
-
-
-~~~{.output}
-[1] NA
+[1] 9.246495
 
 ~~~
 
 
 
 ~~~{.r}
-calcBirthYearAverage(healthData[healthData$education == 3,],1)
+calcAverageHealth(healthData[healthData$education == 5,],"Group 2")
 ~~~
 
 
 
 ~~~{.output}
-[1] NA
+[1] 9.801333
+
+~~~
+
+
+
+~~~{.r}
+calcAverageHealth(healthData[healthData$education == 6,],"Group 2")
+~~~
+
+
+
+~~~{.output}
+[1] 9.162941
 
 ~~~
 
 But this isn't very *nice*. Yes, by using a function, you have reduced a
-substantial amount of repetition. That **is** nice. But there is still
+substantial amount of repetition. That *is* nice. But there is still
 repetition. Repeating yourself will cost you time, both now and later, and
 potentially introduce some nasty bugs.
 
-We could write a new function that potentially more flexible than `calcBirthYearAverage`, but this
+We could write a new function that is potentially more flexible than `calcAverageHealth`, but this
 also takes a substantial amount of effort and testing to get right.
 
 The abstract problem we're encountering here is known as "split-apply-combine":
@@ -147,24 +147,23 @@ Now we can quickly calculate the mean birth year per education level:
 ddply(
  .data = healthData,
  .variables = "education",
- .fun = function(x) mean(x$birthYear)
+ .fun = function(x) mean(x$health)
 )
 ~~~
 
 
 
 ~~~{.output}
-   education       V1
-1          1 1955.200
-2          2 1946.600
-3          3 1948.510
-4          4 1946.634
-5          5 1936.333
-6          6 1922.328
-7          7 1944.333
-8          8 1927.964
-9          9 1923.568
-10        NA 1955.647
+  education       V1
+1         1 6.487500
+2         2 9.967500
+3         3 8.620682
+4         4 9.340258
+5         5 9.069877
+6         6 8.976614
+7         7 9.321495
+8         8 9.525871
+9         9 9.653661
 
 ~~~
 
@@ -191,7 +190,7 @@ What if we want a different type of output data structure?:
 dlply(
  .data = healthData,
  .variables = "education",
- .fun = function(x) mean(x$birthYear)
+ .fun = function(x) mean(x$health)
 )
 ~~~
 
@@ -199,49 +198,45 @@ dlply(
 
 ~~~{.output}
 $`1`
-[1] 1955.2
+[1] 6.4875
 
 $`2`
-[1] 1946.6
+[1] 9.9675
 
 $`3`
-[1] 1948.51
+[1] 8.620682
 
 $`4`
-[1] 1946.634
+[1] 9.340258
 
 $`5`
-[1] 1936.333
+[1] 9.069877
 
 $`6`
-[1] 1922.328
+[1] 8.976614
 
 $`7`
-[1] 1944.333
+[1] 9.321495
 
 $`8`
-[1] 1927.964
+[1] 9.525871
 
 $`9`
-[1] 1923.568
-
-$`NA`
-[1] 1955.647
+[1] 9.653661
 
 attr(,"split_type")
 [1] "data.frame"
 attr(,"split_labels")
-   education
-1          1
-2          2
-3          3
-4          4
-5          5
-6          6
-7          7
-8          8
-9          9
-10        NA
+  education
+1         1
+2         2
+3         3
+4         4
+5         5
+6         6
+7         7
+8         8
+9         9
 
 ~~~
 
@@ -255,34 +250,32 @@ We can specify multiple columns to group by:
 ddply(
  .data = healthData,
  .variables = c("education","sex"),
- .fun = function(x) mean(x$birthYear)
+ .fun = function(x) mean(x$health)
 )
 ~~~
 
 
 
 ~~~{.output}
-   education    sex       V1
-1          1 Female 1955.500
-2          1   Male 1955.000
-3          2 Female 1933.000
-4          2   Male 1955.667
-5          3 Female 1946.059
-6          3   Male 1949.812
-7          4 Female 1948.621
-8          4   Male 1945.099
-9          5 Female 1927.278
-10         5   Male 1942.725
-11         6 Female 1921.538
-12         6   Male 1923.106
-13         7 Female 1945.255
-14         7   Male 1943.491
-15         8 Female 1928.059
-16         8   Male 1927.860
-17         9 Female 1928.753
-18         9   Male 1920.663
-19        NA Female 1955.833
-20        NA   Male 1955.438
+   education    sex        V1
+1          1 Female  4.145000
+2          1   Male  8.830000
+3          2 Female  9.885000
+4          2   Male 10.050000
+5          3 Female  7.688125
+6          3   Male  9.153571
+7          4 Female  9.158053
+8          4   Male  9.470570
+9          5 Female  8.764062
+10         5   Male  9.269592
+11         6 Female  8.760938
+12         6   Male  9.195714
+13         7 Female  9.059946
+14         7   Male  9.562327
+15         8 Female  9.517341
+16         8   Male  9.535098
+17         9 Female  9.469059
+18         9   Male  9.755552
 
 ~~~
 
@@ -291,7 +284,7 @@ ddply(
 daply(
  .data = healthData,
  .variables = c("education","sex"),
- .fun = function(x) mean(x$birthYear)
+ .fun = function(x) mean(x$health)
 )
 ~~~
 
@@ -299,17 +292,16 @@ daply(
 
 ~~~{.output}
          sex
-education   Female     Male
-     1    1955.500 1955.000
-     2    1933.000 1955.667
-     3    1946.059 1949.812
-     4    1948.621 1945.099
-     5    1927.278 1942.725
-     6    1921.538 1923.106
-     7    1945.255 1943.491
-     8    1928.059 1927.860
-     9    1928.753 1920.663
-     <NA> 1955.833 1955.438
+education   Female      Male
+        1 4.145000  8.830000
+        2 9.885000 10.050000
+        3 7.688125  9.153571
+        4 9.158053  9.470570
+        5 8.764062  9.269592
+        6 8.760938  9.195714
+        7 9.059946  9.562327
+        8 9.517341  9.535098
+        9 9.469059  9.755552
 
 ~~~
 
@@ -322,10 +314,10 @@ d_ply(
   .data=healthData,
   .variables = "education",
   .fun = function(x) {
-    meanBirthYear <- mean(x$birthYear)
+    meanHealth <- mean(x$health)
     print(paste(
-      "The mean year of birth for education level", unique(x$education),
-      "is", format(meanBirthYear, big.mark=",")
+      "The mean health metric for education level", unique(x$education),
+      "is", meanHealth
    ))
   }
 )
@@ -334,25 +326,17 @@ d_ply(
 
 
 ~~~{.output}
-[1] "The mean year of birth for education level 1 is 1,955.2"
-[1] "The mean year of birth for education level 2 is 1,946.6"
-[1] "The mean year of birth for education level 3 is 1,948.51"
-[1] "The mean year of birth for education level 4 is 1,946.634"
-[1] "The mean year of birth for education level 5 is 1,936.333"
-[1] "The mean year of birth for education level 6 is 1,922.328"
-[1] "The mean year of birth for education level 7 is 1,944.333"
-[1] "The mean year of birth for education level 8 is 1,927.964"
-[1] "The mean year of birth for education level 9 is 1,923.568"
-[1] "The mean year of birth for education level NA is 1,955.647"
+[1] "The mean health metric for education level 1 is 6.4875"
+[1] "The mean health metric for education level 2 is 9.9675"
+[1] "The mean health metric for education level 3 is 8.62068181818182"
+[1] "The mean health metric for education level 4 is 9.34025830258303"
+[1] "The mean health metric for education level 5 is 9.06987654320988"
+[1] "The mean health metric for education level 6 is 8.97661417322835"
+[1] "The mean health metric for education level 7 is 9.32149484536082"
+[1] "The mean health metric for education level 8 is 9.52587127158556"
+[1] "The mean health metric for education level 9 is 9.65366108786611"
 
 ~~~
-
-> ## Tip: printing numbers {.callout}
->
-> The `format` function can be used to make numeric
-> values "pretty" for printing out in messages.
->
-
 
 > ## Challenge 1 {.challenge}
 >

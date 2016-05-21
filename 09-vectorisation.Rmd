@@ -58,9 +58,10 @@ y:  6  7  8  9
 > Check the head or tail of the data frame to make sure
 > it worked.
 >
-> Hint: R has a round() function
+> **Hint**: R has a round() function
 >
 
+<!--
 > ## Challenge 2 {.challenge}
 >
 > On a single graph, plot neuroticism against health rounded to the nearest integer, 
@@ -69,7 +70,7 @@ y:  6  7  8  9
 > Repeat the exercise, graphing only for people with: conscientiousnss greater than 5, 
 > self-rated health below 7, and alcohol use in young adulthood of 2.
 >
-
+-->
 Comparison operators, logical operators, and many functions are also
 vectorized:
 
@@ -121,7 +122,7 @@ m * -1
 > For more on matrix algebra, see the [Quick-R reference
 > guide](http://www.statmethods.net/advstats/matrix.html)
 
-> ## Challenge 3 {.challenge}
+> ## Challenge 2 {.challenge}
 >
 > Given the following matrix:
 >
@@ -140,7 +141,7 @@ m * -1
 > Did you get the output you expected? If not, ask a helper!
 >
 
-> ## Challenge 4 {.challenge}
+> ## Challenge 3 {.challenge}
 >
 > We're interested in looking at the sum of the
 > following sequence of fractions:
@@ -169,10 +170,11 @@ m * -1
 >
 > ```{r}
 > healthData$healthInteger <- round(healthData$health)
-> head(gapminder)
+> head(healthData)
 > ```
 >
 
+<!--
 > ## Solution to challenge 2 {.challenge}
 >
 >
@@ -191,8 +193,9 @@ m * -1
    geom_point()
 > ```
 >
+-->
 
-> ## Solution to challenge 3 {.challenge}
+> ## Solution to challenge 2 {.challenge}
 >
 > Given the following matrix:
 >
@@ -223,7 +226,7 @@ m * -1
 > ```
 >
 
-> ##  Challenge 4 {.challenge}
+> ##  Challenge 3 {.challenge}
 >
 > We're interested in looking at the sum of the
 > following sequence of fractions:

@@ -69,9 +69,10 @@ y:  6  7  8  9
 > Check the head or tail of the data frame to make sure
 > it worked.
 >
-> Hint: R has a round() function
+> **Hint**: R has a round() function
 >
 
+<!--
 > ## Challenge 2 {.challenge}
 >
 > On a single graph, plot neuroticism against health rounded to the nearest integer, 
@@ -80,7 +81,7 @@ y:  6  7  8  9
 > Repeat the exercise, graphing only for people with: conscientiousnss greater than 5, 
 > self-rated health below 7, and alcohol use in young adulthood of 2.
 >
-
+-->
 Comparison operators, logical operators, and many functions are also
 vectorized:
 
@@ -191,7 +192,7 @@ m * -1
 > For more on matrix algebra, see the [Quick-R reference
 > guide](http://www.statmethods.net/advstats/matrix.html)
 
-> ## Challenge 3 {.challenge}
+> ## Challenge 2 {.challenge}
 >
 > Given the following matrix:
 >
@@ -221,7 +222,7 @@ m * -1
 > Did you get the output you expected? If not, ask a helper!
 >
 
-> ## Challenge 4 {.challenge}
+> ## Challenge 3 {.challenge}
 >
 > We're interested in looking at the sum of the
 > following sequence of fractions:
@@ -252,17 +253,38 @@ m * -1
 > 
 > ~~~{.r}
 > healthData$healthInteger <- round(healthData$health)
-> head(gapminder)
+> head(healthData)
 > ~~~
 > 
 > 
 > 
-> ~~~{.error}
-> Error in head(gapminder): object 'gapminder' not found
+> ~~~{.output}
+>   id conscientiousness extraversion intellect agreeableness neuroticism
+> 1  3             5.825        3.986     6.044         4.613       3.649
+> 2  4             7.732        7.016     6.821         6.649       6.299
+> 3  7             6.498        2.697     5.527         3.087       4.091
+> 4  8             5.881        2.504     4.234         4.613       3.649
+> 5 10             4.254        5.147     4.751         3.850       3.208
+> 6 12             7.508        3.535     6.821         4.613       5.415
+>    sex selfRatedHealth mentalAdjustment illnessReversed health
+> 1 Male               4                2               3   6.74
+> 2 Male               5                3               5  11.96
+> 3 Male               3                3               4   8.05
+> 4 Male               3                2               4   6.48
+> 5 Male               4                2               3   6.74
+> 6 Male               4                2               5   9.01
+>   alcoholUseInYoungAdulthood education birthYear HIGroup healthInteger
+> 1                          2         9      1909 Group 1             7
+> 2                          3         8      1905 Group 1            12
+> 3                          2         6      1910 Group 1             8
+> 4                          1         8      1905 Group 1             6
+> 5                          2         9      1910 Group 1             7
+> 6                          2         4      1911 Group 1             9
 > 
 > ~~~
 >
 
+<!--
 > ## Solution to challenge 2 {.challenge}
 >
 >
@@ -287,17 +309,11 @@ m * -1
 >    geom_point()
 > ~~~
 > 
-> 
-> 
-> ~~~{.error}
-> Warning: Removed 119 rows containing missing values (geom_point).
-> 
-> ~~~
-> 
 > <img src="fig/09-vectorisation-ch2-sol-2.png" title="plot of chunk ch2-sol" alt="plot of chunk ch2-sol" style="display: block; margin: auto;" />
 >
+-->
 
-> ## Solution to challenge 3 {.challenge}
+> ## Solution to challenge 2 {.challenge}
 >
 > Given the following matrix:
 >
@@ -354,7 +370,7 @@ m * -1
 > ~~~
 >
 
-> ##  Challenge 4 {.challenge}
+> ##  Challenge 3 {.challenge}
 >
 > We're interested in looking at the sum of the
 > following sequence of fractions:

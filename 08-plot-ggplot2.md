@@ -137,13 +137,6 @@ simply add another layer to the plot:
 ggplot(healthData,aes(x=health,y=illnessReversed,color=as.factor(education),by=sex)) + geom_point() + geom_line()
 ~~~
 
-
-
-~~~{.error}
-Warning: Removed 4 rows containing missing values (geom_point).
-
-~~~
-
 <img src="fig/08-plot-ggplot2-health-line-point-1.png" title="plot of chunk health-line-point" alt="plot of chunk health-line-point" style="display: block; margin: auto;" />
 
 It's important to note that each layer is drawn on top of the previous layer. In
@@ -153,13 +146,6 @@ demonstration:
 
 ~~~{.r}
 ggplot(healthData,aes(x=health,y=illnessReversed,by=sex)) + geom_line(aes(color=as.factor(education))) + geom_point()
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 4 rows containing missing values (geom_point).
-
 ~~~
 
 <img src="fig/08-plot-ggplot2-health-layer-example-1-1.png" title="plot of chunk health-layer-example-1" alt="plot of chunk health-layer-example-1" style="display: block; margin: auto;" />
@@ -199,13 +185,6 @@ visual values of an aesthetic.
 ~~~{.r}
 ggplot(data = healthData, aes(x = health, y = education, color=sex)) +
   geom_point() + scale_y_log10()
-~~~
-
-
-
-~~~{.error}
-Warning: Removed 34 rows containing missing values (geom_point).
-
 ~~~
 
 <img src="fig/08-plot-ggplot2-axis-scale-1.png" title="plot of chunk axis-scale" alt="plot of chunk axis-scale" style="display: block; margin: auto;" />
@@ -307,6 +286,20 @@ code to modify!
 > Go ahead and try to do it using ggplot!
 >
 
+Lastly, `ggplot2` has a very handy function, `ggsave()` for saving the current plot to a file:
+
+
+~~~{.r}
+ggsave("fig/Figure1.pdf")
+~~~
+
+
+
+~~~{.output}
+Saving 7 x 7 in image
+
+~~~
+
 ## Challenge solutions
 
 > ## Solution to challenge 1 {.challenge}
@@ -317,13 +310,6 @@ code to modify!
 > 
 > ~~~{.r}
 > ggplot(healthData, aes(x = health, y = illnessReversed)) + geom_point()
-> ~~~
-> 
-> 
-> 
-> ~~~{.error}
-> Warning: Removed 4 rows containing missing values (geom_point).
-> 
 > ~~~
 > 
 > <img src="fig/08-plot-ggplot2-ch1-sol-1.png" title="plot of chunk ch1-sol" alt="plot of chunk ch1-sol" style="display: block; margin: auto;" />
@@ -343,13 +329,6 @@ code to modify!
 > geom_point()
 > ~~~
 > 
-> 
-> 
-> ~~~{.error}
-> Warning: Removed 4 rows containing missing values (geom_point).
-> 
-> ~~~
-> 
 > <img src="fig/08-plot-ggplot2-ch2-sol-1.png" title="plot of chunk ch2-sol" alt="plot of chunk ch2-sol" style="display: block; margin: auto;" />
 >
 
@@ -361,13 +340,6 @@ code to modify!
 > 
 > ~~~{.r}
 > ggplot(healthData,aes(x=health,y=illnessReversed,by=sex)) + geom_point() + geom_line(aes(color=as.factor(education)))
-> ~~~
-> 
-> 
-> 
-> ~~~{.error}
-> Warning: Removed 4 rows containing missing values (geom_point).
-> 
 > ~~~
 > 
 > <img src="fig/08-plot-ggplot2-ch3-sol-1.png" title="plot of chunk ch3-sol" alt="plot of chunk ch3-sol" style="display: block; margin: auto;" />

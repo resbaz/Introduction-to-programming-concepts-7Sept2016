@@ -41,10 +41,10 @@
 </section>
 <p>Manipulation of dataframes means many things to many researchers, we often select certain observations (rows) or variables (columns), we often group the data by a certain variable(s), or we even calculate summary statistics. We can do these operations using the normal base R operations:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(healthData[healthData$HIGroup ==<span class="st"> &quot;Group 1&quot;</span>, <span class="st">&quot;health&quot;</span>])</code></pre>
-<pre class="output"><code>[1] 9.199115
+<pre class="output"><code>[1] 9.197253
 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(healthData[healthData$HIGroup ==<span class="st"> &quot;Group 2&quot;</span>, <span class="st">&quot;health&quot;</span>])</code></pre>
-<pre class="output"><code>[1] 9.660906
+<pre class="output"><code>[1] 9.64024
 </code></pre>
 <p>But this isn’t very <em>nice</em> because there is a fair bit of repetition. Repeating yourself will cost you time, both now and later, and potentially introduce some nasty bugs.</p>
 <h2 id="the-dplyr-package">The <code>dplyr</code> package</h2>
@@ -72,11 +72,9 @@
 <p>To help you understand why we wrote that in that way, let’s walk through it step by step. First we summon the healthData dataframe and pass it on, using the pipe symbol <code>%&gt;%</code>, to the next step, which is the <code>select()</code> function. In this case we don’t specify which data object we use in the <code>select()</code> function since in gets that from the previous pipe.</p>
 <h2 id="using-filter">Using filter()</h2>
 <p>If we now wanted to move forward with the above, but only with data for females, we can combine <code>select</code> and <code>filter</code></p>
-<pre class="sourceCode r"><code class="sourceCode r">sex_health_neuroticism_female &lt;-<span class="st"> </span>health %&gt;%
+<pre class="sourceCode r"><code class="sourceCode r">sex_health_neuroticism_female &lt;-<span class="st"> </span>healthData %&gt;%
 <span class="st">    </span><span class="kw">filter</span>(sex==<span class="st">&quot;Female&quot;</span>) %&gt;%
 <span class="st">    </span><span class="kw">select</span>(sex,health,neuroticism)</code></pre>
-<pre class="error"><code>Error in eval(expr, envir, enclos): object &#39;health&#39; not found
-</code></pre>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge 1</h2>
@@ -89,13 +87,13 @@
 <h2 id="using-group_by-and-summarize">Using group_by() and summarize()</h2>
 <p>Now, we were supposed to be reducing the error prone repetitiveness of what can be done with base R, but up to now we haven’t done that since we would have to repeat the above for each sex. Instead of <code>filter()</code>, which will only pass observations that meet your criteria (in the above: <code>sex==&quot;Female&quot;</code>), we can use <code>group_by()</code>, which will essentially use every unique criteria that you could have used in filter.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(healthData)</code></pre>
-<pre class="output"><code>&#39;data.frame&#39;:   2255 obs. of  15 variables:
+<pre class="output"><code>&#39;data.frame&#39;:   2034 obs. of  15 variables:
  $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
  $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
- $ extraversion              : Factor w/ 95 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.408&quot;,..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ extraversion              : num  3.99 7.02 2.7 2.5 5.15 ...
  $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
- $ agreeableness             : Factor w/ 56 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.051&quot;,..: 34 56 17 34 26 34 42 23 39 23 ...
- $ neuroticism               : Factor w/ 43 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.442&quot;,..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ agreeableness             : num  4.61 6.65 3.09 4.61 3.85 ...
+ $ neuroticism               : num  3.65 6.3 4.09 3.65 3.21 ...
  $ sex                       : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 2 2 2 2 2 2 2 2 ...
  $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
  $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
@@ -107,13 +105,13 @@
  $ HIGroup                   : Factor w/ 2 levels &quot;Group 1&quot;,&quot;Group 2&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 </code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(healthData %&gt;%<span class="st"> </span><span class="kw">group_by</span>(sex))</code></pre>
-<pre class="output"><code>Classes &#39;grouped_df&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;: 2255 obs. of  15 variables:
+<pre class="output"><code>Classes &#39;grouped_df&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;: 2034 obs. of  15 variables:
  $ id                        : int  3 4 7 8 10 12 15 17 18 20 ...
  $ conscientiousness         : num  5.83 7.73 6.5 5.88 4.25 ...
- $ extraversion              : Factor w/ 95 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.408&quot;,..: 45 93 20 16 67 36 71 49 65 65 ...
+ $ extraversion              : num  3.99 7.02 2.7 2.5 5.15 ...
  $ intellect                 : num  6.04 6.82 5.53 4.23 4.75 ...
- $ agreeableness             : Factor w/ 56 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.051&quot;,..: 34 56 17 34 26 34 42 23 39 23 ...
- $ neuroticism               : Factor w/ 43 levels &quot;.&quot;,&quot;1.000&quot;,&quot;1.442&quot;,..: 18 41 22 18 15 32 37 32 30 30 ...
+ $ agreeableness             : num  4.61 6.65 3.09 4.61 3.85 ...
+ $ neuroticism               : num  3.65 6.3 4.09 3.65 3.21 ...
  $ sex                       : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 2 2 2 2 2 2 2 2 2 ...
  $ selfRatedHealth           : int  4 5 3 3 4 4 4 4 5 4 ...
  $ mentalAdjustment          : int  2 3 3 2 2 2 3 1 3 3 ...
@@ -127,10 +125,10 @@
   ..$ : symbol sex
  - attr(*, &quot;drop&quot;)= logi TRUE
  - attr(*, &quot;indices&quot;)=List of 2
-  ..$ : int  1231 1232 1233 1234 1235 1236 1237 1238 1239 1240 ...
+  ..$ : int  1118 1119 1120 1121 1122 1123 1124 1125 1126 1127 ...
   ..$ : int  0 1 2 3 4 5 6 7 8 9 ...
- - attr(*, &quot;group_sizes&quot;)= int  1024 1231
- - attr(*, &quot;biggest_group_size&quot;)= int 1231
+ - attr(*, &quot;group_sizes&quot;)= int  916 1118
+ - attr(*, &quot;biggest_group_size&quot;)= int 1118
  - attr(*, &quot;labels&quot;)=&#39;data.frame&#39;:  2 obs. of  1 variable:
   ..$ sex: Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 1 2
   ..- attr(*, &quot;vars&quot;)=List of 1
@@ -145,7 +143,15 @@
 <p>The above was a bit on the uneventful side because <code>group_by()</code> is much more exciting in conjunction with <code>summarize()</code>. This will allow you to create new variable(s) by using functions that repeat for each of the sex-specific data frames. That is to say, using the <code>group_by()</code> function, we split our original dataframe into multiple pieces, then we can run functions (e.g. <code>mean()</code> or <code>sd()</code>) within <code>summarize()</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r">conscientiousness_by_sex &lt;-<span class="st"> </span>healthData %&gt;%
 <span class="st">    </span><span class="kw">group_by</span>(sex) %&gt;%
-<span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_conscientiousness=</span><span class="kw">mean</span>(conscientiousness))</code></pre>
+<span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_conscientiousness=</span><span class="kw">mean</span>(conscientiousness))
+conscientiousness_by_sex</code></pre>
+<pre class="output"><code>Source: local data frame [2 x 2]
+
+     sex mean_conscientiousness
+  (fctr)                  (dbl)
+1 Female               6.086473
+2   Male               5.685394
+</code></pre>
 <div class="figure">
 <img src="fig/13-dplyr-fig3.png" />
 </div>
@@ -195,13 +201,7 @@
 <div class="panel-body">
 <pre class="sourceCode r"><code class="sourceCode r">conscientiousness_extraversion_intellect_males &lt;-<span class="st"> </span>healthData %&gt;%
 <span class="st">                           </span><span class="kw">filter</span>(sex==<span class="st">&quot;Male&quot;</span>) %&gt;%
-<span class="st">                           </span><span class="kw">select</span>(<span class="st">&quot;conscientiousness&quot;</span>,<span class="st">&quot;extraversion&quot;</span>,<span class="st">&quot;intellect&quot;</span>)</code></pre>
-<pre class="error"><code>Error: All select() inputs must resolve to integer column positions.
-The following do not:
-*  &quot;conscientiousness&quot;
-*  &quot;extraversion&quot;
-*  &quot;intellect&quot;
-</code></pre>
+<span class="st">                           </span><span class="kw">select</span>(conscientiousness,extraversion,intellect)</code></pre>
 </div>
 </section>
 <section class="challenge panel panel-success">
@@ -228,7 +228,8 @@ The following do not:
 </div>
 </section>
 <h2 id="other-great-resources">Other great resources</h2>
-<p><a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">Data Wrangling Cheat sheet</a> <a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">Introduction to dplyr</a></p>
+<p><a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">Data Wrangling Cheat sheet</a></p>
+<p><a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">Introduction to dplyr</a></p>
         </div>
       </div>
       </article>

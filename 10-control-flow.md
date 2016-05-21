@@ -142,7 +142,9 @@ If your condition evaluates to a vector with more than one logical element,
 the function `if` will still run, but will only evaluate the condition in the first
 element. Here you need to make sure your condition is of length 1.
 
-> ## Tip: `any` and `all` {.callout}
+
+> ## Tip: any and all {.callout}
+>
 > The `any` function will return TRUE if at least one
 > TRUE value is found within a vector, otherwise it will return `FALSE`.
 > This can be used in a similar way to the `%in%` operator.
@@ -497,7 +499,7 @@ output_vector2
 > [1] "The mean health measure for people with 2 illness in group Group 1 is between 5 and 8 units"
 > [1] "The mean health measure for people with 2 illness in group Group 2 is between 5 and 8 units"
 > [1] "The mean health measure for people with 3 illness in group Group 1 is between 5 and 8 units"
-> [1] "The mean health measure for people with 3 illness in group Group 2 is greater than 8 units"
+> [1] "The mean health measure for people with 3 illness in group Group 2 is between 5 and 8 units"
 > [1] "The mean health measure for people with 4 illness in group Group 1 is greater than 8 units"
 > [1] "The mean health measure for people with 4 illness in group Group 2 is greater than 8 units"
 > [1] "The mean health measure for people with 5 illness in group Group 1 is greater than 8 units"

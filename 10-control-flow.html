@@ -110,10 +110,14 @@ x</code></pre>
 1 and only the first element will be used
 </code></pre>
 <p>If your condition evaluates to a vector with more than one logical element, the function <code>if</code> will still run, but will only evaluate the condition in the first element. Here you need to make sure your condition is of length 1.</p>
-<blockquote>
-<h2>Tip: <code>any</code> and <code class="callout">all</code></h2>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pushpin"></span>Tip: any and all</h2>
+</div>
+<div class="panel-body">
 <p>The <code>any</code> function will return TRUE if at least one TRUE value is found within a vector, otherwise it will return <code>FALSE</code>. This can be used in a similar way to the <code>%in%</code> operator. The function <code>all</code>, as the name suggests, will only return <code>TRUE</code> if all values in the vector are <code>TRUE</code>.</p>
-</blockquote>
+</div>
+</aside>
 <h2 id="repeating-operations">Repeating operations</h2>
 <p>If you want to iterate over a set of values, when the order of iteration is important, and perform the same operation on each, a <code>for</code> loop will do the job. We saw <code>for</code> loops in the shell lessons earlier. This is the most flexible of looping operations, but therefore also the hardest to use correctly. Avoid using <code>for</code> loops unless the order of iteration is important: i.e. the calculation at each iteration depends on the results of previous iterations.</p>
 <p>The basic structure of a <code>for</code> loop is:</p>
@@ -347,7 +351,7 @@ output_vector2</code></pre>
 [1] &quot;The mean health measure for people with 2 illness in group Group 1 is between 5 and 8 units&quot;
 [1] &quot;The mean health measure for people with 2 illness in group Group 2 is between 5 and 8 units&quot;
 [1] &quot;The mean health measure for people with 3 illness in group Group 1 is between 5 and 8 units&quot;
-[1] &quot;The mean health measure for people with 3 illness in group Group 2 is greater than 8 units&quot;
+[1] &quot;The mean health measure for people with 3 illness in group Group 2 is between 5 and 8 units&quot;
 [1] &quot;The mean health measure for people with 4 illness in group Group 1 is greater than 8 units&quot;
 [1] &quot;The mean health measure for people with 4 illness in group Group 2 is greater than 8 units&quot;
 [1] &quot;The mean health measure for people with 5 illness in group Group 1 is greater than 8 units&quot;

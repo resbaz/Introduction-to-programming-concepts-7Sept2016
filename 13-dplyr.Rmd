@@ -73,7 +73,7 @@ To help you understand why we wrote that in that way, let's walk through it step
 If we now wanted to move forward with the above, but only with data for females, we can combine `select` and `filter`
 
 ```{r}
-sex_health_neuroticism_female <- health %>%
+sex_health_neuroticism_female <- healthData %>%
     filter(sex=="Female") %>%
     select(sex,health,neuroticism)
 ```
@@ -108,6 +108,7 @@ The above was a bit on the uneventful side because `group_by()` is much more exc
 conscientiousness_by_sex <- healthData %>%
     group_by(sex) %>%
     summarize(mean_conscientiousness=mean(conscientiousness))
+conscientiousness_by_sex
 ```
 
 ![](fig/13-dplyr-fig3.png)
@@ -165,7 +166,7 @@ intellect_health_bysex_byeducation <- healthData %>%
 >```{r}
 >conscientiousness_extraversion_intellect_males <- healthData %>%
 >                            filter(sex=="Male") %>%
->                            select("conscientiousness","extraversion","intellect")
+>                            select(conscientiousness,extraversion,intellect)
 > ```
 
 > ## Solution to Challenge 2 {.challenge}
@@ -187,4 +188,5 @@ intellect_health_bysex_byeducation <- healthData %>%
 
 ## Other great resources
 [Data Wrangling Cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
 [Introduction to dplyr](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)

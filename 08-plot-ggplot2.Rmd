@@ -255,6 +255,12 @@ code to modify!
 > Go ahead and try to do it using ggplot!
 >
 
+Lastly, `ggplot2` has a very handy function, `ggsave()` for saving the current plot to a file:
+
+```{r}
+ggsave("fig/Figure1.pdf")
+```
+
 ## Challenge solutions
 
 > ## Solution to challenge 1 {.challenge}
