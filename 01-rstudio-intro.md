@@ -2,7 +2,7 @@
 layout: page
 title: R for reproducible scientific analysis
 subtitle: Introduction to R and RStudio
-minutes: 45
+minutes: 45 
 ---
 
 
@@ -581,7 +581,7 @@ function (name, pos = -1L, envir = as.environment(pos), all.names = FALSE,
     }
     else all.names
 }
-<bytecode: 0x332e398>
+<bytecode: 0x2959620>
 <environment: namespace:base>
 
 ~~~
