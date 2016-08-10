@@ -2,25 +2,25 @@
 layout: workshop 
 root: .
 venue: University of Melbourne
-address1: William Hearn Seminar Room, Room G09, The Old Quadrangle, University of Melbourne
+address1: Collaborative Learning Space 1, Old Arts, University of Melbourne
 address2: 
 country: Australia
 language: en
-latlng: -37.797779, 144.961182
-humandate: July 28 and August 4, 2016
-humantime: 9:00 am - 5:00 pm
-startdate: 2016-07-28
-enddate: 2016-08-04
-instructor: ["Tim Esler", "Nikki Rubinstein", "Tiane Ryman", "Chenkai Ma"]
-helper: ["Marion Shadbolt", "Sepideh Foroutan", "Ramyar Molania", "Andy Krause", "Michael Silk"]
-contact: t.esler@student.unimelb.edu.au 
-contact2: nikkir@student.unimelb.edu.au
-etherpad: https://public.etherpad-mozilla.org/p/Introductory-R-Workshop-28July2016
-eventbrite: 26464025613
-survey1: http://goo.gl/forms/kG0Ma5FR37
+latlng: -37.797961, 144.960023
+humandate: September 7, 2016
+humantime: 3:00 pm - 5:00 pm
+startdate: 2016-09-07
+enddate: 
+instructor: ["Nikki Rubinstein"]
+helper: ["Alistair Walsh", "Warda Najam"]
+contact: nikkir@student.unimelb.edu.au 
+contact2: 
+etherpad: 
+eventbrite: 
+survey1: 
 survey2: http://goo.gl/forms/AQdU9I3Z3l
-wifiUsername: Software Carpentry
-wifiPassword: hackerwithin
+wifiUsername: 
+wifiPassword: 
 ---
 
 
@@ -70,21 +70,11 @@ Main things to edit include:
   the pitch.
 -->
 
-  <b>Introduction to R for non-programmers using psychological data.</b>
+  <b>Introductory programming concepts for programming novices.</b>
 <p>
-The goal of this lesson is to teach novice programmers to write modular code and best practices for using R for data analysis. 
-R is commonly used in many scientific disciplines for statistical analysis and its array of third-party packages. 
-The emphasis of these materials is to give attendees a strong foundation in the fundamentals of R, 
-and to teach best practices for scientific computing: breaking down analyses into modular units, task automation, and encapsulation.
-</p>
-<p>
-Note that this workshop will focus on teaching the fundamentals of the programming language R, and will <b><u>not</u></b> teach statistical analysis. If you would like help with your statistical analysis, you can contact the <a href="http://www.scc.ms.unimelb.edu.au/">Statistical Consulting Centre</a> for one-on-one consultations or see their <a href="SCS_2016 leaflet_PG_R17.pdf">flyer</a> for details of statistical training courses.</p>
-<p>
-A variety of third party packages are used throughout this workshop. These are not necessarily the best, nor are they comprehensive, 
-but they are packages we find useful, and have been chosen primarily for their usability.
-
-These materials are a modified version of those used by Software Carpentry for their "R for reproducible scientific analysis" workshop:
-Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (doi: 10.12688/f1000research.3-62.v2).
+The goal of this lesson is to teach novice programmers basic programming concepts. The workshop will cover data types, 
+data structures, functions and control flow (don't worry if you don't know what these are; you will by the end of the 
+workshop!). After attending this workshop, you will be well set to attend any beginner programming language course.
 </p>
 
 <!--
@@ -95,8 +85,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 <p id="who">
   <strong>Who:</strong>
   The course is aimed at graduate students and other researchers. 
-  <strong>You don't need to have any previous knowledge of the tools that will
-    be presented at the workshop.</strong>
+  <strong>You don't need to have any previous programming knowledge.</strong>
 </p>
 
 <!--
@@ -125,9 +114,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
   Modify the block below if there are any special requirements.
 -->
 <p id="requirements">
-  <strong>Requirements:</strong> <strong>**Participants must bring a laptop**</strong> with a 
-  Mac, Linux, or Windows operating sytem (not a tablet, Chromebook, etc.) that they have administrative privileges
-  on. 
+  <strong>Requirements:</strong> <strong>**Participants must bring a laptop**</strong> that can access the internet. 
 </p>
 
 <!--
@@ -159,19 +146,21 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
   to match your plans.  You may also want to change 'Day 1' and 'Day
   2' to be actual dates or days of the week.
 -->
-<h2 id="schedule">Schedule</h2> 
+<h2 id="schedule">Training materials</h2> 
 
 <!-- DO NOT EDIT SURVEY LINKS -->
- <p><em>Surveys</em></p>
-<p>Please be sure to complete these surveys at the end of each day of the workshop.</p>
-<p><a href="{{page.survey1}}">End of first day survey</a></p>
-<p><a href="{{page.survey2}}">End of second day survey</a></p>
+ <p><em>Survey</em></p>
+<p>Please be sure to complete this survey at the end of the workshop.</p>
+<!--<p><a href="{{page.survey1}}">End of first day survey</a></p>-->
+<p><a href="{{page.survey2}}">End of workshop survey</a></p>
 <!--<p><a href='{{ site.swc_pre_survey }}{{ site.github.project_title }}'>Pre-workshop Survey</a></p>
 <p><a href='{{ site.swc_post_survey }}{{ site.github.project_title }}'>Post-workshop Survey</a></p>-->
 
-<div class="row">
+<p>The training materials used for this workshop can be found 
+<a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-programming-concepts/content/">here</a></p>.
+<!--<div class="row">
   <div class="col-md-6">
-    <h3>Thursday July 28th</h3>
+    <h3>Wednesday September 7th</h3>
     <table class="table table-striped">
       <tr> <td>09:00</td>  <td>Introduction and access to R through "Data Intensive Tools for the Cloud (DIT4C)"</td> </tr>
       <tr> <td>10:00</td> <td>Intro to R and how to find help</td> </tr>
@@ -191,16 +180,16 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
       <tr> <td>10:30</td>  <td>Control flow ("if" and "for" statements)</td> </tr>
       <tr> <td>12:00</td>  <td>Lunch break</td> </tr>
       <tr> <td>13:00</td>  <td>Writing data and figures</td> </tr>
-      <!--<tr> <td>13:30</td>  <td>Split-apply-combine</td> </tr> -->
+      <!--<tr> <td>13:30</td>  <td>Split-apply-combine</td> </tr> -- >
       <tr> <td>13:30</td>  <td>Dataframe manipulation using dplyr</td> </tr>
       <tr> <td>15:00</td>  <td>Discussion</td></tr>
-      <!--<tr> <td>16:00</td>  <td>Github</td></tr> -->
+      <!--<tr> <td>16:00</td>  <td>Github</td></tr> -- >
       <tr> <td>16:45</td>  <td>Wrap up</td> </tr>
     </table>
   </div>
 </div>
-
-<h2 id="topics">Topics</h2>
+-->
+<!--<h2 id="topics">Topics</h2>
 <ol style="list-style-type: decimal">
 <li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/01-rstudio-intro.html">Introduction to R and RStudio</a></li>
 <li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/02-seeking-help.html">Seeking help</a></li>
@@ -212,10 +201,10 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 <li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/08-vectorisation.html">Vectorisation</a></li>
 <li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/09-control-flow.html">Control flow</a></li>
 <li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/10-writing-data.html">Writing data</a></li>
-<!--<li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/11-plyr.html">Split-apply-combine</a></li>-->
+<!--<li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/11-plyr.html">Split-apply-combine</a></li>-- >
 <li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/11-dplyr.html">Dataframe manipulation with dplyr</a></li>
-<!-- <li><a href="12-tidyr.html">Dataframe manipulation with tidyr</a></li>-->
-<!--<li><a href=" 02-project-intro.html">Project management with RStudio</a></li>-->
+<!-- <li><a href="12-tidyr.html">Dataframe manipulation with tidyr</a></li>-- >
+<!--<li><a href=" 02-project-intro.html">Project management with RStudio</a></li>-- > 
 <li><a href="https://nikkirubinstein.gitbooks.io/resguides-introductory-r-workshop/content/content/12-wrap-up.html">Wrapping up</a></li>
 </ol>
 <h2 id="other-resources">Other Resources</h2>
@@ -223,7 +212,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 <li><a href="reference.html">Reference</a></li>
 <li><a href="instructors.html">Instructor’s Guide</a></li>
 </ul>
-
+-->
 
 
 <!--
@@ -365,7 +354,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 
 <p>
   <strong>Requirements:</strong>
-  <strong>**Participants will be required to bring their own laptop**</strong>,
+  <strong>**Participants will be required to bring their own laptop**</strong>.<!--,
   from which they will logon to the
   <a href="http://resbaz.cloud.edu.au/ ">Data Intensive Tools for the Cloud</a>
   (DIT4C) environment on the
@@ -379,8 +368,7 @@ Greg Wilson: "Software Carpentry: Lessons Learned". F1000Research, 2016, 3:62 (d
 
 <p>
   <strong>Wifi:</strong>
-  If you're bringing a wifi device to the workshop,
-  access to the wifi network will depend on whether you're affiliated with the Univerity of Melbourne.
+  Access to the wifi network will depend on whether you're affiliated with the Univerity of Melbourne.
   University of Melbourne staff/students can connect to the UniWireless network;
   instructions on how to do this and where to get assistance can be found
   <a href="https://its.unimelb.edu.au/help/networks-access/networks-internet/connect-wireless/unimelb">here</a>.
@@ -680,7 +668,7 @@ For visitors who are not from a tertiary institution, the visitor login details 
 
 <div id="r"> <!-- Start of 'R' section. -->
 
-  <h3>R</h3>
+<!--  <h3>R</h3>
   <p>
     <a href="http://www.r-project.org">R</a> is a programming language
     that is especially powerful for data exploration, visualization, and
